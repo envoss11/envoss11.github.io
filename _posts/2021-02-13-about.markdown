@@ -4,5 +4,10 @@ title: "About Me"
 date:   2021-02-13 21:00:45 -0600
 categories:
 ---
+I am a data analytics professional with over 5 years of experience in the financial services industry. I love helping businesses use data to ask more productive questions, solve problems and better serve their customers. 
 
-![Headshot](/EricHeadshot.png) My name is Eric Voss. I currently work as a Data Analyst at [U.S. Bank](https://www.usbank.com/index.html) and am a student in the [Statistics M.S. program](https://stat.tamu.edu/ms-statistics/) at Texas A&M.
+In my current role as a data analyst at [U.S. Bank](https://www.usbank.com/index.html), I use tools like SQL, Python, and Tableau to extract, analyze, and visualize data for thousands of users. I am also a student in the [Statistics M.S. program](https://stat.tamu.edu/ms-statistics/) at Texas A&M with an empahsis in Applied Analytics & Data Science. In this program, I've developed deep knowledge of statistical theory and machine learning as well as extensive experience analyzing data and building models with R. 
+
+I live in St. Paul, MN, along with my wife Jen and our 2 cats, Artemis and Apollo. When I'm not working or studying, you'll usually find me reading, listening to podcasts, or battling [beholders](https://forgottenrealms.fandom.com/wiki/Beholder) with friends in Dungeons & Dragons (virtually, these days).
+
+![Artemis](/Artemis.png)![Apollo](/Apollo.png)
