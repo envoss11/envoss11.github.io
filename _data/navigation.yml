@@ -1,7 +1,9 @@
 # main links links
 main:
-  - title: "About"
+  - title: "Bio"
     url: https://envoss11.github.io/posts/2021-02-13-about/
+  - title: "Résumé"
+    url: https://envoss11.github.io/posts/2021-02-21-resume/
   - title: "Portfolio"
     url: /portfolio/
   - title: "Posts"
