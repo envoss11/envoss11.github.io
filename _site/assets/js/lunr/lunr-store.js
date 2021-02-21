@@ -10,4 +10,10 @@ var store = [{
         "tags": [],
         "url": "/posts/2021-02-13-about/",
         "teaser": null
+      },{
+        "title": "My Resume",
+        "excerpt":"You can click here to download my full resume, but here are some quick highlights in case you’re in a hurry.   Experience   Data Analyst, U.S. Bank (2020 - Current)           Extracted, analyzed, and visualized data for thousands of users by utilizing SQL, Python, and Tableau            Scraped and wrangled web data for a variety of purposes with Python       Business Intelligence Specialist, Securian Financial Group (2017-2019)           Produced financial and operational reporting for wealth management business            Automated reports with SAP Business Objects and Excel/VBA       Application Developer, Securian Financial Group (2015-2017)           Led project to upgrade IIS-hosted vendor application            Consulted with business areas to automate and digitize various processes       Education      2019-2021 (expected)   M.S., Statistics: Texas A&amp;M University (College Station, TX)      Emphasis: Applied Analytics &amp; Data Science       2011-2015   B.A., Economics and Computer Information Systems: Augustana University (Sioux Falls, SD)      Minor: Business Administration       Skills   Programming           Python (Pandas, NumPy, Scikit Learn)            R (ggplot2, Caret, Tidyverse)            SQL            JavaScript            Java            VBA       Other Tools           Tableau            Excel (as well as the entire Office suite)            Apache Superset      ","categories": [],
+        "tags": [],
+        "url": "/posts/2021-02-21-resume/",
+        "teaser": null
       }]

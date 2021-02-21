@@ -1,7 +1,96 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-02-21T13:40:27-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Eric Voss</title><subtitle>Data Professional</subtitle><author><name>Eric Voss</name></author><entry><title type="html">About Me</title><link href="http://localhost:4000/posts/2021-02-13-about/" rel="alternate" type="text/html" title="About Me" /><published>2021-02-13T21:00:45-06:00</published><updated>2021-02-13T21:00:45-06:00</updated><id>http://localhost:4000/posts/about</id><content type="html" xml:base="http://localhost:4000/posts/2021-02-13-about/">&lt;p&gt;I am a data analytics professional with over 5 years of experience in the financial services industry. I love helping businesses use data to ask more productive questions, solve problems and better serve their customers.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-02-21T15:06:26-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Eric Voss</title><subtitle>Data Professional</subtitle><author><name>Eric Voss</name></author><entry><title type="html">About Me</title><link href="http://localhost:4000/posts/2021-02-13-about/" rel="alternate" type="text/html" title="About Me" /><published>2021-02-13T21:00:45-06:00</published><updated>2021-02-13T21:00:45-06:00</updated><id>http://localhost:4000/posts/about</id><content type="html" xml:base="http://localhost:4000/posts/2021-02-13-about/">&lt;p&gt;I am a data analytics professional with over 5 years of experience in the financial services industry. I love helping businesses use data to ask more productive questions, solve problems and better serve their customers.&lt;/p&gt;
 
 &lt;p&gt;In my current role as a data analyst at &lt;a href=&quot;https://www.usbank.com/index.html&quot;&gt;U.S. Bank&lt;/a&gt;, I use tools like SQL, Python, and Tableau to extract, analyze, and visualize data for thousands of users. I am also a student in the &lt;a href=&quot;https://stat.tamu.edu/ms-statistics/&quot;&gt;Statistics M.S. program&lt;/a&gt; at Texas A&amp;amp;M with an empahsis in Applied Analytics &amp;amp; Data Science. In this program, I’ve developed deep knowledge of statistical theory and machine learning as well as extensive experience analyzing data and building models with R.&lt;/p&gt;
 
 &lt;p&gt;I live in St. Paul, MN, along with my wife Jen and our 2 cats, Artemis and Apollo. When I’m not working or studying, you’ll usually find me reading, listening to podcasts, or battling &lt;a href=&quot;https://forgottenrealms.fandom.com/wiki/Beholder&quot;&gt;beholders&lt;/a&gt; with friends in Dungeons &amp;amp; Dragons (virtually, these days).&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/Artemis.png&quot; alt=&quot;Artemis&quot; /&gt;&lt;img src=&quot;/Apollo.png&quot; alt=&quot;Apollo&quot; /&gt;&lt;/p&gt;</content><author><name>Eric Voss</name></author><summary type="html">I am a data analytics professional with over 5 years of experience in the financial services industry. I love helping businesses use data to ask more productive questions, solve problems and better serve their customers.</summary></entry></feed>
+&lt;p&gt;&lt;img src=&quot;/Artemis.png&quot; alt=&quot;Artemis&quot; /&gt;&lt;img src=&quot;/Apollo.png&quot; alt=&quot;Apollo&quot; /&gt;&lt;/p&gt;</content><author><name>Eric Voss</name></author><summary type="html">I am a data analytics professional with over 5 years of experience in the financial services industry. I love helping businesses use data to ask more productive questions, solve problems and better serve their customers.</summary></entry><entry><title type="html">My Resume</title><link href="http://localhost:4000/posts/2021-02-21-resume/" rel="alternate" type="text/html" title="My Resume" /><published>2021-02-13T21:00:45-06:00</published><updated>2021-02-13T21:00:45-06:00</updated><id>http://localhost:4000/posts/resume</id><content type="html" xml:base="http://localhost:4000/posts/2021-02-21-resume/">&lt;p&gt;You can &lt;a href=&quot;/resume.pdf&quot;&gt;click here&lt;/a&gt; to download my full resume, but here are some quick highlights in case you’re in a hurry.&lt;/p&gt;
+
+&lt;h2 id=&quot;experience&quot;&gt;Experience&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;Data Analyst, U.S. Bank (2020 - Current)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Extracted, analyzed, and visualized data for thousands of users by utilizing SQL, Python, and Tableau&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Scraped and wrangled web data for a variety of purposes with Python&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Business Intelligence Specialist, Securian Financial Group (2017-2019)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Produced financial and operational reporting for wealth management business&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Automated reports with SAP Business Objects and Excel/VBA&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Application Developer, Securian Financial Group (2015-2017)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Led project to upgrade IIS-hosted vendor application&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Consulted with business areas to automate and digitize various processes&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;education&quot;&gt;Education&lt;/h2&gt;
+
+&lt;dl&gt;
+  &lt;dt&gt;2019-2021 (expected)&lt;/dt&gt;
+  &lt;dd&gt;&lt;strong&gt;M.S., Statistics&lt;/strong&gt;: Texas A&amp;amp;M University (College Station, TX)
+
+    &lt;p&gt;&lt;em&gt;Emphasis: Applied Analytics &amp;amp; Data Science&lt;/em&gt;&lt;/p&gt;
+  &lt;/dd&gt;
+  &lt;dt&gt;2011-2015&lt;/dt&gt;
+  &lt;dd&gt;&lt;strong&gt;B.A., Economics and Computer Information Systems&lt;/strong&gt;: Augustana University (Sioux Falls, SD)
+
+    &lt;p&gt;&lt;em&gt;Minor: Business Administration&lt;/em&gt;&lt;/p&gt;
+  &lt;/dd&gt;
+&lt;/dl&gt;
+
+&lt;h2 id=&quot;skills&quot;&gt;Skills&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;Programming&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Python (Pandas, NumPy, Scikit Learn)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;R (ggplot2, Caret, Tidyverse)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;SQL&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;JavaScript&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Java&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;VBA&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Other Tools&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Tableau&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Excel (as well as the entire Office suite)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Apache Superset&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Eric Voss</name></author><summary type="html">You can click here to download my full resume, but here are some quick highlights in case you’re in a hurry.</summary></entry></feed>
