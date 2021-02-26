@@ -105,6 +105,9 @@ author:
   bio              : "Statistics M.S. student, data analyst, aspiring data scientist"
   location         : "St. Paul, MN"
   links:
+    - label: "Linkedin"
+      icon: "fab fa-linkedin-square"
+      url: "https://www.linkedin.com/in/eric-n-voss/"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
       url: "https://twitter.com/VossEricN/"
@@ -115,6 +118,9 @@ author:
 # Site Footer
 footer:
   links:
+    - label: "Linkedin"
+      icon: "fab fa-linkedin-square"
+      url: "https://www.linkedin.com/in/eric-n-voss/"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
       url: "https://twitter.com/VossEricN/"
