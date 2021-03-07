@@ -21,7 +21,6 @@
   
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: VossEricN
 github_username:  envoss11
 
 # Build settings
@@ -79,8 +78,6 @@ bing_site_verification   :
 yandex_site_verification :
 
 # Social Sharing
-twitter:
-  username               : "VossEricN"
 og_image                 : "/assets/images/bio-photo.jpg"
 # For specifying social profiles
 # - https://developers.google.com/structured-data/customize/social-profiles
