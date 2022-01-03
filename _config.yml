@@ -97,9 +97,9 @@ analytics:
 
 # Site Author
 author:
-  name             : "Eric Voss"
+  name             : "Eric Voss, M.S."
   avatar           : "/EricSmall.png"
-  bio              : "Statistics M.S. student, data analyst, aspiring data scientist"
+  bio              : "Data analyst and aspiring data scientist"
   location         : "St. Paul, MN"
   links:
     - label: "Linkedin"

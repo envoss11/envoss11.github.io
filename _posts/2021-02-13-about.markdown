@@ -4,10 +4,10 @@ title: "About Me"
 date:   2021-02-13 21:00:45 -0600
 categories:
 ---
-I am a data analytics professional with over 5 years of experience in the financial services industry. I love helping businesses use data to ask more productive questions, solve problems and better serve their customers. 
+I am a data analytics professional with over 6 years of experience in the financial services industry. I love helping businesses use data to ask more productive questions, solve problems and better serve their customers. 
 
-In my current role as a data analyst at [U.S. Bank](https://www.usbank.com/index.html), I use tools like SQL, Python, and Tableau to extract, analyze, and visualize data for thousands of users. I am also a student in the [Statistics M.S. program](https://stat.tamu.edu/ms-statistics/) at Texas A&M with an empahsis in Applied Analytics & Data Science. In this program, I've developed deep knowledge of statistical theory and machine learning as well as extensive experience analyzing data and building models with R. 
+In my time as a data analyst at [U.S. Bank](https://www.usbank.com/index.html), I have used tools like SQL, Python, and Tableau to extract, analyze, and visualize data for thousands of users. In my current role as an insights analyst, I help to develop hypotheses, query and analyze the data needed to test those hypotheses, and distill all that work into a concise story for senior management. I am also a recent graduate of the [Statistics M.S. program](https://stat.tamu.edu/ms-statistics/) at Texas A&M with an empahsis in Applied Analytics & Data Science. In this program, I've developed deep knowledge of statistical theory and machine learning as well as extensive experience analyzing data and building models with R. 
 
-I live in St. Paul, MN, along with my wife Jen and our 2 cats, Artemis and Apollo. When I'm not working or studying, you'll usually find me reading, listening to podcasts, or battling [beholders](https://forgottenrealms.fandom.com/wiki/Beholder) with friends in Dungeons & Dragons (virtually, these days).
+I live in St. Paul, MN, along with my wife Jen, our 2 cats, and our daughter. When I'm not working or studying, you'll usually find me reading, listening to podcasts, or battling [beholders](https://forgottenrealms.fandom.com/wiki/Beholder) with friends in Dungeons & Dragons.
 
 ![Artemis](/Artemis.png)![Apollo](/Apollo.png)

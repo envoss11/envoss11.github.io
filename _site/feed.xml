@@ -1,18 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-03-06T21:59:28-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Eric Voss</title><subtitle>Data Professional</subtitle><author><name>Eric Voss</name></author><entry><title type="html">About Me</title><link href="http://localhost:4000/posts/2021-02-13-about/" rel="alternate" type="text/html" title="About Me" /><published>2021-02-13T21:00:45-06:00</published><updated>2021-02-13T21:00:45-06:00</updated><id>http://localhost:4000/posts/about</id><content type="html" xml:base="http://localhost:4000/posts/2021-02-13-about/">&lt;p&gt;I am a data analytics professional with over 5 years of experience in the financial services industry. I love helping businesses use data to ask more productive questions, solve problems and better serve their customers.&lt;/p&gt;
-
-&lt;p&gt;In my current role as a data analyst at &lt;a href=&quot;https://www.usbank.com/index.html&quot;&gt;U.S. Bank&lt;/a&gt;, I use tools like SQL, Python, and Tableau to extract, analyze, and visualize data for thousands of users. I am also a student in the &lt;a href=&quot;https://stat.tamu.edu/ms-statistics/&quot;&gt;Statistics M.S. program&lt;/a&gt; at Texas A&amp;amp;M with an empahsis in Applied Analytics &amp;amp; Data Science. In this program, I’ve developed deep knowledge of statistical theory and machine learning as well as extensive experience analyzing data and building models with R.&lt;/p&gt;
-
-&lt;p&gt;I live in St. Paul, MN, along with my wife Jen and our 2 cats, Artemis and Apollo. When I’m not working or studying, you’ll usually find me reading, listening to podcasts, or battling &lt;a href=&quot;https://forgottenrealms.fandom.com/wiki/Beholder&quot;&gt;beholders&lt;/a&gt; with friends in Dungeons &amp;amp; Dragons (virtually, these days).&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/Artemis.png&quot; alt=&quot;Artemis&quot; /&gt;&lt;img src=&quot;/Apollo.png&quot; alt=&quot;Apollo&quot; /&gt;&lt;/p&gt;</content><author><name>Eric Voss</name></author><summary type="html">I am a data analytics professional with over 5 years of experience in the financial services industry. I love helping businesses use data to ask more productive questions, solve problems and better serve their customers.</summary></entry><entry><title type="html">My Resume</title><link href="http://localhost:4000/posts/2021-02-21-resume/" rel="alternate" type="text/html" title="My Resume" /><published>2021-02-13T21:00:45-06:00</published><updated>2021-02-13T21:00:45-06:00</updated><id>http://localhost:4000/posts/resume</id><content type="html" xml:base="http://localhost:4000/posts/2021-02-21-resume/">&lt;p&gt;You can &lt;a href=&quot;/resume.pdf&quot;&gt;click here&lt;/a&gt; to download my full resume, but here are some quick highlights in case you’re in a hurry.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-01-03T16:09:01-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Eric Voss</title><subtitle>Data Professional</subtitle><author><name>Eric Voss, M.S.</name></author><entry><title type="html">My Resume</title><link href="http://localhost:4000/posts/2021-02-21-resume/" rel="alternate" type="text/html" title="My Resume" /><published>2022-01-02T21:00:45-06:00</published><updated>2022-01-02T21:00:45-06:00</updated><id>http://localhost:4000/posts/resume</id><content type="html" xml:base="http://localhost:4000/posts/2021-02-21-resume/">&lt;p&gt;You can &lt;a href=&quot;/resume.pdf&quot;&gt;click here&lt;/a&gt; to download my full resume, but here are some quick highlights in case you’re in a hurry.&lt;/p&gt;
 
 &lt;h2 id=&quot;experience&quot;&gt;Experience&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Insights Analyst, U.S. Bank (2021 - Current)&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Data Analyst, U.S. Bank (2020 - Current)&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Explored data with SQL and Python (Pandas, NumPy, Plotly) to test hypotheses and identify insights&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Analyzed and visualized complex data for presentation to senior leaders and distilled insights into a concise story&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Compiled external data sources and research to produce a monthly competitive intelligence report&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Data Analyst, U.S. Bank (2020 - 2021)&lt;/strong&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
     &lt;p&gt;Extracted, analyzed, and visualized data for thousands of users by utilizing SQL, Python, and Tableau&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Developed and maintained SQL database and built data pipelines with Python (pyodbc, SQLAlchemy)&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;Scraped and wrangled web data for a variety of purposes with Python&lt;/p&gt;
@@ -71,6 +81,9 @@
     &lt;p&gt;SQL&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
+    &lt;p&gt;SAS&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
     &lt;p&gt;JavaScript&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
@@ -93,4 +106,10 @@
   &lt;li&gt;
     &lt;p&gt;Apache Superset&lt;/p&gt;
   &lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Eric Voss</name></author><summary type="html">You can click here to download my full resume, but here are some quick highlights in case you’re in a hurry.</summary></entry></feed>
+&lt;/ul&gt;</content><author><name>Eric Voss, M.S.</name></author><summary type="html">You can click here to download my full resume, but here are some quick highlights in case you’re in a hurry.</summary></entry><entry><title type="html">About Me</title><link href="http://localhost:4000/posts/2021-02-13-about/" rel="alternate" type="text/html" title="About Me" /><published>2021-02-13T21:00:45-06:00</published><updated>2021-02-13T21:00:45-06:00</updated><id>http://localhost:4000/posts/about</id><content type="html" xml:base="http://localhost:4000/posts/2021-02-13-about/">&lt;p&gt;I am a data analytics professional with over 6 years of experience in the financial services industry. I love helping businesses use data to ask more productive questions, solve problems and better serve their customers.&lt;/p&gt;
+
+&lt;p&gt;In my time as a data analyst at &lt;a href=&quot;https://www.usbank.com/index.html&quot;&gt;U.S. Bank&lt;/a&gt;, I have used tools like SQL, Python, and Tableau to extract, analyze, and visualize data for thousands of users. In my current role as an insights analyst, I help to develop hypotheses, query and analyze the data needed to test those hypotheses, and distill all that work into a concise story for senior management. I am also a recent graduate of the &lt;a href=&quot;https://stat.tamu.edu/ms-statistics/&quot;&gt;Statistics M.S. program&lt;/a&gt; at Texas A&amp;amp;M with an empahsis in Applied Analytics &amp;amp; Data Science. In this program, I’ve developed deep knowledge of statistical theory and machine learning as well as extensive experience analyzing data and building models with R.&lt;/p&gt;
+
+&lt;p&gt;I live in St. Paul, MN, along with my wife Jen, our 2 cats, and our daughter. When I’m not working or studying, you’ll usually find me reading, listening to podcasts, or battling &lt;a href=&quot;https://forgottenrealms.fandom.com/wiki/Beholder&quot;&gt;beholders&lt;/a&gt; with friends in Dungeons &amp;amp; Dragons.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/Artemis.png&quot; alt=&quot;Artemis&quot; /&gt;&lt;img src=&quot;/Apollo.png&quot; alt=&quot;Apollo&quot; /&gt;&lt;/p&gt;</content><author><name>Eric Voss, M.S.</name></author><summary type="html">I am a data analytics professional with over 6 years of experience in the financial services industry. I love helping businesses use data to ask more productive questions, solve problems and better serve their customers.</summary></entry></feed>

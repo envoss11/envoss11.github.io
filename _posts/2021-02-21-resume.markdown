@@ -1,17 +1,26 @@
 ---
 layout: single
 title: "My Resume"
-date:   2021-02-13 21:00:45 -0600
+date:   2022-01-02 21:00:45 -0600
 categories:
 ---
 You can [click here](/resume.pdf) to download my full resume, but here are some quick highlights in case you're in a hurry.
 
 Experience
 ----------
+**Insights Analyst, U.S. Bank (2021 - Current)**
 
-**Data Analyst, U.S. Bank (2020 - Current)**
+* Explored data with SQL and Python (Pandas, NumPy, Plotly) to test hypotheses and identify insights
+
+* Analyzed and visualized complex data for presentation to senior leaders and distilled insights into a concise story
+
+* Compiled external data sources and research to produce a monthly competitive intelligence report
+
+**Data Analyst, U.S. Bank (2020 - 2021)**
 
 * Extracted, analyzed, and visualized data for thousands of users by utilizing SQL, Python, and Tableau
+
+* Developed and maintained SQL database and built data pipelines with Python (pyodbc, SQLAlchemy)
 
 * Scraped and wrangled web data for a variety of purposes with Python
 
@@ -50,6 +59,8 @@ Skills
 * R (ggplot2, Caret, Tidyverse)
 
 * SQL
+
+* SAS
 
 * JavaScript
 
