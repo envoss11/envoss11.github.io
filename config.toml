@@ -1,5 +1,59 @@
 baseURL = 'https://envoss11.github.io'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
+title = 'Eric Voss - Data Scientist'
 theme = 'holy'
 publishDir = "docs"
+
+[menu]
+
+  [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/about/"
+    weight = 10
+  [[menu.main]]
+    identifier = "society"
+    name = "Society"
+    url = "/society/"
+    weight = 10
+  [[menu.main]]
+    identifier = "data_science"
+    name = "Data Science"
+    url = "/data_science/"
+    weight = 10
+  [[menu.main]]
+    identifier = "misc_media"
+    name = "Misc. Media"
+    url = "/misc_media/"
+    weight = 10
+
+[taxonomies]
+category = "categories"
+tag = "tags"
+
+[privacy]
+
+  [privacy.vimeo]
+    disabled = false
+    simple = true
+
+  [privacy.twitter]
+    disabled = false
+    enableDNT = true
+    simple = true
+
+  [privacy.instagram]
+    disabled = false
+    simple = true
+
+  [privacy.youtube]
+    disabled = false
+    privacyEnhanced = true
+
+[services]
+
+  [services.instagram]
+    disableInlineCSS = true
+
+  [services.twitter]
+    disableInlineCSS = true
