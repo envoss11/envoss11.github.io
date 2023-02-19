@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Project Portfolio on Eric Voss - Data Scientist</title>
+    <link>https://envoss11.github.io/project_portfolio/</link>
+    <description>Recent content in Project Portfolio on Eric Voss - Data Scientist</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="https://envoss11.github.io/project_portfolio/index.xml" rel="self" type="application/rss+xml" />
+  </channel>
+</rss>
