@@ -7,9 +7,19 @@ publishDir = "docs"
 [menu]
 
   [[menu.main]]
-    identifier = "about"
-    name = "About"
-    url = "/about/"
+    identifier = "data_science"
+    name = "Data Science"
+    url = "/data_science/"
+    weight = 10
+  [[menu.main]]
+    identifier = "project_portfolio"
+    name = "Project Portfolio"
+    url = "/project_portfolio/"
+    weight = 10
+  [[menu.main]]
+    identifier = "misc_media"
+    name = "Misc. Media"
+    url = "/misc_media/"
     weight = 10
   [[menu.main]]
     identifier = "society"
@@ -17,14 +27,9 @@ publishDir = "docs"
     url = "/society/"
     weight = 10
   [[menu.main]]
-    identifier = "data_science"
-    name = "Data Science"
-    url = "/data_science/"
-    weight = 10
-  [[menu.main]]
-    identifier = "misc_media"
-    name = "Misc. Media"
-    url = "/misc_media/"
+    identifier = "about"
+    name = "About"
+    url = "/about/"
     weight = 10
 
 [taxonomies]
