@@ -5,16 +5,6 @@
     <link>https://envoss11.github.io/misc_media/</link>
     <description>Recent content in Miscellaneous Media on Eric Voss - Data Scientist</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sun, 10 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://envoss11.github.io/misc_media/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Rich Content</title>
-      <link>https://envoss11.github.io/misc_media/rich-content/</link>
-      <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://envoss11.github.io/misc_media/rich-content/</guid>
-      <description>&lt;p&gt;Hugo ships with several &lt;a href=&#34;https://gohugo.io/content-management/shortcodes/#use-hugos-built-in-shortcodes&#34;&gt;Built-in Shortcodes&lt;/a&gt; for rich content, along with a &lt;a href=&#34;https://gohugo.io/about/hugo-and-gdpr/&#34;&gt;Privacy Config&lt;/a&gt; and a set of Simple Shortcodes that enable static and no-JS versions of various social media embeds.&lt;/p&gt;</description>
-    </item>
-    
+    <language>en-us</language><atom:link href="https://envoss11.github.io/misc_media/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

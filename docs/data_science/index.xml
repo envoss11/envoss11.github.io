@@ -5,16 +5,6 @@
     <link>https://envoss11.github.io/data_science/</link>
     <description>Recent content in Data Science on Eric Voss - Data Scientist</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Tue, 05 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://envoss11.github.io/data_science/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Emoji Support</title>
-      <link>https://envoss11.github.io/data_science/emoji-support/</link>
-      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://envoss11.github.io/data_science/emoji-support/</guid>
-      <description>&lt;p&gt;Emoji can be enabled in a Hugo project in a number of ways.&lt;/p&gt;</description>
-    </item>
-    
+    <language>en-us</language><atom:link href="https://envoss11.github.io/data_science/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
