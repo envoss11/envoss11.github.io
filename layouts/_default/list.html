@@ -7,7 +7,7 @@
         {{- partial "prose.html" . -}}
     </article>
     <ul>
-        {{- range site.RegularPages }}
+        {{- range (where site.RegularPages ".Params.unlisted" "!=" "true") }}
         <li>
             <div class="mb:16 py:24 f:fade-30 f:fade-10:hover transition:150ms;ease-in">
                 <a class="f:24 font:semibold" href="{{ .Permalink }}">

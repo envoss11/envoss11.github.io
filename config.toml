@@ -10,27 +10,27 @@ publishDir = "docs"
     identifier = "data_science"
     name = "Data Science"
     url = "/data_science/"
-    weight = 10
+    weight = 3
   [[menu.main]]
     identifier = "project_portfolio"
     name = "Project Portfolio"
     url = "/project_portfolio/"
-    weight = 10
+    weight = 2
   [[menu.main]]
     identifier = "misc_media"
     name = "Misc. Media"
     url = "/misc_media/"
-    weight = 10
+    weight = 4
   [[menu.main]]
     identifier = "society"
     name = "Society"
     url = "/society/"
-    weight = 10
+    weight = 5
   [[menu.main]]
     identifier = "about"
     name = "About"
     url = "/about/"
-    weight = 10
+    weight = 1
 
 [taxonomies]
 category = "categories"

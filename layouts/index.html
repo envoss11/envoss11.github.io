@@ -4,7 +4,7 @@
 
     <h2 class="my:1em">All Posts</h2>
 
-    {{- range site.RegularPages -}}
+    {{- range (where site.RegularPages ".Params.unlisted" "!=" "true") -}}
 
     {{- partial "li.html" ( dict "url" .Permalink "title" .Title "subTitle" (.Date | time.Format (":date_medium")) ) -}}
     {{- end -}}
