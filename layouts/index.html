@@ -2,7 +2,7 @@
 <div class="d:flex flex:col">
     {{- partial "prose.html" . -}}
 
-    <h2 class="my:1em">All Posts</h2>
+    <h2 class="my:1em">all posts</h2>
 
     {{- range (where site.RegularPages ".Params.unlisted" "!=" "true") -}}
 

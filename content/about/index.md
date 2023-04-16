@@ -1,5 +1,5 @@
 +++
-title = "About"
+title = "stuff about me"
 author = "Eric Voss"
 unlisted = "true"
 +++

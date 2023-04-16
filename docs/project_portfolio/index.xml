@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Project Portfolio on Eric Voss - Data Scientist</title>
+    <title>projects on eric voss</title>
     <link>https://envoss11.github.io/project_portfolio/</link>
-    <description>Recent content in Project Portfolio on Eric Voss - Data Scientist</description>
+    <description>Recent content in projects on eric voss</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 15 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://envoss11.github.io/project_portfolio/index.xml" rel="self" type="application/rss+xml" />
@@ -16,7 +16,8 @@
       <description>Shiny app
 GitHub repo
 R Markdown report with code/visualizations
-Using publicly available data from crowd-sourced lending platform Lending Club, I set out to create a classifier which would help solve a marketing problem which (I imagine) a company like this would encounter. I realized that one of the most popular loan types Lending Club provided, debt conslidation, was rather different than the rest from a marketing perspective. An advertisement for a debt consolidation product would likely relate to the stress caused by having too many sources of debt, and then offer to help them simplify that situation.</description>
+This is an old project from school. Very rudimentary, but it represents one of my earliest attempts at a &amp;ldquo;real&amp;rdquo; predictive modeling problem, and in any case I need some filler content to start populating this site.
+Using publicly available data from crowd-sourced lending platform Lending Club, I set out to create a classifier which would help solve a marketing problem which (I imagine) a company like this would encounter.</description>
     </item>
     
   </channel>

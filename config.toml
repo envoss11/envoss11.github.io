@@ -1,34 +1,24 @@
 baseURL = 'https://envoss11.github.io'
 languageCode = 'en-us'
-title = 'Eric Voss - Data Scientist'
+title = 'eric voss'
 theme = 'holy'
 publishDir = "docs"
 
 [menu]
 
   [[menu.main]]
-    identifier = "data_science"
-    name = "Data Science"
-    url = "/data_science/"
-    weight = 3
-  [[menu.main]]
     identifier = "project_portfolio"
-    name = "Project Portfolio"
+    name = "projects"
     url = "/project_portfolio/"
     weight = 2
   [[menu.main]]
-    identifier = "misc_media"
-    name = "Misc. Media"
-    url = "/misc_media/"
-    weight = 4
-  [[menu.main]]
-    identifier = "society"
-    name = "Society"
-    url = "/society/"
-    weight = 5
+    identifier = "stuff"
+    name = "stuff i'm thinking about"
+    url = "/stuff/"
+    weight = 3
   [[menu.main]]
     identifier = "about"
-    name = "About"
+    name = "about"
     url = "/about/"
     weight = 1
 

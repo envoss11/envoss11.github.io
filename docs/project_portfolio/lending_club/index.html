@@ -4,14 +4,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <title>Loan Marketing Segmentation - Eric Voss - Data Scientist</title>
+    <title>Loan Marketing Segmentation - eric voss</title>
 
     
     
     <meta name="description" content="Shiny app
 GitHub repo
 R Markdown report with code/visualizations
-Using publicly available data from crowd-sourced lending platform Lending Club, I set out to create a classifier which would help solve a marketing problem which (I imagine) a company like this would encounter. I realized that one of the most popular loan types Lending Club provided, debt conslidation, was rather different than the rest from a marketing perspective. An advertisement for a debt consolidation product would likely relate to the stress caused by having too many sources of debt, and then offer to help them simplify that situation." />
+This is an old project from school. Very rudimentary, but it represents one of my earliest attempts at a &ldquo;real&rdquo; predictive modeling problem, and in any case I need some filler content to start populating this site.
+Using publicly available data from crowd-sourced lending platform Lending Club, I set out to create a classifier which would help solve a marketing problem which (I imagine) a company like this would encounter." />
     <meta name="author" content="Eric Voss" />
     
 
@@ -35,7 +36,7 @@ Using publicly available data from crowd-sourced lending platform Lending Club, 
         <div>
             <a href="/" class="mr-3 font:extralight">
               
-              Eric Voss - Data Scientist
+              eric voss
               
             </a>
         </div>
@@ -53,7 +54,7 @@ Using publicly available data from crowd-sourced lending platform Lending Club, 
                 px:8
                 transition:150ms;ease-in
                 
-            " href="/about/" title="">About</a>
+            " href="/about/" title="">about</a>
             
             
             <a class="
@@ -64,7 +65,7 @@ Using publicly available data from crowd-sourced lending platform Lending Club, 
                 px:8
                 transition:150ms;ease-in
                 
-            " href="/project_portfolio/" title="">Project Portfolio</a>
+            " href="/project_portfolio/" title="">projects</a>
             
             
             <a class="
@@ -75,29 +76,7 @@ Using publicly available data from crowd-sourced lending platform Lending Club, 
                 px:8
                 transition:150ms;ease-in
                 
-            " href="/data_science/" title="">Data Science</a>
-            
-            
-            <a class="
-                font:semibold
-                font:fade
-                font:fade-10:hover
-                font:fade-30.active
-                px:8
-                transition:150ms;ease-in
-                
-            " href="/misc_media/" title="">Misc. Media</a>
-            
-            
-            <a class="
-                font:semibold
-                font:fade
-                font:fade-10:hover
-                font:fade-30.active
-                px:8
-                transition:150ms;ease-in
-                
-            " href="/society/" title="">Society</a>
+            " href="/stuff/" title="">stuff i&#39;m thinking about</a>
             
         </div>
     </div>
@@ -149,6 +128,7 @@ Using publicly available data from crowd-sourced lending platform Lending Club, 
 "><p><a href="https://ericvoss.shinyapps.io/debtconsolidationapp/">Shiny app</a></p>
 <p><a href="https://github.com/envoss11/LendingClubProject">GitHub repo</a></p>
 <p><a href="LCClean.html">R Markdown report with code/visualizations</a></p>
+<p><strong>This is an old project from school. Very rudimentary, but it represents one of my earliest attempts at a &ldquo;real&rdquo; predictive modeling problem, and in any case I need some filler content to start populating this site.</strong></p>
 <p>Using publicly available data from crowd-sourced lending platform Lending Club, I set out to create a classifier which would help solve a marketing problem which (I imagine) a company like this would encounter. I realized that one of the most popular loan types Lending Club provided, debt conslidation, was rather different than the rest from a marketing perspective. An advertisement for a debt consolidation product would likely relate to the stress caused by having too many sources of debt, and then offer to help them simplify that situation. This is the exact opposite of the message one would want to send to persuade a customer to take on a new loan for something like a car or home improvements.</p>
 <p>I chose to focus my analysis on predicting whether a client would be more likely interested in debt consolidation products or other, more conventional loans. The final deliverable for this project was a Shiny app in which a marketing employee could input information about a prospective customer, and receive a response telling them which marketing materials to send them - the standard materials, or something focused on debt consolidation products. I tried out a variety of different models, including a classification tree and bagging and boosting method, finally settling on a model trained with xgboost which maximized the accuracy of my model.</p>
 <p><img src="images/confusionMatrix.png" alt="Confusion Matrix"></p>

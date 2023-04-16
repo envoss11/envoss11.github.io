@@ -3,7 +3,6 @@ author = "Eric Voss"
 title = "Loan Marketing Segmentation"
 description = "End-to-end project to build and deploy marketing model from Lending Club data"
 date = "2020-11-15"
-unlisted = "true"
 +++
 
 [Shiny app](https://ericvoss.shinyapps.io/debtconsolidationapp/)
@@ -11,6 +10,8 @@ unlisted = "true"
 [GitHub repo](https://github.com/envoss11/LendingClubProject)
 
 [R Markdown report with code/visualizations](LCClean.html)
+
+**This is an old project from school. Very rudimentary, but it represents one of my earliest attempts at a "real" predictive modeling problem, and in any case I need some filler content to start populating this site.**
 
 Using publicly available data from crowd-sourced lending platform Lending Club, I set out to create a classifier which would help solve a marketing problem which (I imagine) a company like this would encounter. I realized that one of the most popular loan types Lending Club provided, debt conslidation, was rather different than the rest from a marketing perspective. An advertisement for a debt consolidation product would likely relate to the stress caused by having too many sources of debt, and then offer to help them simplify that situation. This is the exact opposite of the message one would want to send to persuade a customer to take on a new loan for something like a car or home improvements. 
 
