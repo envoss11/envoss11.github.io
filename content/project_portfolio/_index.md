@@ -1,5 +1,3 @@
 +++
-title = "projects"
 author = "Eric Voss"
-tags = ["index"]
 +++

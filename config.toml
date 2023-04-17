@@ -16,11 +16,6 @@ publishDir = "docs"
     name = "stuff i'm thinking about"
     url = "/stuff/"
     weight = 3
-  [[menu.main]]
-    identifier = "about"
-    name = "about"
-    url = "/about/"
-    weight = 1
 
 [taxonomies]
 category = "categories"

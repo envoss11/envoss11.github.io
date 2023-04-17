@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>projects on eric voss</title>
+    <title>eric voss</title>
     <link>https://envoss11.github.io/project_portfolio/</link>
-    <description>Recent content in projects on eric voss</description>
+    <description>Recent content on eric voss</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 15 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://envoss11.github.io/project_portfolio/index.xml" rel="self" type="application/rss+xml" />
