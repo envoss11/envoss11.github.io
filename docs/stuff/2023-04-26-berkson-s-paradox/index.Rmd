@@ -1,0 +1,77 @@
+---
+title: Berkson's Paradox
+author: R package build
+date: '2023-04-26'
+slug: []
+categories: []
+tags: []
+draft: yes
+---
+
+Today's post was prompted by this tweet (admittedly already rather old by the time of this posting):
+
+![](images/tweet_screenshot.png)
+
+The phenomenon observed here shouldn't be particularly shocking --- it's exactly what we should expect in light of something called [Berkson's Paradox](https://en.wikipedia.org/wiki/Berkson%27s_paradox).
+
+This paradox, much like its [more famous cousin](https://en.wikipedia.org/wiki/Simpson%27s_paradox) named after Edward Simpson, isn't really a paradox at all, but it does lead to some counterintuitive observations. In this example, we appear to see a negative correlation between product quality and sales team quality. You can probably come up with some examples of this on your own --- it's not a particularly novel observation that in the enterprise software world, overpriced and obsolete solutions keep chugging along in the marketplace long past their expiration date simply on the strength of their sales relationships and brand.
+
+The 'paradox' could be considered a case of sampling bias. In this case, there are two ways of looking at this negative correlation:
+
+1.  If a product is low-quality yet continues to persist in the market, it must have an exceptional sales team keeping it afloat.
+
+2.  If a product has poor marketing yet continues to persist in the market, it must be of exceptional quality in order to sell.
+
+```{r}
+set.seed(86753)
+n = 200
+p = 0.1
+
+prod_qual = rnorm(n)
+sales_team = rnorm(n)
+
+true_cor = cor(prod_qual,
+               sales_team)
+
+score = prod_qual + sales_team
+q = quantile(score, 1-p)
+selected = ifelse(score >= q, TRUE, FALSE)
+false_cor = cor(prod_qual[selected],
+    sales_team[selected])
+
+
+```
+
+
+In either case, the bias is introduced by the fact that we're only looking at products which are successful in the sense that they continue to be developed and sold and the companies producing them haven't gone out of business.
+
+If we look at this as implicitly conditioning on the success of the product, we might frame the same problem in terms of a collider bias --- a phenomenon in which two variables (product quality and sales team quality) both directly influence the third variable (product success rate) on which we are conditioning, creating the appearance of association between the first two variables:
+
+```{r, echo=FALSE, message=FALSE}
+library(dagitty)
+library(ggdag)
+library(ggplot2)
+
+dag <- dagitty("dag {
+  Product_Quality [pos=\"0,0\"]
+  Sales_Team [exposure,pos=\"2,0\"]
+  Product_Viability [outcome, pos=\"1,-1\"]
+  Product_Quality -> Product_Viability
+  Sales_Team -> Product_Viability
+}")
+
+dag %>%
+  ggdag_dseparated(controlling_for = "Product_Viability",
+                   text_col = "black") +
+  theme_classic() +
+  theme(legend.position = "none",
+        axis.text.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.line = element_blank())
+```
+
+I'm still very early in my own causal inference learing journey, but once you start looking out for these concepts in the real world you'll notice them everywhere --- and how many otherwise respectable intellectual-types have a massive blind spot for them.
