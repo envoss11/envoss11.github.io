@@ -47,3 +47,8 @@ tag = "tags"
 
   [services.twitter]
     disableInlineCSS = true
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
