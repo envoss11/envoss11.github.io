@@ -11,7 +11,16 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 01 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://envoss11.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 25 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://envoss11.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Resume</title>
+      <link>https://envoss11.github.io/posts/resume/</link>
+      <pubDate>Wed, 25 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://envoss11.github.io/posts/resume/</guid>
+      <description>Executive Summary 8 years of data science and development experience in the financial services industry Advanced quantitative modeling skills derived from M.S. in Statistics and hands-on experience in advanced actuarial modeling Highly proficient with R, Python, and SQL Experienced in leveraging AWS services for machine learning projects Professional Experience Senior Data Scientist (Securian Financial, 2023 - present) Served as data science technical lead for underwriting area Led analytics projects to support underwriting modernization initiatives, such as evaluating appropriateness of decision thresholds for various types of evidence Mentored junior team members and provided guidance on projects and coding best practices Data Scientist (Securian Financial, 2022 - 2023) Utilized generalized additive modeling to develop updated state-of-the-art mortality projections, impacting pricing and reserving for hundreds of thousands of policies Leveraged AWS ML services (SageMaker, Textract, Comprehend) to develop AI-powered intelligent document processing solution, including automatic information extraction and document annotation, to substantially reduce time required for claim review Consulted with busienss area to assess value of different types of underwriting evidence and reduce cycle times for insurance applications Data Analyst (U.</description>
+    </item>
+    
     <item>
       <title>Berkson&#39;s Paradox</title>
       <link>https://envoss11.github.io/posts/2023-04-26-berkson-s-paradox/</link>
