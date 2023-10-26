@@ -16,30 +16,6 @@ minify:
     disableXML: true
     # minifyOutput: true
 
-    languages:
-    en:
-        languageName: "English"
-        weight: 1
-        taxonomies:
-          category: categories
-          tag: tags
-          series: series
-        menu:
-            main:
-                - name: Archive
-                  url: archives
-                  weight: 5
-                - name: Search
-                  url: search/
-                  weight: 10
-                - name: Tags
-                  url: tags/
-                  weight: 10
-                - name: WiKi
-                  url: https://github.com/adityatelange/hugo-PaperMod/wiki/
-                - name: Discord
-                  url: https://discord.gg/ahpmTvhVmp
-
 outputs:
     home:
         - HTML
@@ -92,8 +68,6 @@ params:
           url: "https://github.com/envoss11"
         - name: linkedin
           url: "https://www.linkedin.com/in/eric-n-voss/"
-        - name: twitter
-          url: "https://twitter.com/VossEricN"
         - name: Rss
           url: "index.xml"
 
@@ -174,7 +148,12 @@ menu:
     - identifier: blog
       name: Blog
       url: /categories/blog
+      weight: 20
     - identifier: tags
       name: Tags
       url: /tags/
-      weight: 20
+      weight: 30
+    - identifier: resume
+      name: Resume
+      url: /posts/resume
+      weight: 40
