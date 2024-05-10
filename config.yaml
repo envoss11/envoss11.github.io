@@ -55,13 +55,9 @@ params:
               url: tags
 
     homeInfoParams:
-        Title: "Greetings!"
+        Title: "A blog, of sorts."
         Content: >
-            - I am a data scientist with 8 years of experience in the financial services industry across a variety of analytics and technology roles.
-
-            - 
-
-            - This blog is a home for my writing and analysis on a variety of interests, both professional and personal. 
+            - The internet's only home for mansplaining and unjustifiably confident takes from an unexceptional white guy.
 
     socialIcons:
         - name: github
@@ -146,9 +142,13 @@ menu:
       url: /categories/projects
       weight: 10
     - identifier: blog
-      name: Blog
+      name: Data Science Blog
       url: /categories/blog
       weight: 20
+    - identifier: essays
+      name: Essays
+      url: /categories/essays
+      weight: 25
     - identifier: tags
       name: Tags
       url: /tags/
