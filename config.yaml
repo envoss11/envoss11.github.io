@@ -152,7 +152,7 @@ menu:
       name: Tags
       url: /tags/
       weight: 30
-    - identifier: resume
-      name: Resume
-      url: /posts/resume
+    - identifier: about
+      name: About Me
+      url: /posts/about
       weight: 40
