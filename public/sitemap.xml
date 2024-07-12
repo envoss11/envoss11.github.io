@@ -2,19 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://envoss11.github.io/posts/about/</loc>
+    <lastmod>2024-05-13T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://envoss11.github.io/</loc>
-    <lastmod>2023-10-25T00:00:00+00:00</lastmod>
+    <lastmod>2024-05-13T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://envoss11.github.io/posts/</loc>
-    <lastmod>2023-10-25T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://envoss11.github.io/posts/resume/</loc>
-    <lastmod>2023-10-25T00:00:00+00:00</lastmod>
+    <lastmod>2024-05-13T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://envoss11.github.io/posts/2023-04-26-berkson-s-paradox/</loc>
-    <lastmod>2023-05-01T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://envoss11.github.io/categories/blog/</loc>
     <lastmod>2023-05-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://envoss11.github.io/categories/</loc>
@@ -27,6 +24,9 @@
     <lastmod>2023-05-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://envoss11.github.io/tags/</loc>
+    <lastmod>2023-05-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://envoss11.github.io/categories/writing/</loc>
     <lastmod>2023-05-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://envoss11.github.io/posts/lending_club/</loc>

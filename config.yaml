@@ -54,17 +54,6 @@ params:
             - name: Tags
               url: tags
 
-    homeInfoParams:
-        Title: "A blog, of sorts."
-        Content: >
-
-    socialIcons:
-        - name: github
-          url: "https://github.com/envoss11"
-        - name: linkedin
-          url: "https://www.linkedin.com/in/eric-n-voss/"
-        - name: Rss
-          url: "index.xml"
 
     # label:
     #     text: "Home"
@@ -140,14 +129,10 @@ menu:
       name: Projects
       url: /categories/projects
       weight: 10
-    - identifier: blog
-      name: Data Science Blog
-      url: /categories/blog
+    - identifier: writing
+      name: Writing
+      url: /categories/writing
       weight: 20
-    - identifier: essays
-      name: Essays
-      url: /categories/essays
-      weight: 25
     - identifier: tags
       name: Tags
       url: /tags/

@@ -3,11 +3,10 @@ title: Berkson's Paradox
 author: Eric Voss
 date: '2023-05-01'
 categories:
-  - blog
+  - writing
 tags:
   - causal inference
   - statistics
-description: Sample Description
 draft: no
 output: blogdown::html_page
 ---
@@ -18,7 +17,7 @@ library(ggplot2)
 ```
 
 
-Today's post was prompted by this tweet (admittedly already rather old by the time of this posting):
+This post was prompted by this tweet (admittedly already rather old by the time of this posting):
 
 ![](images/tweet_screenshot.png)
 

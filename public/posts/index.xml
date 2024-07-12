@@ -11,14 +11,15 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 25 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://envoss11.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 13 May 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://envoss11.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Resume</title>
-      <link>https://envoss11.github.io/posts/resume/</link>
-      <pubDate>Wed, 25 Oct 2023 00:00:00 +0000</pubDate>
+      <title>About Me</title>
+      <link>https://envoss11.github.io/posts/about/</link>
+      <pubDate>Mon, 13 May 2024 00:00:00 +0000</pubDate>
       
-      <guid>https://envoss11.github.io/posts/resume/</guid>
-      <description>Executive Summary 8 years of data science and development experience in the financial services industry Advanced quantitative modeling skills derived from M.S. in Statistics and hands-on experience in advanced actuarial modeling Highly proficient with R, Python, and SQL Experienced in leveraging AWS services for machine learning projects Professional Experience Senior Data Scientist (Securian Financial, 2023 - present) Served as data science technical lead for underwriting area Led analytics projects to support underwriting modernization initiatives, such as evaluating appropriateness of decision thresholds for various types of evidence Mentored junior team members and provided guidance on projects and coding best practices Data Scientist (Securian Financial, 2022 - 2023) Utilized generalized additive modeling to develop updated state-of-the-art mortality projections, impacting pricing and reserving for hundreds of thousands of policies Leveraged AWS ML services (SageMaker, Textract, Comprehend) to develop AI-powered intelligent document processing solution, including automatic information extraction and document annotation, to substantially reduce time required for claim review Consulted with busienss area to assess value of different types of underwriting evidence and reduce cycle times for insurance applications Data Analyst (U.</description>
+      <guid>https://envoss11.github.io/posts/about/</guid>
+      <description>I&amp;rsquo;m a senior data scientist who&amp;rsquo;s spent most of his career in the insurance/financial services industry. I&amp;rsquo;m aware that &amp;lsquo;data scientist&amp;rsquo; is no longer a particularly useful descriptor, so to elaborate:
+My main focus these days is building systems based around generative AI, which as far as I can tell has less to do with traditional data science and is more akin to imagining what kind of processes you could design with an army of extremely diligent interns who never need to eat, sleep, or take a break but may at any point become detached from reality.</description>
     </item>
     
     <item>
@@ -27,7 +28,9 @@
       <pubDate>Mon, 01 May 2023 00:00:00 +0000</pubDate>
       
       <guid>https://envoss11.github.io/posts/2023-04-26-berkson-s-paradox/</guid>
-      <description>Sample Description</description>
+      <description>This post was prompted by this tweet (admittedly already rather old by the time of this posting):
+The phenomenon observed here shouldn’t be particularly shocking — it’s exactly what we should expect in light of something called Berkson’s Paradox.
+This paradox, much like its more famous cousin named after Edward Simpson, isn’t really a paradox at all, but it does lead to some counterintuitive observations. In this example, we appear to see a negative correlation between product quality and sales team quality.</description>
     </item>
     
     <item>
