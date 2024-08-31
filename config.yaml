@@ -129,10 +129,6 @@ menu:
       name: Projects
       url: /categories/projects
       weight: 10
-    - identifier: writing
-      name: Writing
-      url: /categories/writing
-      weight: 20
     - identifier: tags
       name: Tags
       url: /tags/

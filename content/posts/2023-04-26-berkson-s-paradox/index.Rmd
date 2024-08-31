@@ -3,7 +3,7 @@ title: Berkson's Paradox
 author: Eric Voss
 date: '2023-05-01'
 categories:
-  - writing
+  - projects
 tags:
   - causal inference
   - statistics
