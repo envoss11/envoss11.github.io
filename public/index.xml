@@ -1,49 +1,61 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Eric Voss</title>
+    <title>Home on Eric Voss</title>
     <link>https://envoss11.github.io/</link>
-    <description>Recent content on Eric Voss</description>
-    <image>
-      <title>Eric Voss</title>
-      <url>https://envoss11.github.io/papermod-cover.png</url>
-      <link>https://envoss11.github.io/papermod-cover.png</link>
-    </image>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Home on Eric Voss</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 13 May 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://envoss11.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 13 May 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://envoss11.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About Me</title>
       <link>https://envoss11.github.io/posts/about/</link>
       <pubDate>Mon, 13 May 2024 00:00:00 +0000</pubDate>
-      
       <guid>https://envoss11.github.io/posts/about/</guid>
-      <description>I&amp;rsquo;m a senior data scientist who&amp;rsquo;s spent most of his career in the insurance/financial services industry. I&amp;rsquo;m aware that &amp;lsquo;data scientist&amp;rsquo; is a nebulous term, so to elaborate:
-My main focus these days is cobbling together systems based around generative AI tools. One could argue that this type of work should fall under the umbrella of software engineering rather than data science (and one would probably be correct).
-Prior to that, I actually made occasional use of my statistics degree by doing more &amp;rsquo;traditional&amp;rsquo; predictive and inferential modeling (GLMs, tree-based methods, yada yada).</description>
+      <description>&lt;p&gt;I&amp;rsquo;m a senior data scientist who&amp;rsquo;s spent most of his career in the insurance/financial services industry. I&amp;rsquo;m aware that &amp;lsquo;data scientist&amp;rsquo; is a nebulous term, so to elaborate:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;My main focus these days is cobbling together systems based around generative AI tools. One could argue that this type of work should fall under the umbrella of software engineering rather than data science (and one would probably be correct).&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Prior to that, I actually made occasional use of my statistics degree by doing more &amp;rsquo;traditional&amp;rsquo; predictive and inferential modeling (GLMs, tree-based methods, yada yada).&lt;/p&gt;</description>
     </item>
-    
+    <item>
+      <title>About Me</title>
+      <link>https://envoss11.github.io/resume/</link>
+      <pubDate>Mon, 13 May 2024 00:00:00 +0000</pubDate>
+      <guid>https://envoss11.github.io/resume/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;m a Lead Data Scientist with 10 years of experience delivering data science and software solutions in insurance and broader financial services.&lt;/p&gt;&#xA;&lt;p&gt;In my current role, I&amp;rsquo;m a technical lead on a cross-functional AI team, shipping generative AI systems that improve cycle time and unit cost in regulated workflows. I&amp;rsquo;ve led document intelligence initiatives from prototype through production, driving measurable operational gains—including solutions that have dramatically reduced processing time and eliminated significant vendor costs by bringing capabilities in-house.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Portfolio</title>
+      <link>https://envoss11.github.io/portfolio/</link>
+      <pubDate>Mon, 13 May 2024 00:00:00 +0000</pubDate>
+      <guid>https://envoss11.github.io/portfolio/</guid>
+      <description>&lt;h2 id=&#34;projects&#34;&gt;Projects&lt;/h2&gt;&#xA;&lt;h3 id=&#34;loan-marketing-segmentation&#34;&gt;Loan Marketing Segmentation&lt;/h3&gt;&#xA;&lt;p&gt;This is an old project from school. Very rudimentary, but it represents one of my earliest attempts at a &amp;ldquo;real&amp;rdquo; predictive modeling problem.&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://envoss11.github.io/posts/lending_club/&#34;&gt;View Project&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3 id=&#34;berksons-paradox&#34;&gt;Berkson&amp;rsquo;s Paradox&lt;/h3&gt;&#xA;&lt;p&gt;An exploration of Berkson&amp;rsquo;s Paradox and its implications for data analysis.&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://envoss11.github.io/posts/2023-04-26-berkson-s-paradox/&#34;&gt;View Post&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Berkson&#39;s Paradox</title>
       <link>https://envoss11.github.io/posts/2023-04-26-berkson-s-paradox/</link>
       <pubDate>Mon, 01 May 2023 00:00:00 +0000</pubDate>
-      
       <guid>https://envoss11.github.io/posts/2023-04-26-berkson-s-paradox/</guid>
-      <description>This post was prompted by this tweet (admittedly already rather old by the time of this posting):
-The phenomenon observed here shouldn’t be particularly shocking — it’s exactly what we should expect in light of something called Berkson’s Paradox.
-This paradox, much like its more famous cousin named after Edward Simpson, isn’t really a paradox at all, but it does lead to some counterintuitive observations. In this example, we appear to see a negative correlation between product quality and sales team quality.</description>
+      <description>&lt;p&gt;This post was prompted by this tweet (admittedly already rather old by the time of this posting):&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;images/tweet_screenshot.png&#34; /&gt;&lt;/p&gt;&#xA;&lt;p&gt;The phenomenon observed here shouldn’t be particularly shocking — it’s exactly what we should expect in light of something called &lt;a href=&#34;https://en.wikipedia.org/wiki/Berkson%27s_paradox&#34;&gt;Berkson’s Paradox&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;This paradox, much like its &lt;a href=&#34;https://en.wikipedia.org/wiki/Simpson%27s_paradox&#34;&gt;more famous cousin&lt;/a&gt; named after Edward Simpson, isn’t really a paradox at all, but it does lead to some counterintuitive observations. In this example, we appear to see a negative correlation between product quality and sales team quality. You can probably come up with some examples of this on your own — it’s not a particularly novel observation that in the enterprise software world, overpriced and obsolete solutions keep chugging along in the marketplace long past their expiration date simply on the strength of their sales relationships and brand.&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Loan Marketing Segmentation</title>
       <link>https://envoss11.github.io/posts/lending_club/</link>
       <pubDate>Sun, 15 Nov 2020 00:00:00 +0000</pubDate>
-      
       <guid>https://envoss11.github.io/posts/lending_club/</guid>
-      <description>End-to-end project to build and deploy marketing model from Lending Club data</description>
+      <description>&lt;p&gt;&lt;a href=&#34;https://ericvoss.shinyapps.io/debtconsolidationapp/&#34;&gt;Shiny app&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/envoss11/LendingClubProject&#34;&gt;GitHub repo&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;LCClean.html&#34;&gt;R Markdown report with code/visualizations&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;This is an old project from school. Very rudimentary, but it represents one of my earliest attempts at a &amp;ldquo;real&amp;rdquo; predictive modeling problem, and in any case I need some filler content to start populating this site.&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;Using publicly available data from crowd-sourced lending platform Lending Club, I set out to create a classifier which would help solve a marketing problem which (I imagine) a company like this would encounter. I realized that one of the most popular loan types Lending Club provided, debt conslidation, was rather different than the rest from a marketing perspective. An advertisement for a debt consolidation product would likely relate to the stress caused by having too many sources of debt, and then offer to help them simplify that situation. This is the exact opposite of the message one would want to send to persuade a customer to take on a new loan for something like a car or home improvements.&lt;/p&gt;</description>
     </item>
-    
-    
-    
+    <item>
+      <title>Archive</title>
+      <link>https://envoss11.github.io/archives/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://envoss11.github.io/archives/</guid>
+      <description>archives</description>
+    </item>
+    <item>
+      <title>Search</title>
+      <link>https://envoss11.github.io/search/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://envoss11.github.io/search/</guid>
+      <description>search</description>
+    </item>
   </channel>
 </rss>

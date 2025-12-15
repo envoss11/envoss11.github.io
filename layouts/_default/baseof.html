@@ -1,56 +1,35 @@
 <!DOCTYPE html>
-<html lang="en-us" dir="auto">
+<html lang="{{ .Site.LanguageCode }}" dir="auto">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="robots" content="index, follow">
-    <title>Categories - Eric Voss</title>
-    <meta name="description" content="I&#39;m a Lead Data Scientist with 10 years of experience in insurance and financial services. My background spans traditional statistical modeling to modern AI deployment, with recent focus on putting generative AI systems into production at scale.">
-    <meta name="author" content="Eric Voss">
-    <link rel="canonical" href="https://envoss11.github.io/categories/">
-    <link rel="stylesheet" href="/css/custom.css">
-    <link rel="icon" href="/favicon.ico">
+    <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}</title>
+    <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+    <meta name="author" content="{{ .Site.Params.author }}">
+    <link rel="canonical" href="{{ .Permalink }}">
+    <link rel="stylesheet" href="{{ "css/custom.css" | relURL }}">
+    <link rel="icon" href="{{ "favicon.ico" | relURL }}">
 </head>
 <body>
     <header class="site-header">
         <nav class="nav">
             <div class="logo">
-                <a href="/">Eric Voss</a>
+                <a href="{{ "/" | relURL }}">{{ .Site.Title }}</a>
             </div>
             <ul class="nav-menu">
-                
-                <li><a href="/posts">Blog</a></li>
-                
-                <li><a href="/resume">About Me</a></li>
-                
+                {{ range .Site.Menus.main }}
+                <li><a href="{{ .URL | relURL }}">{{ .Name }}</a></li>
+                {{ end }}
             </ul>
         </nav>
     </header>
     <main class="main-content">
-        
-<div class="list-container">
-    <header class="list-header">
-        <h1 class="list-title">Categories</h1>
-    </header>
-    <div class="list-content">
-        
-        <article class="list-item">
-            <h2 class="list-item-title">
-                <a href="https://envoss11.github.io/categories/projects/">Projects</a>
-            </h2>
-            
-            <div class="list-item-meta">
-                <time datetime="2023-05-01">May 1, 2023</time>
-            </div>
-        </article>
-        
-    </div>
-</div>
-
+        {{ block "main" . }}{{ end }}
     </main>
     <footer class="site-footer">
-        <p>&copy; 2025 Eric Voss</p>
+        <p>&copy; {{ now.Year }} {{ .Site.Params.author }}</p>
     </footer>
     <a href="https://www.linkedin.com/in/eric-n-voss/" target="_blank" rel="noopener noreferrer" class="linkedin-fixed" aria-label="LinkedIn Profile">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

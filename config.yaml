@@ -1,7 +1,6 @@
 languageCode: en-us
 baseURL: "https://envoss11.github.io"
 title: Eric Voss
-theme: PaperMod
 
 enableInlineShortcodes: true
 enableRobotsTXT: true
@@ -24,35 +23,26 @@ outputs:
 
 params:
     env: production # to enable google analytics, opengraph, twitter-cards and schema.
-    description: "Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod"
-    author: Theme PaperMod
+    description: "I'm a Lead Data Scientist with 10 years of experience in insurance and financial services. My background spans traditional statistical modeling to modern AI deployment, with recent focus on putting generative AI systems into production at scale."
+    author: Eric Voss
+    intro: "a Lead Data Scientist and AI technical leader."
 
-    defaultTheme: auto
-    # disableThemeToggle: true
-    ShowShareButtons: true
+    defaultTheme: light
+    disableThemeToggle: true
+    ShowShareButtons: false
     ShowReadingTime: true
     # disableSpecial1stPost: true
     displayFullLangName: true
     ShowPostNavLinks: true
-    ShowBreadCrumbs: true
+    ShowBreadCrumbs: false
     ShowCodeCopyButtons: true
-    ShowRssButtonInSectionTermList: true
+    ShowRssButtonInSectionTermList: false
     ShowToc: true
     # comments: false
     images: ["papermod-cover.png"]
 
     profileMode:
         enabled: false
-        title: PaperMod
-        imageUrl: "#"
-        imageTitle: my image
-        # imageWidth: 120
-        # imageHeight: 120
-        buttons:
-            - name: Archives
-              url: archives
-            - name: Tags
-              url: tags
 
 
     # label:
@@ -125,15 +115,11 @@ services:
 
 menu:
   main:
-    - identifier: projects
-      name: Projects
-      url: /categories/projects
+    - identifier: blog
+      name: Blog
+      url: /posts
       weight: 10
-    - identifier: tags
-      name: Tags
-      url: /tags/
-      weight: 30
-    - identifier: about
+    - identifier: resume
       name: About Me
-      url: /posts/about
-      weight: 40
+      url: /resume
+      weight: 20

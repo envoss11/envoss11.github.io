@@ -1,0 +1,25 @@
+{{ define "main" }}
+<div class="home-container">
+    <div class="intro-section">
+        <h1 class="intro-title">Hi, I'm Eric,</h1>
+        <p class="intro-subtitle">
+            {{ if .Site.Params.intro }}
+                {{ .Site.Params.intro }}
+            {{ else }}
+                a data scientist and AI engineer.
+            {{ end }}
+        </p>
+        <p class="intro-description">
+            {{ if .Site.Params.description }}
+                {{ .Site.Params.description }}
+            {{ else }}
+                I help build AI solutions and write about data science and machine learning.
+            {{ end }}
+        </p>
+        <p class="intro-description">
+            My focus is on the full lifecycle—from defining metrics and building evaluation frameworks to establishing engineering practices that make AI systems maintainable and production-ready. I'm passionate about bridging the gap between cutting-edge capabilities and real-world deployment.
+        </p>
+    </div>
+</div>
+{{ end }}
+
