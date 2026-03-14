@@ -1,5 +1,5 @@
 ---
-title: "{{title}}"
+blog_title: "{{title}}"
 published: {{date}}
 author: "[[Eric Voss]]"
 tags: []

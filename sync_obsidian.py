@@ -86,8 +86,10 @@ def transform_frontmatter(fm: dict) -> dict:
     """Map Obsidian frontmatter fields to Hugo equivalents."""
     hugo: dict = {}
 
-    # Title — keep as-is
-    if "title" in fm:
+    # Title: blog_title takes precedence over title
+    if "blog_title" in fm:
+        hugo["title"] = fm["blog_title"]
+    elif "title" in fm:
         hugo["title"] = fm["title"]
 
     # Date: published → date
