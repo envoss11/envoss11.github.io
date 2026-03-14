@@ -1,3 +1,5 @@
 *.DS_Store
 .Rhistory
 .DS_Store
+.sync_state.json
+public/
