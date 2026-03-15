@@ -87,9 +87,7 @@ def transform_frontmatter(fm: dict) -> dict:
     """Map Obsidian frontmatter fields to Hugo equivalents."""
     hugo: dict = {}
 
-    # Title
-    if "title" in fm:
-        hugo["title"] = fm["title"]
+    # Title: set from filename in sync()
 
     # Date: stamped at first sync, not pulled from Obsidian
     # (handled in sync() to preserve existing dates)
@@ -188,6 +186,8 @@ def sync(vault_path: Path) -> None:
         hugo_fm = transform_frontmatter(fm)
         body = truncate_at_marker(body)
         body = strip_wikilinks(body)
+
+        hugo_fm["title"] = md_file.stem
 
         slug = slugify(md_file.stem)
         out_dir = HUGO_POSTS / slug
