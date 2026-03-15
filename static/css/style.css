@@ -2,15 +2,15 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #FBF8F3;
-  --text: #3D3229;
-  --accent: #B05E3B;
-  --accent-hover: #8C4A2E;
+  --bg: #FAF6ED;
+  --text: #2F3630;
+  --accent: #5B7A5E;
+  --accent-hover: #476349;
   --card-bg: #FFFFFF;
-  --callout-bg: #F3EDE4;
-  --callout-border: #B05E3B;
-  --blockquote-border: #D4C5B2;
-  --muted: #8C7B6B;
+  --callout-bg: #EBE8E0;
+  --callout-border: #5B7A5E;
+  --blockquote-border: #C4BDAE;
+  --muted: #7B7567;
   --font-body: 'Source Serif 4', Georgia, serif;
   --font-ui: 'Inter', system-ui, sans-serif;
 }
@@ -59,7 +59,7 @@ a:hover { color: var(--accent-hover); }
   font-family: var(--font-ui);
   font-size: 1.35rem;
   font-weight: 600;
-  color: var(--text);
+  color: var(--muted);
   text-decoration: none;
 }
 .site-name:hover { color: var(--accent); }
