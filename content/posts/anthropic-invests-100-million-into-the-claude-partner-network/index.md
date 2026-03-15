@@ -1,6 +1,6 @@
 ---
-title: "Claude Partner Network"
-date: ""
+title: "Anthropic invests $100 million into the Claude Partner Network"
+date: "2026-03-15"
 categories:
   - "career"
 tags:
@@ -9,8 +9,6 @@ author: ""
 source: "https://www.anthropic.com/news/claude-partner-network?utm_source=tldrai"
 description: ""
 ---
-
-[Anthropic invests $100 million into the Claude Partner Network](https://www.anthropic.com/news/claude-partner-network?utm_source=tldrai)
 
 An interesting initiative, but perhaps limited in scope by the very thing touted in the opening section of this announcement: 
 

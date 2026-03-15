@@ -1,0 +1,11 @@
+{{- if .Params.source }}
+{{- $sourceURL := .Params.source }}
+{{- $parsed := urls.Parse $sourceURL }}
+{{- $domain := $parsed.Host }}
+{{- $domain = strings.TrimPrefix "www." $domain }}
+<div class="source-callout">
+  <span class="source-label">Commenting on:</span>
+  <a href="{{ $sourceURL }}" target="_blank" rel="noopener" class="source-title">{{ with .Title }}{{ . }}{{ else }}{{ $sourceURL }}{{ end }}</a>
+  <span class="source-domain">{{ $domain }}</span>
+</div>
+{{- end }}

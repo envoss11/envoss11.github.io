@@ -1,11 +1,6 @@
 ---
 title: "About Me"
 url: "/about/"
-ShowFullTextinRSS: false
-hideSummary: true
-searchHidden: true
-hiddenInHomeList: true
-ShowToc: false
 ---
 
 I'm a Lead Data Scientist with 10 years of experience delivering data science and software solutions in insurance and broader financial services.

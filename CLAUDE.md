@@ -25,22 +25,30 @@ Deployment is automatic via GitHub Actions (`.github/workflows/hugo.yaml`) on pu
 
 ## Architecture
 
-Hugo static site using the **PaperMod** theme (git submodule at `themes/PaperMod`). Blog-forward design — homepage shows a post feed.
+Hugo static site with **custom project-level templates** (no external theme). Designed as a scrollable commentary feed — short-form posts rendered inline on the homepage so readers never need to click into individual posts.
 
-**Configuration:** Single `config.yaml` with theme, taxonomies, menus, params, privacy, and services.
+**Design approach:** Warm, journal-style aesthetic. Cream background (`#FBF8F3`), terracotta accents (`#B05E3B`), Source Serif 4 body font, Inter for headings/UI. Single-column layout, max-width 680px.
 
-**Templates:** PaperMod provides base templates. Custom overrides:
-- `layouts/_default/single.html` — adds "Commenting on:" block for commentary posts (shown when `source` frontmatter param exists)
-- `layouts/partials/extend_head.html` — loads custom CSS
+**Configuration:** Single `config.yaml` with taxonomies, menu (About only), params (including `tagline`), privacy, and services. No theme reference.
+
+**Templates:**
+- `layouts/_default/baseof.html` — base HTML shell
+- `layouts/index.html` — homepage feed, iterates posts sorted by date descending
+- `layouts/_default/single.html` — standalone post page for permalinks/RSS
+- `layouts/_default/list.html` — fallback for taxonomy pages
+- `layouts/partials/head.html` — meta tags, Google Fonts, CSS, RSS autodiscovery
+- `layouts/partials/header.html` — site name, tagline, About nav, LinkedIn icon
+- `layouts/partials/footer.html` — copyright + RSS link
+- `layouts/partials/feed-card.html` — post rendered as an inline card with source callout, full content, date, and categories
+- `layouts/partials/source-callout.html` — "Commenting on:" block for commentary posts (uses `source` frontmatter URL + `.Title` for display text)
 - `layouts/shortcodes/blogdown/postref.html` — R Markdown cross-references
 
 **Content structure:**
 - `/content/posts/` — blog posts as page bundles (`slug/index.md`)
 - `/content/about.md` — About Me page (url: `/about/`)
-- Top-level pages: `archives.md`, `search.md`
 
-**Frontmatter format:** Posts use YAML frontmatter (`---` delimiters) with title, date, categories, tags, and draft fields. Commentary posts add a `source` field.
+**Frontmatter format:** Posts use YAML frontmatter (`---` delimiters) with title, date, categories, tags, and draft fields. Commentary posts add a `source` field (URL of the article being commented on). The `title` field serves as the display text in the source callout.
 
-**Obsidian sync pipeline:** `sync_obsidian.py` walks an Obsidian vault for notes with `publish: true`, transforms frontmatter, strips `[[wikilinks]]`, truncates at `<!-- end-publish -->`, and outputs Hugo page bundles. State tracked in `.sync_state.json` (gitignored).
+**Obsidian sync pipeline:** `sync_obsidian.py` walks an Obsidian vault for notes with `publish: true`, transforms frontmatter (maps `title`, `domain` → `categories`, `tags`, `author`, `source`, `description`/`summary`), strips `[[wikilinks]]`, truncates at `<!-- end-publish -->`, and outputs Hugo page bundles. Dates are **not** pulled from Obsidian — the script stamps today's date on first sync and preserves the existing date on subsequent syncs. State tracked in `.sync_state.json` (gitignored).
 
-**Styling:** Minimal custom CSS in `/static/css/custom.css` for commentary source block styling. PaperMod handles all other styling. LinkedIn social icon configured via `params.socialIcons` in config.
+**Styling:** All styles in `/static/css/style.css`. No external theme CSS.

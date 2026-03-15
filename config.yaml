@@ -1,7 +1,6 @@
 languageCode: en-us
 baseURL: "https://envoss11.github.io"
 title: Eric Voss
-theme: PaperMod
 
 enableInlineShortcodes: true
 enableRobotsTXT: true
@@ -23,33 +22,12 @@ outputs:
   home:
     - HTML
     - RSS
-    - JSON
 
 params:
   env: production
   description: "I'm a Lead Data Scientist with 10 years of experience in insurance and financial services. My background spans traditional statistical modeling to modern AI deployment, with recent focus on putting generative AI systems into production at scale."
   author: Eric Voss
-
-  defaultTheme: light
-  disableThemeToggle: true
-  ShowShareButtons: false
-  ShowReadingTime: true
-  displayFullLangName: true
-  ShowPostNavLinks: true
-  ShowBreadCrumbs: false
-  ShowCodeCopyButtons: true
-  ShowRssButtonInSectionTermList: false
-  ShowToc: true
-
-  profileMode:
-    enabled: false
-
-  socialIcons:
-    - name: linkedin
-      url: "https://www.linkedin.com/in/ericvoss11/"
-
-  assets:
-    disableHLJS: true
+  tagline: "Data science, AI in production, and the occasional opinion."
 
 markup:
   goldmark:
@@ -81,15 +59,7 @@ services:
 
 menu:
   main:
-    - identifier: archive
-      name: Archive
-      url: /archives/
-      weight: 10
-    - identifier: search
-      name: Search
-      url: /search/
-      weight: 20
     - identifier: about
       name: About
       url: /about/
-      weight: 30
+      weight: 10

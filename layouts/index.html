@@ -1,0 +1,7 @@
+{{- define "main" }}
+<div class="feed">
+  {{- range (where site.RegularPages "Section" "posts").ByDate.Reverse }}
+  {{- partial "feed-card.html" . }}
+  {{- end }}
+</div>
+{{- end }}

@@ -12,6 +12,7 @@ import json
 import os
 import re
 import sys
+from datetime import date
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -86,17 +87,12 @@ def transform_frontmatter(fm: dict) -> dict:
     """Map Obsidian frontmatter fields to Hugo equivalents."""
     hugo: dict = {}
 
-    # Title: blog_title takes precedence over title
-    if "blog_title" in fm:
-        hugo["title"] = fm["blog_title"]
-    elif "title" in fm:
+    # Title
+    if "title" in fm:
         hugo["title"] = fm["title"]
 
-    # Date: published → date
-    if "published" in fm:
-        hugo["date"] = fm["published"]
-    elif "date" in fm:
-        hugo["date"] = fm["date"]
+    # Date: stamped at first sync, not pulled from Obsidian
+    # (handled in sync() to preserve existing dates)
 
     # Categories: domain → categories
     if "domain" in fm:
@@ -193,11 +189,21 @@ def sync(vault_path: Path) -> None:
         body = truncate_at_marker(body)
         body = strip_wikilinks(body)
 
-        output = dump_frontmatter(hugo_fm) + "\n" + body
-
         slug = slugify(md_file.stem)
         out_dir = HUGO_POSTS / slug
         out_file = out_dir / "index.md"
+
+        # Date: preserve existing date from Hugo file, or stamp today
+        if out_file.exists():
+            existing_fm, _ = parse_frontmatter(out_file.read_text(encoding="utf-8"))
+            if existing_fm.get("date"):
+                hugo_fm["date"] = existing_fm["date"]
+            else:
+                hugo_fm["date"] = date.today().isoformat()
+        else:
+            hugo_fm["date"] = date.today().isoformat()
+
+        output = dump_frontmatter(hugo_fm) + "\n" + body
 
         h = content_hash(output)
         new_state[slug] = h

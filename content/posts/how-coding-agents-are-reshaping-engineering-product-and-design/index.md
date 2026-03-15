@@ -1,6 +1,6 @@
 ---
-title: ""
-date: "2026-03-09"
+title: "How Coding Agents Are Reshaping Engineering, Product and Design"
+date: "2026-03-15"
 categories:
   - "career"
 tags:
@@ -9,8 +9,6 @@ author: ""
 source: "https://x.com/hwchase17/status/2031051115169808685?utm_source=tldrai"
 description: ""
 ---
-
-[How Coding Agents Are Reshaping Engineering, Product and Design](https://x.com/hwchase17/status/2031051115169808685?utm_source=tldrai)
 
 Kind of obvious, but with rising capabilities comes rising expectations:
 

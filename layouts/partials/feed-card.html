@@ -1,0 +1,16 @@
+<article class="feed-card">
+  {{- partial "source-callout.html" . }}
+  <div class="card-content">
+    {{- .Content }}
+  </div>
+  <footer class="card-footer">
+    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+    {{- with .GetTerms "categories" }}
+    <span class="card-categories">
+      {{- range . }}
+      <a href="{{ .Permalink }}">{{ .LinkTitle }}</a>
+      {{- end }}
+    </span>
+    {{- end }}
+  </footer>
+</article>
