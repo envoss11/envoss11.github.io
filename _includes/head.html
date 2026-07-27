@@ -1,0 +1,33 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+{%- assign profile = site.data.profile -%}
+{%- if page.title and page.url != "/" -%}
+  {%- assign page_title = page.title | append: " — " | append: profile.name -%}
+{%- else -%}
+  {%- assign page_title = profile.name | append: " — " | append: profile.role -%}
+{%- endif -%}
+{%- assign page_desc = page.description | default: page.excerpt | default: profile.tagline | strip_html | strip_newlines | truncate: 180 -%}
+
+<title>{{ page_title }}</title>
+<meta name="description" content="{{ page_desc }}">
+<meta name="author" content="{{ profile.name }}">
+<link rel="canonical" href="{{ page.url | absolute_url }}">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ profile.name }}">
+<meta property="og:title" content="{{ page_title }}">
+<meta property="og:description" content="{{ page_desc }}">
+<meta property="og:url" content="{{ page.url | absolute_url }}">
+<meta property="og:image" content="{{ page.image | default: profile.portrait | absolute_url }}">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,300..700;1,400..600&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&display=swap">
+<link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+
+<link rel="icon" href="{{ '/assets/images/favicon.svg' | relative_url }}" type="image/svg+xml">
+{%- feed_meta -%}
+
+<script>document.documentElement.classList.add('js');</script>

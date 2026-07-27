@@ -1,0 +1,19 @@
+- category: "AI & Machine Learning"
+  icon: "chart"
+  items: "LLM and generative AI solutions, NLP and document processing, supervised learning, generalized additive models, statistical modeling, and evaluation and experiment design for AI in production"
+
+- category: "Cloud & MLOps"
+  icon: "package"
+  items: "AWS — SageMaker, Bedrock, Textract, Comprehend, Step Functions, Lambda, S3 — plus deployment patterns, CI/CD, performance monitoring, and incident response for live AI systems"
+
+- category: "Languages & Engineering"
+  icon: "code"
+  items: "Python, R, SQL, Git and code review, automated testing — building data science codebases that other people can maintain"
+
+- category: "Responsible AI & Governance"
+  icon: "tool"
+  items: "Model validation, explainability, fairness and robustness, lifecycle management, and aligning delivery with responsible AI frameworks and emerging regulatory expectations"
+
+- category: "Strategy & Partnership"
+  icon: "leaf"
+  items: "Shaping enterprise AI strategy and platform roadmaps with business and technology leaders, and explaining technical trade-offs to audiences who have to make the decision"

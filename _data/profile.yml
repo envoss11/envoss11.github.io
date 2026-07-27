@@ -1,0 +1,29 @@
+name: "Eric Voss"
+credential: "M.S."
+role: "Lead Data Scientist"
+company: "Securian Financial"
+location: "Minnesota"
+email: "envoss11@gmail.com"
+portrait: "/EricSmall.png"
+
+kicker: "AI & Data Science"
+tagline: "I help businesses in highly regulated industries build AI solutions and quantify their impact."
+
+links:
+  - label: "LinkedIn"
+    icon: "linkedin"
+    url: "https://www.linkedin.com/in/eric-n-voss/"
+  - label: "GitHub"
+    icon: "github"
+    url: "https://github.com/envoss11/"
+  - label: "Email"
+    icon: "mail"
+    url: "mailto:envoss11@gmail.com"
+
+footer_links:
+  - label: "LinkedIn"
+    url: "https://www.linkedin.com/in/eric-n-voss/"
+  - label: "GitHub"
+    url: "https://github.com/envoss11/"
+  - label: "Email"
+    url: "mailto:envoss11@gmail.com"

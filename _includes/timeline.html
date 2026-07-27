@@ -1,0 +1,29 @@
+{%- comment -%}
+Dated timeline. Pass any collection of rows:
+  {% include timeline.html rows=site.data.career %}
+Each row takes: title, org, date, and optionally url, summary, meta, location.
+{%- endcomment -%}
+<div class="timeline">
+  {%- for row in include.rows -%}
+  <div class="tl-row">
+    <div>
+      <div class="tl-primary">
+        {{ row.title }}
+        {%- if row.org %}
+        <span class="muted">&middot;
+          {%- if row.url %}
+          <a class="marker-link" href="{{ row.url }}" rel="noopener">{{ row.org }}</a>
+          {%- else %}{{ row.org }}{% endif -%}
+        </span>
+        {%- endif -%}
+      </div>
+      {%- if row.summary %}<div class="tl-secondary">{{ row.summary }}</div>{% endif -%}
+      {%- if row.meta %}<div class="tl-meta">{{ row.meta }}</div>{% endif -%}
+    </div>
+    <div class="tl-date">
+      {{ row.date }}
+      {%- if row.location %}<br><span class="muted">{{ row.location }}</span>{% endif -%}
+    </div>
+  </div>
+  {%- endfor -%}
+</div>

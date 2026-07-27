@@ -1,27 +1,66 @@
 ---
+layout: project
+order: 1
 title: "Loan Marketing Segmentation"
-excerpt: "End-to-end project to build and deploy marketing model from Lending Club data"
-header:
-  image: /LoanMarketingHeader.png
-  teaser: /LoanMarketingHeader.png
-sidebar:
-  - title: "Class"
-    text: "STAT 656: Applied Analytics"
-  - title: "Tools Used"
-    text: "R, Shiny, Caret"
+excerpt: "An end-to-end project on public Lending Club data: build a classifier that tells a marketer which pitch to send, then ship it as a tool they can actually use."
+image: /LoanMarketingHeader.png
+image_fit: contain
+tags_list:
+  - "R"
+  - "Shiny"
+  - "caret"
+  - "xgboost"
+facts:
+  - label: "Course"
+    value: "STAT 656 — Applied Analytics"
+  - label: "Data"
+    value: "Public Lending Club loan listings"
+  - label: "Deliverable"
+    value: "Interactive R Shiny app"
+links:
+  - label: "Shiny app"
+    icon: "external"
+    url: "https://ericvoss.shinyapps.io/debtconsolidationapp/"
+  - label: "GitHub repo"
+    icon: "github"
+    url: "https://github.com/envoss11/LendingClubProject"
+  - label: "Full report"
+    icon: "file"
+    url: "/LCClean.html"
 ---
-[Shiny app](https://ericvoss.shinyapps.io/debtconsolidationapp/)
 
-[GitHub repo](https://github.com/envoss11/LendingClubProject)
+Using publicly available data from the crowd-sourced lending platform Lending Club, I set
+out to build a classifier that would solve a marketing problem a company like this would
+plausibly run into. One of the most popular loan types on the platform, debt consolidation,
+is quite different from the rest from a marketing perspective. An ad for a debt
+consolidation product speaks to the stress of juggling too many sources of debt, then
+offers to simplify the situation. That is the exact opposite of the message you would send
+to persuade someone to take on a *new* loan for a car or a home improvement project.
 
-[R Markdown report with code/visualizations](/LCClean.html)
+So I focused the analysis on a single question: is this prospective customer more likely to
+want a debt consolidation product, or a more conventional loan?
 
-Using publicly available data from crowd-sourced lending platform Lending Club, I set out to create a classifier which would help solve a marketing problem which (I imagine) a company like this would encounter. I realized that one of the most popular loan types Lending Club provided, debt conslidation, was rather different than the rest from a marketing perspective. An advertisement for a debt consolidation product would likely relate to the stress caused by having too many sources of debt, and then offer to help them simplify that situation. This is the exact opposite of the message one would want to send to persuade a customer to take on a new loan for something like a car or home improvements. 
+## The deliverable
 
-I chose to focus my analysis on predicting whether a client would be more likely interested in debt consolidation products or other, more conventional loans. The final deliverable for this project was a Shiny app in which a marketing employee could input information about a prospective customer, and receive a response telling them which marketing materials to send them - the standard materials, or something focused on debt consolidation products. I tried out a variety of different models, including a classification tree and bagging and boosting method, finally settling on a model trained with xgboost which maximized the accuracy of my model.
+The final output was a Shiny app where a marketing employee enters what they know about a
+prospect and gets back a recommendation — send the standard materials, or send the debt
+consolidation pitch. I tried a range of models, including a classification tree along with
+bagging and boosting methods, and settled on an xgboost-trained model that maximized
+accuracy.
 
-![Confusion Matrix](/confusionMatrix.png) ![ROC Curve](/ROC.PNG)
+![Confusion Matrix](/confusionMatrix.png)
+![ROC Curve](/ROC.png)
 
-The model did not produce mind-blowing results, but it is a clear improvement over just guessing which category a customer might fall into. Playing around with the Shiny app yields mostly sensible results - for example, under the default parameters with a customer having 20 credit lines and 50% credit utilization, the model suggests debt consolidation. Change that number of credit lines to 5 and credit utilization rate to 20%, and the model no longer suggests debt consolidation marketing.
+## How it did
 
-![Default model parameters](/defaultparam.png) ![New model parameters](/newparam.png)
+The model does not produce mind-blowing results, but it is a clear improvement over
+guessing which category a customer falls into. Playing with the app yields mostly sensible
+behavior. Under the default parameters, a customer with 20 credit lines and 50% credit
+utilization gets a debt consolidation recommendation. Drop that to 5 credit lines and 20%
+utilization and the model stops suggesting debt consolidation.
+
+![Default model parameters](/defaultparam.png)
+![Adjusted model parameters](/newparam.png)
+
+The full R Markdown report, with all the code and visualizations behind this, is linked at
+the top of the page.

@@ -1,0 +1,14 @@
+# The few things my current work actually consists of. Rendered on the home page
+# in place of a career timeline — the shape of the work, not the chronology.
+
+- category: "Enterprise AI standards"
+  icon: "tool"
+  items: "Defining how AI gets built, evaluated, and operated across the company — engineering and testing practices, deployment and monitoring patterns, and the model governance a regulated industry requires."
+
+- category: "Shared platform capabilities"
+  icon: "package"
+  items: "Designing AI services as reusable building blocks rather than one-off projects, so document processing, summarization, and decision support can be picked up by the next team instead of rebuilt."
+
+- category: "Applied AI & machine learning"
+  icon: "chart"
+  items: "Still close to the build: LLM and generative AI solutions on AWS, NLP and document processing, statistical modeling, and the evaluation design that tells you whether any of it is actually working."

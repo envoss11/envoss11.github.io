@@ -1,0 +1,78 @@
+---
+layout: default
+---
+{%- assign profile = site.data.profile -%}
+<div class="home">
+
+  <header class="hero surface reveal">
+    <div class="hero-grid">
+      <div class="portrait-wrap">
+        <img class="portrait"
+             src="{{ profile.portrait | relative_url }}"
+             alt="Portrait of {{ profile.name }}"
+             width="208" height="208">
+      </div>
+      <div class="hero-copy">
+        <div class="kicker">{{ profile.kicker }}</div>
+        <h1 class="h1">{{ profile.name }}</h1>
+        <p class="lede">{{ profile.tagline }}</p>
+
+        {%- comment -%} A sprig that draws itself in beneath the name. {%- endcomment -%}
+        <svg class="branch" viewBox="0 0 520 62" width="520" height="62" aria-hidden="true" focusable="false">
+          <path class="branch-stem" d="M6,46 C 92,14 168,52 248,26 S 402,52 514,18"/>
+          {%- comment -%}
+          Each leaf is positioned on a wrapper <g> so the CSS pop-in animation,
+          which sets its own transform, can't clobber the placement.
+          {%- endcomment -%}
+          <g fill="rgba(78,115,70,.62)">
+            <g transform="translate(52,29) rotate(-34)"><path class="branch-leaf" style="animation-delay:.8s"  d="M0,0 C7,-9.5 19,-10.5 26,0 C19,10.5 7,9.5 0,0 Z"/></g>
+            <g transform="translate(126,36) rotate(26)"><path class="branch-leaf" style="animation-delay:.95s" d="M0,0 C7,-9.5 19,-10.5 26,0 C19,10.5 7,9.5 0,0 Z"/></g>
+            <g transform="translate(206,30) rotate(-22)"><path class="branch-leaf" style="animation-delay:1.1s" d="M0,0 C7,-9.5 19,-10.5 26,0 C19,10.5 7,9.5 0,0 Z"/></g>
+            <g transform="translate(292,38) rotate(30)"><path class="branch-leaf" style="animation-delay:1.25s" d="M0,0 C7,-9.5 19,-10.5 26,0 C19,10.5 7,9.5 0,0 Z"/></g>
+            <g transform="translate(378,36) rotate(-26)"><path class="branch-leaf" style="animation-delay:1.4s" d="M0,0 C7,-9.5 19,-10.5 26,0 C19,10.5 7,9.5 0,0 Z"/></g>
+          </g>
+          <g fill="rgba(206,150,48,.85)">
+            <g transform="translate(452,24) rotate(-16)"><path class="branch-leaf" style="animation-delay:1.55s" d="M0,0 C7,-9.5 19,-10.5 26,0 C19,10.5 7,9.5 0,0 Z"/></g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <section class="panel surface reveal" aria-label="Introduction">
+    <div class="copy">
+      {{ content }}
+    </div>
+    <div class="home-links">
+      {%- for link in profile.links -%}
+      <a class="home-link" href="{{ link.url | relative_url }}"{% if link.url contains "http" %} rel="noopener"{% endif %}>
+        {%- include icon.html name=link.icon -%}
+        <span>{{ link.label }}</span>
+      </a>
+      {%- endfor -%}
+    </div>
+  </section>
+
+  <section class="section reveal" aria-label="What I work on">
+    <div class="section-head">
+      <h2 class="section-h2">What I work on</h2>
+      <a class="home-link" href="{{ '/about/' | relative_url }}">
+        <span>More about me</span>{% include icon.html name="arrow" %}
+      </a>
+    </div>
+    <div class="panel surface">
+      <div class="simple-list">
+        {%- for group in site.data.focus -%}
+        <div class="simple-item">
+          <span class="simple-icon">{% include icon.html name=group.icon %}</span>
+          <div class="simple-body">
+            <span class="simple-category">{{ group.category }}</span>
+            <span class="simple-desc">{{ group.items }}</span>
+          </div>
+        </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+</div>

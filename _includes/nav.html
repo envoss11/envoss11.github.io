@@ -1,0 +1,23 @@
+{%- assign profile = site.data.profile -%}
+<div class="navbar">
+  <div class="shell">
+    <div class="nav-inner">
+      <a class="brand" href="{{ '/' | relative_url }}">
+        <span class="brand-title">{{ profile.name }}</span>
+        <span class="brand-sub">{{ profile.role }}</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        {%- for item in site.data.navigation.main -%}
+          {%- if item.url == "/" -%}
+            {%- if page.url == "/" -%}{%- assign active = true -%}{%- else -%}{%- assign active = false -%}{%- endif -%}
+          {%- else -%}
+            {%- if page.url contains item.url -%}{%- assign active = true -%}{%- else -%}{%- assign active = false -%}{%- endif -%}
+          {%- endif -%}
+          <a class="nav-link{% if active %} is-active{% endif %}"
+             href="{{ item.url | relative_url }}"
+             {% if active %}aria-current="page"{% endif %}>{{ item.title }}</a>
+        {%- endfor -%}
+      </nav>
+    </div>
+  </div>
+</div>

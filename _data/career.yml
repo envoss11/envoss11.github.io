@@ -1,0 +1,38 @@
+# Roles, newest first. Position, company, and tools only — no descriptions.
+# Rendered by _includes/timeline.html on the About page.
+
+- title: "Lead Data Scientist — AI Center of Excellence"
+  org: "Securian Financial"
+  url: "https://www.securian.com/"
+  date: "2026 — Present"
+  meta: "AI strategy · standards · platform capabilities"
+
+- title: "Lead Data Scientist"
+  org: "Securian Financial"
+  url: "https://www.securian.com/"
+  date: "2025 — 2026"
+  meta: "AWS Bedrock · LLMs · MLOps · evaluation design"
+
+- title: "Data Scientist → Senior Data Scientist"
+  org: "Securian Financial"
+  url: "https://www.securian.com/"
+  date: "2022 — 2025"
+  meta: "Python · SageMaker · Predictive Modeling · NLP"
+
+- title: "Data Analyst"
+  org: "U.S. Bank"
+  url: "https://www.usbank.com/"
+  date: "2020 — 2022"
+  meta: "Tableau · SQL · Python · SAS"
+
+- title: "Business Intelligence Analyst"
+  org: "Securian Financial"
+  url: "https://www.securian.com/"
+  date: "2017 — 2019"
+  meta: "SAP BusinessObjects · Excel · VBA · R"
+
+- title: "Application Developer"
+  org: "Securian Financial"
+  url: "https://www.securian.com/"
+  date: "2015 — 2017"
+  meta: "SharePoint · Guardium · Java"

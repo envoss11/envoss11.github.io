@@ -1,0 +1,13 @@
+# Smaller pieces of work that don't have a full write-up of their own.
+
+- name: "Analysis of Danish ATM Data"
+  tag: "R · GLM"
+  description: "Modeled demand for euros versus Danish krone at ATMs across Denmark using a quasi-Poisson regression, and communicated the findings in a written report and presentation."
+
+- name: "Retail Sales Growth Regression"
+  tag: "R · Regression"
+  description: "Built a regression model at U.S. Bank to identify the factors associated with retail sales growth, used to surface exceptional branches for closer study."
+
+- name: "Reporting Automation Pipelines"
+  tag: "Python · SQL"
+  description: "Designed and maintained a SQL database and Python pipelines (pyodbc, SQLAlchemy) that replaced a team's manual reporting process, plus assorted scrapers and REST API extractors."

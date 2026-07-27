@@ -1,0 +1,73 @@
+---
+layout: default
+title: About
+permalink: /about/
+description: "Career timeline, education, and skills — Eric Voss, lead data scientist working on enterprise AI in financial services."
+---
+{%- assign profile = site.data.profile -%}
+{%- assign schooling = site.data.education | concat: site.data.certifications -%}
+<div class="about">
+
+  <h1 class="sr-only">About {{ profile.name }}</h1>
+
+  <div class="pill-row reveal">
+    <a class="pill" href="https://www.linkedin.com/in/eric-n-voss/" rel="noopener">
+      {%- include icon.html name="linkedin" -%}<span>Connect with me</span>
+    </a>
+    <a class="pill" href="https://github.com/envoss11/" rel="noopener">
+      {%- include icon.html name="github" -%}<span>GitHub</span>
+    </a>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-main">
+
+      <section class="projects-section reveal" aria-labelledby="career">
+        <h2 class="section-h2" id="career">Career</h2>
+        {% include timeline.html rows=site.data.career %}
+      </section>
+
+      <section class="projects-section reveal" aria-labelledby="education">
+        <h2 class="section-h2" id="education">Education &amp; certifications</h2>
+        {% include timeline.html rows=schooling %}
+      </section>
+
+      <section class="panel surface reveal" aria-labelledby="skills">
+        <h2 class="section-h2" id="skills">Skills &amp; tools</h2>
+        <div class="simple-list">
+          {%- for group in site.data.skills -%}
+          <div class="simple-item">
+            <span class="simple-icon">{% include icon.html name=group.icon %}</span>
+            <div class="simple-body">
+              <span class="simple-category">{{ group.category }}</span>
+              <span class="simple-desc">{{ group.items }}</span>
+            </div>
+          </div>
+          {%- endfor -%}
+        </div>
+      </section>
+
+    </div>
+
+    <aside class="about-aside">
+      <div class="about-card surface reveal">
+        <div class="cat-split">
+          <figure class="cat">
+            <span class="cat-icon">{% include icon.html name="moon" %}</span>
+            <img src="{{ '/Artemis.png' | relative_url }}" alt="Artemis, a cat" loading="lazy">
+            <figcaption>Artemis</figcaption>
+          </figure>
+          <figure class="cat">
+            <span class="cat-icon">{% include icon.html name="sun" %}</span>
+            <img src="{{ '/Apollo.png' | relative_url }}" alt="Apollo, a cat" loading="lazy">
+            <figcaption>Apollo</figcaption>
+          </figure>
+        </div>
+        <div class="about-card-body">
+          Moon and sun, twins in name only — they don't share well.
+        </div>
+      </div>
+    </aside>
+  </div>
+
+</div>

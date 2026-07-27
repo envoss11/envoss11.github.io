@@ -1,25 +1,14 @@
 ---
-permalink: /404.html
 layout: default
+permalink: /404.html
+title: "Page not found"
 ---
-
-<style type="text/css" media="screen">
-  .container {
-    margin: 10px auto;
-    max-width: 600px;
-    text-align: center;
-  }
-  h1 {
-    margin: 30px 0;
-    font-size: 4em;
-    line-height: 1;
-    letter-spacing: -1px;
-  }
-</style>
-
-<div class="container">
-  <h1>404</h1>
-
-  <p><strong>Page not found :(</strong></p>
-  <p>The requested page could not be found.</p>
+<div class="notfound surface">
+  <p class="notfound-num">404</p>
+  <h1 class="section-h2">Nothing down this street</h1>
+  <p class="muted">That page either moved or never existed. The rest of the block is fine.</p>
+  <div class="pill-row" style="margin-top:10px; justify-content:center">
+    <a class="pill" href="{{ '/' | relative_url }}">{% include icon.html name="arrow" class="icon icon-flip" %}<span>Back home</span></a>
+    <a class="pill" href="{{ '/projects/' | relative_url }}">{% include icon.html name="chart" %}<span>Projects</span></a>
+  </div>
 </div>
