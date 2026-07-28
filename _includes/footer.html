@@ -2,7 +2,10 @@
 <div class="footer">
   <div class="shell">
     <div class="footer-inner">
-      <div>&copy; {{ site.time | date: "%Y" }} {{ profile.name }} &middot; {{ profile.location }}</div>
+      <div class="footer-status">
+        <span class="footer-pip" aria-hidden="true"></span>
+        <span class="footer-text">&copy; {{ site.time | date: "%Y" }} {{ profile.name }} &middot; {{ profile.location }}</span>
+      </div>
       <div class="footer-links">
         {%- for link in profile.footer_links -%}
         <a class="footer-link" href="{{ link.url }}"{% unless link.url contains "mailto:" %} rel="noopener"{% endunless %}>{{ link.label }}</a>

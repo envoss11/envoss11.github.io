@@ -1,13 +1,17 @@
 # Smaller pieces of work that don't have a full write-up of their own.
+#
+# Renders as the collapsible "Other analyses & coursework" list at the bottom
+# of /projects/. Each row takes:
+#
+#   name        required — the heading on the row
+#   tag         optional — the small pill beside the name, e.g. "Python · SQL"
+#   description required — one or two sentences, no link
+#
+# The whole section is hidden when this file has no entries.
 
-- name: "Analysis of Danish ATM Data"
-  tag: "R · GLM"
-  description: "Modeled demand for euros versus Danish krone at ATMs across Denmark using a quasi-Poisson regression, and communicated the findings in a written report and presentation."
+- name: "Placeholder — Archive Entry"
+  tag: "Tool · Method"
+  description: "Placeholder copy. One or two sentences on what the analysis was and what came out of it. These rows are for work that is worth listing but does not need a page of its own."
 
-- name: "Retail Sales Growth Regression"
-  tag: "R · Regression"
-  description: "Built a regression model at U.S. Bank to identify the factors associated with retail sales growth, used to surface exceptional branches for closer study."
-
-- name: "Reporting Automation Pipelines"
-  tag: "Python · SQL"
-  description: "Designed and maintained a SQL database and Python pipelines (pyodbc, SQLAlchemy) that replaced a team's manual reporting process, plus assorted scrapers and REST API extractors."
+- name: "Placeholder — Second Archive Entry"
+  description: "Placeholder copy. This row has no tag, to show that the pill is optional and the layout closes up without it."

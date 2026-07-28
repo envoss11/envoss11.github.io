@@ -6,6 +6,7 @@ layout: default
   {%- if page.image -%}
   <div class="article-hero surface reveal{% if page.image_fit == 'contain' %} article-hero--contain{% endif %}">
     <img src="{{ page.image | relative_url }}" alt="{{ page.title }}">
+    <span class="hero-plate" aria-hidden="true"></span>
   </div>
   {%- endif -%}
 
@@ -15,7 +16,7 @@ layout: default
     {%- if page.excerpt %}<p class="page-sub">{{ page.excerpt | strip_html | strip_newlines }}</p>{% endif -%}
 
     {%- if page.tags_list -%}
-    <div class="project-meta" style="margin-top:16px">
+    <div class="project-meta article-tags">
       {%- for tag in page.tags_list -%}<span class="tag">{{ tag }}</span>{%- endfor -%}
     </div>
     {%- endif -%}
@@ -32,10 +33,12 @@ layout: default
     {%- endif -%}
 
     {%- if page.facts -%}
-    <div class="about-card-divider" style="margin-top:18px">
+    {%- comment -%} Status window: label, dotted leader, value. {%- endcomment -%}
+    <div class="article-facts">
       {%- for fact in page.facts -%}
       <div class="fact-row">
         <span class="fact-label">{{ fact.label }}</span>
+        <span class="fact-lead" aria-hidden="true"></span>
         <span class="fact-value">{{ fact.value }}</span>
       </div>
       {%- endfor -%}
@@ -51,7 +54,7 @@ layout: default
     {{ content }}
   </div>
 
-  <p>
+  <p class="article-back">
     <a class="home-link" href="{{ '/projects/' | relative_url }}">{% include icon.html name="arrow" class="icon icon-flip" %}<span>All projects</span></a>
   </p>
 

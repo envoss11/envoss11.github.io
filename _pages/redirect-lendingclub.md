@@ -1,6 +1,6 @@
 ---
 layout: redirect
 permalink: /portfolio/LendingClub/
-redirect_to: /projects/LendingClub/
+redirect_to: /projects/
 sitemap: false
 ---

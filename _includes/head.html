@@ -24,10 +24,42 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,300..700;1,400..600&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap">
+<meta name="theme-color" content="#070a1c">
 <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
 
 <link rel="icon" href="{{ '/assets/images/favicon.svg' | relative_url }}" type="image/svg+xml">
 {%- feed_meta -%}
 
-<script>document.documentElement.classList.add('js');</script>
+{%- comment -%}
+Pre-paint bootstrap. Inline and blocking on purpose: both of these have to land
+before the first paint. A visitor who chose day would otherwise get a frame of
+night sky, and one who has a familiar out would get a frame of the About card
+with the cat still in its photo before it greys out. It is the only thing on the
+site allowed to block rendering, so it stays this small — everything else lives
+in site.js, which is deferred.
+
+Kept in sync with site.js by hand. The contract between them is four strings:
+the two storage keys, and the value sets each one accepts.
+{%- endcomment -%}
+<script>
+  (function () {
+    var root = document.documentElement;
+    root.classList.add('js');
+    var theme, familiar;
+    try {
+      theme = localStorage.getItem('theme');
+      familiar = localStorage.getItem('familiar');
+    } catch (e) {}
+    if (theme !== 'day' && theme !== 'night') {
+      theme =
+        window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
+          ? 'day'
+          : 'night';
+    }
+    root.setAttribute('data-theme', theme);
+    if (familiar === 'artemis' || familiar === 'apollo') {
+      root.setAttribute('data-familiar', familiar);
+    }
+  })();
+</script>

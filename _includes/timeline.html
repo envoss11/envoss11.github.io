@@ -2,11 +2,16 @@
 Dated timeline. Pass any collection of rows:
   {% include timeline.html rows=site.data.career %}
 Each row takes: title, org, date, and optionally url, summary, meta, location.
+
+Presented as a quest log: every row is a selectable record on a lit rail.
+The empty <span class="tl-tick"> is decorative only — it draws the pixel
+connector between the rail node and the record.
 {%- endcomment -%}
 <div class="timeline">
   {%- for row in include.rows -%}
-  <div class="tl-row">
-    <div>
+  <div class="tl-row has-cursor">
+    <span class="tl-tick" aria-hidden="true"></span>
+    <div class="tl-body">
       <div class="tl-primary">
         {{ row.title }}
         {%- if row.org %}
@@ -21,8 +26,8 @@ Each row takes: title, org, date, and optionally url, summary, meta, location.
       {%- if row.meta %}<div class="tl-meta">{{ row.meta }}</div>{% endif -%}
     </div>
     <div class="tl-date">
-      {{ row.date }}
-      {%- if row.location %}<br><span class="muted">{{ row.location }}</span>{% endif -%}
+      <span class="tl-date-plate">{{ row.date }}</span>
+      {%- if row.location %}<span class="muted tl-loc">{{ row.location }}</span>{% endif -%}
     </div>
   </div>
   {%- endfor -%}

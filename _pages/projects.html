@@ -16,16 +16,36 @@ description: "Selected data and statistics projects by Eric Voss — modeling, d
     </p>
   </header>
 
+  {%- comment -%}
+  Standing notice while the shelf is being restocked. This block and the
+  .wip-notice rules in 50-projects come out together once the real write-ups
+  are back.
+  {%- endcomment -%}
+  <aside class="wip-notice reveal" aria-label="Page status">
+    <span class="wip-badge">
+      <span class="wip-blip" aria-hidden="true"></span>
+      <span>Work in progress</span>
+    </span>
+    <p class="wip-copy">
+      This page is deliberately mid-renovation. I'm retiring older coursework and
+      writing up work closer to what I do now — everything below is placeholder
+      text holding the shelf open. More coming soon.
+    </p>
+  </aside>
+
   {%- if featured.size > 0 -%}
   <section class="projects-section reveal" aria-label="Featured projects">
     <h2 class="section-h2">Write-ups</h2>
     <div class="projects-grid">
       {%- for project in featured -%}
-      <a class="project-card surface{% if featured.size == 1 %} project-card--wide{% endif %}" href="{{ project.url | relative_url }}">
+      <a class="project-card surface has-cursor{% if featured.size == 1 %} project-card--wide{% endif %}" href="{{ project.url | relative_url }}">
+        {%- comment -%} Slot gutter: rarity rail + the cursor's landing strip. {%- endcomment -%}
+        <span class="card-rail" aria-hidden="true"></span>
         {%- if project.image -%}
         <div class="project-media">
           <img class="project-img{% if project.image_fit == 'contain' %} project-img--contain{% endif %}"
                src="{{ project.image | relative_url }}" alt="{{ project.title }}" loading="lazy">
+          <span class="media-frame" aria-hidden="true"></span>
         </div>
         {%- endif -%}
         <div class="project-body">
@@ -49,12 +69,13 @@ description: "Selected data and statistics projects by Eric Voss — modeling, d
   {%- if site.data.archive.size > 0 -%}
   <details class="archive surface reveal">
     <summary class="archive-summary">
-      <span class="career-chevron">&#9662;</span>
+      <span class="career-chevron"><svg class="pixel-chevron" viewBox="0 0 8 8" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true" focusable="false"><rect x="1" y="2" width="6" height="1"/><rect x="2" y="3" width="4" height="1"/><rect x="3" y="4" width="2" height="1"/></svg></span>
       <span>Other analyses &amp; coursework</span>
+      <span class="archive-handle" aria-hidden="true"></span>
     </summary>
     <div class="archive-list">
       {%- for item in site.data.archive -%}
-      <div class="archive-row">
+      <div class="archive-row has-cursor">
         <div class="archive-top">
           <span class="archive-name">{{ item.name }}</span>
           {%- if item.tag %}<span class="tag">{{ item.tag }}</span>{% endif -%}
@@ -63,7 +84,7 @@ description: "Selected data and statistics projects by Eric Voss — modeling, d
       </div>
       {%- endfor -%}
     </div>
-    <p class="archive-desc" style="margin-top:14px">
+    <p class="archive-desc archive-foot">
       Odds and ends live on
       <a class="marker-link" href="https://github.com/envoss11/" rel="noopener">GitHub</a>.
     </p>

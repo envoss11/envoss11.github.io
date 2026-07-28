@@ -1,0 +1,192 @@
+{%- comment -%}
+Decorative backdrop — the sky the menu windows are open over. It has two
+faces, and both ship in the markup: CSS shows one and hides the other off
+`data-theme` on <html>. See assets/css/site.css, section 10-skyline.
+
+Layers, back to front:
+  .sky-stars    five tiled pixel starfields + a dozen four-point sparkles  [night]
+  .sky-clouds   three tiled cloud banks drifting at their own speeds       [day]
+  .sky-body     the moon, or the sun, with a radial bloom behind it
+  .sky-toggle   the control laid over that sprite — the one live thing here
+  .sky-comet    a shooting star on a very long loop                        [night]
+  .sky-birds    a flock crossing on a very long loop                       [day]
+  .sky-horizon  haze, a far range, near foothills, and a castle
+
+Every sprite is a tiled data-URI or a handful of rects, so each theme costs
+one paint and no per-frame script.
+
+`aria-hidden` sits on the individual scenery layers rather than on .skyline,
+because the toggle lives in here too and has to stay reachable. The sprite is
+a sibling of the button rather than its content, so with no JS — where CSS
+withdraws the button entirely — the sky still looks exactly the same.
+{%- endcomment -%}
+<div class="skyline">
+  <div class="sky-stars" aria-hidden="true">
+    <div class="sky-field sky-field--far"></div>
+    <div class="sky-field sky-field--mid"></div>
+    <div class="sky-field sky-field--near"></div>
+    <div class="sky-field sky-field--blink-a"></div>
+    <div class="sky-field sky-field--blink-b"></div>
+    <div class="sky-sparks">
+      <span class="sky-spark"></span>
+      <span class="sky-spark"></span>
+      <span class="sky-spark"></span>
+      <span class="sky-spark"></span>
+      <span class="sky-spark"></span>
+      <span class="sky-spark"></span>
+      <span class="sky-spark"></span>
+      <span class="sky-spark"></span>
+      <span class="sky-spark"></span>
+      <span class="sky-spark"></span>
+      <span class="sky-spark"></span>
+      <span class="sky-spark"></span>
+    </div>
+  </div>
+
+  <div class="sky-clouds" aria-hidden="true">
+    <div class="sky-bank sky-bank--far"></div>
+    <div class="sky-bank sky-bank--mid"></div>
+    <div class="sky-bank sky-bank--near"></div>
+  </div>
+
+  <div class="sky-body" aria-hidden="true">
+    <span class="sky-glow"></span>
+
+    {%- comment -%}
+    Waning gibbous: one pixel disc with a second disc bitten out of its left
+    side. 32-unit viewBox rendered at exactly 3x, so every source pixel lands
+    on a 3x3 block of device pixels with nothing in between.
+    {%- endcomment -%}
+    <svg class="sky-moon-sprite" width="96" height="96" viewBox="0 0 32 32"
+         shape-rendering="crispEdges" aria-hidden="true" focusable="false">
+      <g class="moon-body"><rect x='12' y='3' width='8' height='1'/><rect x='10' y='4' width='12' height='1'/><rect x='8' y='5' width='16' height='1'/><rect x='7' y='6' width='18' height='1'/><rect x='8' y='7' width='18' height='1'/><rect x='9' y='8' width='18' height='1'/><rect x='9' y='9' width='18' height='1'/><rect x='10' y='10' width='18' height='1'/><rect x='10' y='11' width='18' height='1'/><rect x='11' y='12' width='18' height='1'/><rect x='11' y='13' width='18' height='1'/><rect x='11' y='14' width='18' height='1'/><rect x='11' y='15' width='18' height='1'/><rect x='11' y='16' width='18' height='1'/><rect x='11' y='17' width='18' height='1'/><rect x='11' y='18' width='18' height='1'/><rect x='11' y='19' width='18' height='1'/><rect x='10' y='20' width='18' height='1'/><rect x='10' y='21' width='18' height='1'/><rect x='9' y='22' width='18' height='1'/><rect x='9' y='23' width='18' height='1'/><rect x='8' y='24' width='18' height='1'/><rect x='7' y='25' width='18' height='1'/><rect x='8' y='26' width='16' height='1'/><rect x='10' y='27' width='12' height='1'/><rect x='12' y='28' width='8' height='1'/></g>
+      <g class="moon-crater"><rect x="17" y="10" width="3" height="2"/><rect x="22" y="17" width="2" height="2"/><rect x="14" y="21" width="2" height="1"/><rect x="21" y="7" width="2" height="1"/></g>
+    </svg>
+
+    {%- comment -%}
+    A 14px disc on the same 32-unit grid, with two rings of rays hung off it.
+    The rings alternate rather than turn: rotating pixel art resamples it, and
+    a two-frame swap is what the hardware this is imitating would have done.
+    {%- endcomment -%}
+    <svg class="sky-sun-sprite" width="96" height="96" viewBox="0 0 32 32"
+         shape-rendering="crispEdges" aria-hidden="true" focusable="false">
+      <g class="sun-rays sun-rays--a">
+        <rect x="15" y="1" width="2" height="4"/>
+        <rect x="15" y="27" width="2" height="4"/>
+        <rect x="1" y="15" width="4" height="2"/>
+        <rect x="27" y="15" width="4" height="2"/>
+      </g>
+      <g class="sun-rays sun-rays--b">
+        <rect x="5" y="5" width="2" height="2"/><rect x="7" y="7" width="1" height="1"/>
+        <rect x="25" y="5" width="2" height="2"/><rect x="24" y="7" width="1" height="1"/>
+        <rect x="5" y="25" width="2" height="2"/><rect x="7" y="24" width="1" height="1"/>
+        <rect x="25" y="25" width="2" height="2"/><rect x="24" y="24" width="1" height="1"/>
+      </g>
+      <g class="sun-body">
+        <rect x="13" y="9" width="6" height="1"/>
+        <rect x="11" y="10" width="10" height="1"/>
+        <rect x="10" y="11" width="12" height="2"/>
+        <rect x="9" y="13" width="14" height="6"/>
+        <rect x="10" y="19" width="12" height="2"/>
+        <rect x="11" y="21" width="10" height="1"/>
+        <rect x="13" y="22" width="6" height="1"/>
+      </g>
+      <g class="sun-core">
+        <rect x="12" y="12" width="3" height="2"/>
+        <rect x="11" y="14" width="2" height="2"/>
+      </g>
+    </svg>
+  </div>
+
+  {%- comment -%}
+  Pointer-only, deliberately: `tabindex="-1"` and `aria-hidden`.
+
+  This is the second control for one command — the nav carries the first, and
+  the nav's is present at every width and in every theme, including all the
+  widths where this one is withdrawn. Left in the tab order this would be the
+  first stop on the page, ahead of the site's own navigation, and it would
+  announce a command a screen reader has already been offered. So the keyboard
+  and the reader get the nav toggle; the pointer gets the moon as well.
+
+  The hint names the command, not the current setting — a menu says "Save",
+  not "Not saved". Both strings ship and CSS drops the wrong one.
+  {%- endcomment -%}
+  <button class="sky-toggle" type="button" data-theme-toggle tabindex="-1" aria-hidden="true">
+    <span class="sky-toggle-frame"></span>
+    <span class="sky-toggle-hint">
+      <span class="when-night">Day</span><span class="when-day">Night</span>
+    </span>
+  </button>
+
+  <span class="sky-comet" aria-hidden="true"></span>
+
+  <div class="sky-birds" aria-hidden="true">
+    <span class="sky-bird"></span>
+    <span class="sky-bird"></span>
+    <span class="sky-bird"></span>
+  </div>
+
+  <div class="sky-horizon" aria-hidden="true">
+    <span class="sky-haze"></span>
+    <span class="sky-ridge sky-ridge--far"></span>
+    <span class="sky-ridge sky-ridge--near"></span>
+    <svg class="sky-castle" width="144" height="120" viewBox="0 0 48 40"
+         shape-rendering="crispEdges" aria-hidden="true" focusable="false">
+      <g class="castle-body">
+        <rect x="24" y="2" width="1" height="5"/>
+        <rect x="18" y="9" width="14" height="23"/>
+        <rect x="18" y="7" width="2" height="2"/>
+        <rect x="21" y="7" width="2" height="2"/>
+        <rect x="24" y="7" width="2" height="2"/>
+        <rect x="27" y="7" width="2" height="2"/>
+        <rect x="30" y="7" width="2" height="2"/>
+        <rect x="7" y="16" width="8" height="16"/>
+        <rect x="7" y="14" width="2" height="2"/>
+        <rect x="10" y="14" width="2" height="2"/>
+        <rect x="13" y="14" width="2" height="2"/>
+        <rect x="34" y="14" width="8" height="18"/>
+        <rect x="34" y="12" width="2" height="2"/>
+        <rect x="37" y="12" width="2" height="2"/>
+        <rect x="40" y="12" width="2" height="2"/>
+        <rect x="15" y="22" width="3" height="10"/>
+        <rect x="15" y="20" width="2" height="2"/>
+        <rect x="32" y="21" width="2" height="11"/>
+        <rect x="32" y="19" width="2" height="2"/>
+        <rect x="4" y="30" width="40" height="4"/>
+      </g>
+      {%- comment -%}
+      The ground the keep stands on. Its own group because by night it is more
+      silhouette, but by day it has to be the same green as the foothills
+      either side of it or the castle reads as standing on a grey plinth.
+      {%- endcomment -%}
+      <g class="castle-ground">
+        <rect x="0" y="33" width="48" height="7"/>
+      </g>
+      {%- comment -%}
+      By day the keep stops being a silhouette, so it needs a lit side: the
+      same rects again, narrowed to the left face of each tower and filled a
+      shade paler. Hidden at night, where the whole shape is one flat black.
+      {%- endcomment -%}
+      <g class="castle-face">
+        <rect x="18" y="9" width="5" height="23"/>
+        <rect x="7" y="16" width="3" height="16"/>
+        <rect x="34" y="14" width="3" height="18"/>
+        <rect x="15" y="22" width="1" height="10"/>
+        <rect x="4" y="30" width="40" height="1"/>
+      </g>
+      <g class="castle-lit">
+        <rect x="25" y="2" width="5" height="3"/>
+        <rect x="23" y="25" width="4" height="5"/>
+        <rect x="24" y="20" width="2" height="3"/>
+      </g>
+      <g class="castle-lit castle-lit--flicker">
+        <rect x="21" y="13" width="2" height="3"/>
+        <rect x="10" y="21" width="2" height="3"/>
+      </g>
+      <g class="castle-lit castle-lit--flicker-b">
+        <rect x="27" y="13" width="2" height="3"/>
+        <rect x="37" y="19" width="2" height="3"/>
+      </g>
+    </svg>
+  </div>
+</div>

@@ -3,8 +3,40 @@
   <div class="shell">
     <div class="nav-inner">
       <a class="brand" href="{{ '/' | relative_url }}">
-        <span class="brand-title">{{ profile.name }}</span>
-        <span class="brand-sub">{{ profile.role }}</span>
+        <span class="brand-crest" aria-hidden="true">
+          {%- comment -%} A 16x16 pixel crystal, drawn as whole-pixel rects. {%- endcomment -%}
+          <svg class="crest" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true" focusable="false">
+            <g class="crest-edge">
+              <rect x="7" y="1" width="2" height="1"/>
+              <rect x="6" y="2" width="4" height="1"/>
+              <rect x="5" y="3" width="6" height="1"/>
+              <rect x="4" y="4" width="8" height="1"/>
+              <rect x="3" y="5" width="10" height="5"/>
+              <rect x="4" y="10" width="8" height="1"/>
+              <rect x="5" y="11" width="6" height="1"/>
+              <rect x="6" y="12" width="4" height="1"/>
+              <rect x="7" y="13" width="2" height="1"/>
+            </g>
+            <g class="crest-core">
+              <rect x="7" y="2" width="2" height="1"/>
+              <rect x="6" y="3" width="4" height="1"/>
+              <rect x="5" y="4" width="6" height="1"/>
+              <rect x="4" y="5" width="8" height="4"/>
+              <rect x="5" y="9" width="6" height="1"/>
+              <rect x="6" y="10" width="4" height="1"/>
+              <rect x="7" y="11" width="2" height="1"/>
+            </g>
+            <g class="crest-glint">
+              <rect x="7" y="3" width="1" height="1"/>
+              <rect x="6" y="4" width="1" height="1"/>
+              <rect x="5" y="5" width="1" height="2"/>
+            </g>
+          </svg>
+        </span>
+        <span class="brand-text">
+          <span class="brand-title">{{ profile.name }}</span>
+          <span class="brand-sub">{{ profile.role }}</span>
+        </span>
       </a>
       <nav class="nav-links" aria-label="Primary">
         {%- for item in site.data.navigation.main -%}
@@ -13,11 +45,24 @@
           {%- else -%}
             {%- if page.url contains item.url -%}{%- assign active = true -%}{%- else -%}{%- assign active = false -%}{%- endif -%}
           {%- endif -%}
-          <a class="nav-link{% if active %} is-active{% endif %}"
+          <a class="nav-link has-cursor{% if active %} is-active{% endif %}"
              href="{{ item.url | relative_url }}"
              {% if active %}aria-current="page"{% endif %}>{{ item.title }}</a>
         {%- endfor -%}
       </nav>
+      {%- comment -%}
+      The same command the moon carries, in a slot you can always reach. The
+      moon is the better control when there is room for it, but it lives in
+      the page margin, and below ~1384px there is no margin left — so this is
+      the one that has to work everywhere. Both are wired by site.js off
+      `data-theme-toggle`; CSS drops both when there is no script to wire them.
+      {%- endcomment -%}
+      <button class="nav-toggle" type="button" data-theme-toggle>
+        <span class="nav-toggle-glyph when-night" aria-hidden="true">{% include icon.html name="sun" %}</span>
+        <span class="nav-toggle-glyph when-day" aria-hidden="true">{% include icon.html name="moon" %}</span>
+        <span class="sr-only when-night">Switch to day mode</span>
+        <span class="sr-only when-day">Switch to night mode</span>
+      </button>
     </div>
   </div>
 </div>

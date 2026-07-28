@@ -36,7 +36,7 @@ description: "Career timeline, education, and skills — Eric Voss, lead data sc
         <h2 class="section-h2" id="skills">Skills &amp; tools</h2>
         <div class="simple-list">
           {%- for group in site.data.skills -%}
-          <div class="simple-item">
+          <div class="simple-item has-cursor">
             <span class="simple-icon">{% include icon.html name=group.icon %}</span>
             <div class="simple-body">
               <span class="simple-category">{{ group.category }}</span>
@@ -50,23 +50,44 @@ description: "Career timeline, education, and skills — Eric Voss, lead data sc
     </div>
 
     <aside class="about-aside">
-      <div class="about-card surface reveal">
+      {%- comment -%}
+      The party window doubles as the summon control. Each cat is a toggle
+      button, not a figure: pressing one sends that familiar out to follow you
+      around the site, and its photo greys out with an OUT stamp to say the
+      slot is empty because the cat is with you. figure/figcaption cannot live
+      inside a button — the content model is phrasing content — so the same
+      classes hang off spans instead.
+
+      alt is empty on purpose: the nameplate already says which cat it is, and
+      the button carries the name. Without it a screen reader reads "Artemis"
+      twice over.
+      {%- endcomment -%}
+      <section class="about-card familiar-card surface reveal" aria-labelledby="familiar-h">
+        <h2 class="section-h2" id="familiar-h">Summon a familiar</h2>
         <div class="cat-split">
-          <figure class="cat">
-            <span class="cat-icon">{% include icon.html name="moon" %}</span>
-            <img src="{{ '/Artemis.png' | relative_url }}" alt="Artemis, a cat" loading="lazy">
-            <figcaption>Artemis</figcaption>
-          </figure>
-          <figure class="cat">
-            <span class="cat-icon">{% include icon.html name="sun" %}</span>
-            <img src="{{ '/Apollo.png' | relative_url }}" alt="Apollo, a cat" loading="lazy">
-            <figcaption>Apollo</figcaption>
-          </figure>
+          <button type="button" class="cat" data-summon="artemis" aria-label="Artemis" aria-pressed="false">
+            <span class="cat-slot">
+              <img src="{{ '/Artemis.png' | relative_url }}" alt="" loading="lazy">
+            </span>
+            <span class="cat-plate">
+              <span class="cat-icon">{% include icon.html name="moon" %}</span>
+              <span class="cat-name">Artemis</span>
+            </span>
+          </button>
+          <button type="button" class="cat" data-summon="apollo" aria-label="Apollo" aria-pressed="false">
+            <span class="cat-slot">
+              <img src="{{ '/Apollo.png' | relative_url }}" alt="" loading="lazy">
+            </span>
+            <span class="cat-plate">
+              <span class="cat-icon">{% include icon.html name="sun" %}</span>
+              <span class="cat-name">Apollo</span>
+            </span>
+          </button>
         </div>
         <div class="about-card-body">
           Moon and sun, twins in name only — they don't share well.
         </div>
-      </div>
+      </section>
     </aside>
   </div>
 

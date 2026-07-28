@@ -1,0 +1,103 @@
+{%- comment -%}
+The familiar: a pixel cat that follows the cursor around the site.
+
+Both cats ship on every page. The choice can change on the About page without a
+reload, so both frame sets have to already be here — it is a few hundred bytes
+of path data each and no extra request, which is cheaper than the alternative.
+
+Nothing is visible until site.js summons one. The `aria-hidden` is not an
+oversight: the cat is decoration, and the real control is the pair of buttons on
+the About page, which carry the accessible name and the pressed state between
+them. A screen reader gets the toggle; it does not get told a cat walked past.
+
+Grid is 20x16 drawn at 3x, integer coordinates only, crisp edges — the same
+rules as icon.html and skyline.html. Every frame is bottom-aligned on the grid
+so the sprite does not hop when the pose changes.
+
+Colour lives in the --fam-* tokens, one set per cat per theme, so a white cat
+stays legible on parchment and a black one stays legible against the night sky.
+{%- endcomment -%}
+<div class="familiar" id="familiar" data-pose="sit" aria-hidden="true" hidden>
+  <svg class="familiar-sprite" viewBox="0 0 20 16" shape-rendering="crispEdges" focusable="false" aria-hidden="true">
+  <g class="fam-cat" data-cat="artemis">
+    <g class="fam-frame" data-frame="sit">
+      <path class="fam-line" d="M12 1h1v1h-1zM17 1h1v1h-1zM11 2h1v7h-1zM13 2h1v1h-1zM16 2h1v1h-1zM18 2h1v2h-1zM14 3h2v1h-2zM3 4h1v1h-1zM6 4h1v1h-1zM19 4h1v4h-1zM2 5h1v2h-1zM5 5h1v2h-1zM1 7h1v4h-1zM4 7h1v4h-1zM10 8h1v2h-1zM18 8h1v1h-1zM9 9h1v2h-1zM19 9h1v7h-1zM8 10h1v2h-1zM2 11h1v2h-1zM5 11h1v2h-1zM7 11h1v1h-1zM6 12h1v2h-1zM3 13h1v1h-1zM4 14h1v2h-1zM5 15h14v1h-14z"/>
+      <path class="fam-fur" d="M12 2h1v13h-1zM17 2h1v3h-1zM13 3h1v2h-1zM16 3h1v12h-1zM4 4h2v1h-2zM14 4h2v2h-2zM18 4h1v4h-1zM3 5h2v2h-2zM13 6h2v2h-2zM17 6h1v9h-1zM2 7h2v4h-2zM15 7h1v8h-1zM14 8h1v7h-1zM11 9h1v6h-1zM13 9h1v6h-1zM18 9h1v6h-1zM10 10h1v5h-1zM3 11h2v2h-2zM9 11h1v4h-1zM7 12h2v3h-2zM4 13h2v1h-2zM5 14h2v1h-2z"/>
+      <path class="fam-shade" d="M15 6h1v1h-1z"/>
+      <path class="fam-eye" d="M13 5h1v1h-1zM17 5h1v1h-1z"/>
+      <path class="fam-tag" d="M13 8h1v1h-1z"/>
+    </g>
+    <g class="fam-frame" data-frame="walk-a">
+      <path class="fam-line" d="M3 1h2v1h-2zM2 2h1v1h-1zM5 2h1v1h-1zM1 3h1v3h-1zM4 3h1v3h-1zM12 3h1v1h-1zM17 3h1v1h-1zM11 4h1v3h-1zM13 4h1v1h-1zM16 4h1v1h-1zM18 4h1v3h-1zM2 6h1v2h-1zM5 6h1v2h-1zM10 6h1v2h-1zM7 7h3v1h-3zM19 7h1v1h-1zM3 8h1v5h-1zM19 11h1v1h-1zM4 12h1v4h-1zM18 12h1v1h-1zM6 13h1v3h-1zM9 13h1v3h-1zM11 13h1v3h-1zM15 13h1v3h-1zM17 13h1v3h-1zM5 15h1v1h-1zM10 15h1v1h-1zM16 15h1v1h-1z"/>
+      <path class="fam-fur" d="M3 2h2v1h-2zM2 3h2v3h-2zM12 4h1v9h-1zM17 4h1v9h-1zM13 5h4v1h-4zM3 6h2v2h-2zM14 6h2v7h-2zM11 7h1v6h-1zM13 7h1v6h-1zM16 7h1v8h-1zM18 7h1v5h-1zM4 8h7v4h-7zM19 8h1v3h-1zM5 12h6v1h-6zM5 13h1v2h-1zM10 13h1v2h-1z"/>
+      <path class="fam-eye" d="M13 6h1v1h-1zM16 6h1v1h-1z"/>
+    </g>
+    <g class="fam-frame" data-frame="walk-b">
+      <path class="fam-line" d="M2 1h2v1h-2zM1 2h1v3h-1zM4 2h1v3h-1zM12 3h1v1h-1zM17 3h1v1h-1zM11 4h1v3h-1zM13 4h1v1h-1zM16 4h1v1h-1zM18 4h1v3h-1zM2 5h1v2h-1zM5 5h1v3h-1zM10 6h1v2h-1zM3 7h1v6h-1zM7 7h3v1h-3zM19 7h1v1h-1zM19 11h1v1h-1zM4 12h1v1h-1zM18 12h1v1h-1zM6 13h1v3h-1zM8 13h1v3h-1zM10 13h1v3h-1zM12 13h1v3h-1zM14 13h1v3h-1zM16 13h1v3h-1zM7 15h1v1h-1zM11 15h1v1h-1zM15 15h1v1h-1z"/>
+      <path class="fam-fur" d="M2 2h2v3h-2zM12 4h1v9h-1zM17 4h1v9h-1zM3 5h2v2h-2zM13 5h4v1h-4zM14 6h2v7h-2zM4 7h1v5h-1zM11 7h1v8h-1zM13 7h1v6h-1zM16 7h1v6h-1zM18 7h1v5h-1zM5 8h6v5h-6zM19 8h1v3h-1zM7 13h1v2h-1zM15 13h1v2h-1z"/>
+      <path class="fam-eye" d="M13 6h1v1h-1zM16 6h1v1h-1z"/>
+    </g>
+    <g class="fam-frame" data-frame="groom">
+      <path class="fam-line" d="M11 2h1v6h-1zM16 2h1v2h-1zM3 3h1v1h-1zM6 3h1v1h-1zM13 3h1v1h-1zM18 3h1v2h-1zM2 4h1v2h-1zM5 4h1v2h-1zM14 4h2v1h-2zM19 5h1v11h-1zM1 6h1v5h-1zM4 6h1v5h-1zM10 7h1v2h-1zM9 8h1v2h-1zM8 9h1v2h-1zM7 10h1v2h-1zM2 11h1v2h-1zM5 11h1v1h-1zM3 13h1v3h-1zM4 15h15v1h-15z"/>
+      <path class="fam-fur" d="M4 3h2v1h-2zM12 3h1v11h-1zM17 3h1v3h-1zM3 4h2v2h-2zM13 4h1v2h-1zM16 4h1v11h-1zM14 5h2v2h-2zM18 5h1v10h-1zM2 6h2v5h-2zM13 7h1v8h-1zM15 7h1v8h-1zM17 7h1v8h-1zM11 8h1v7h-1zM10 9h1v5h-1zM14 9h1v6h-1zM9 10h1v4h-1zM3 11h2v2h-2zM8 11h1v4h-1zM5 12h3v3h-3zM4 13h1v2h-1z"/>
+      <path class="fam-shade" d="M13 6h1v1h-1zM17 6h1v1h-1zM14 7h1v1h-1zM9 14h2v1h-2zM12 14h1v1h-1z"/>
+      <path class="fam-tag" d="M14 8h1v1h-1z"/>
+    </g>
+    <g class="fam-frame" data-frame="alert">
+      <path class="fam-line" d="M11 1h1v7h-1zM17 1h1v3h-1zM13 2h1v2h-1zM19 2h1v5h-1zM3 3h2v1h-2zM2 4h1v12h-1zM5 4h1v9h-1zM10 7h1v2h-1zM18 7h1v2h-1zM9 8h1v2h-1zM8 9h1v2h-1zM19 9h1v7h-1zM7 10h1v2h-1zM6 12h1v1h-1zM3 15h16v1h-16z"/>
+      <path class="fam-fur" d="M12 2h1v6h-1zM18 2h1v5h-1zM3 4h2v11h-2zM13 4h5v1h-5zM14 5h3v1h-3zM13 6h2v9h-2zM16 6h2v9h-2zM15 7h1v8h-1zM11 8h1v6h-1zM10 9h1v6h-1zM12 9h1v6h-1zM18 9h1v6h-1zM9 10h1v4h-1zM8 11h1v3h-1zM7 12h1v3h-1zM5 13h2v2h-2z"/>
+      <path class="fam-shade" d="M15 6h1v1h-1zM8 14h2v1h-2zM11 14h1v1h-1z"/>
+      <path class="fam-eye" d="M13 5h1v1h-1zM17 5h1v1h-1z"/>
+      <path class="fam-tag" d="M12 8h1v1h-1z"/>
+    </g>
+    <g class="fam-frame" data-frame="sleep">
+      <path class="fam-line" d="M5 6h2v1h-2zM13 6h2v1h-2zM4 7h1v1h-1zM7 7h1v1h-1zM12 7h1v1h-1zM15 7h1v1h-1zM3 8h1v1h-1zM8 8h4v1h-4zM16 8h1v1h-1zM2 9h1v1h-1zM17 9h1v1h-1zM1 10h1v4h-1zM18 10h1v4h-1zM2 14h1v1h-1zM17 14h1v1h-1zM3 15h14v1h-14z"/>
+      <path class="fam-fur" d="M5 7h2v4h-2zM13 7h2v4h-2zM4 8h1v3h-1zM7 8h1v7h-1zM12 8h1v7h-1zM15 8h1v3h-1zM3 9h1v3h-1zM8 9h4v6h-4zM16 9h1v6h-1zM2 10h1v4h-1zM17 10h1v4h-1zM6 11h1v4h-1zM13 11h1v4h-1zM4 12h2v3h-2zM14 12h2v3h-2zM3 13h1v2h-1z"/>
+      <path class="fam-shade" d="M4 11h2v1h-2zM14 11h2v1h-2zM3 12h1v1h-1z"/>
+      <g class="fam-zzz"><path d="M0 4h2v1h-2zM2 5h1v1h-1z"/></g>
+    </g>
+  </g>
+  <g class="fam-cat" data-cat="apollo">
+    <g class="fam-frame" data-frame="sit">
+      <path class="fam-line" d="M11 1h1v1h-1zM17 1h1v1h-1zM10 2h1v1h-1zM12 2h1v1h-1zM16 2h1v1h-1zM18 2h1v1h-1zM9 3h1v7h-1zM13 3h1v1h-1zM15 3h1v1h-1zM19 3h1v13h-1zM3 7h2v1h-2zM2 8h1v4h-1zM5 8h1v3h-1zM8 9h1v2h-1zM7 10h1v1h-1zM3 12h1v4h-1zM4 15h15v1h-15z"/>
+      <path class="fam-fur" d="M11 2h1v3h-1zM17 2h1v3h-1zM10 3h1v10h-1zM12 3h1v10h-1zM16 3h1v12h-1zM18 3h1v12h-1zM13 4h3v2h-3zM11 6h1v2h-1zM13 6h1v9h-1zM15 6h1v9h-1zM17 6h1v9h-1zM14 7h1v8h-1zM3 8h2v4h-2zM11 9h1v6h-1zM9 10h1v3h-1zM5 11h4v4h-4zM4 12h1v3h-1z"/>
+      <path class="fam-shade" d="M14 6h1v1h-1zM9 13h2v2h-2zM12 13h1v2h-1z"/>
+      <path class="fam-eye" d="M11 5h1v1h-1zM17 5h1v1h-1z"/>
+      <path class="fam-tag" d="M11 8h1v1h-1z"/>
+    </g>
+    <g class="fam-frame" data-frame="walk-a">
+      <path class="fam-line" d="M12 1h1v1h-1zM17 1h1v1h-1zM11 2h1v1h-1zM13 2h1v2h-1zM16 2h1v1h-1zM18 2h1v1h-1zM2 3h2v1h-2zM10 3h1v4h-1zM14 3h1v1h-1zM17 3h1v1h-1zM1 4h1v3h-1zM4 4h1v3h-1zM18 4h1v3h-1zM7 6h3v1h-3zM2 7h1v5h-1zM19 10h1v1h-1zM3 11h1v5h-1zM18 11h1v1h-1zM5 12h1v4h-1zM8 12h1v4h-1zM10 12h1v4h-1zM14 12h1v4h-1zM16 12h1v4h-1zM4 15h1v1h-1zM9 15h1v1h-1zM15 15h1v1h-1z"/>
+      <path class="fam-fur" d="M12 2h1v3h-1zM17 2h1v1h-1zM11 3h1v9h-1zM15 3h2v2h-2zM2 4h2v3h-2zM13 4h2v8h-2zM17 4h1v8h-1zM15 5h1v1h-1zM12 6h1v6h-1zM16 6h1v6h-1zM3 7h8v4h-8zM15 7h1v8h-1zM18 7h2v3h-2zM18 10h1v1h-1zM4 11h7v1h-7zM4 12h1v3h-1zM9 12h1v3h-1z"/>
+      <path class="fam-shade" d="M15 6h1v1h-1z"/>
+      <path class="fam-eye" d="M12 5h1v1h-1zM16 5h1v1h-1z"/>
+    </g>
+    <g class="fam-frame" data-frame="walk-b">
+      <path class="fam-line" d="M12 1h1v1h-1zM17 1h1v1h-1zM11 2h1v1h-1zM13 2h1v2h-1zM16 2h1v1h-1zM18 2h1v1h-1zM10 3h1v4h-1zM14 3h1v1h-1zM17 3h1v1h-1zM2 4h2v1h-2zM18 4h1v3h-1zM1 5h1v2h-1zM4 5h1v2h-1zM7 6h3v1h-3zM2 7h1v5h-1zM19 10h1v1h-1zM3 11h1v1h-1zM18 11h1v1h-1zM4 12h1v4h-1zM6 12h1v4h-1zM8 12h1v4h-1zM10 12h1v4h-1zM12 12h1v4h-1zM14 12h1v4h-1zM5 15h1v1h-1zM9 15h1v1h-1zM13 15h1v1h-1z"/>
+      <path class="fam-fur" d="M12 2h1v3h-1zM17 2h1v1h-1zM11 3h1v9h-1zM15 3h2v2h-2zM13 4h2v8h-2zM17 4h1v8h-1zM2 5h2v2h-2zM15 5h1v1h-1zM12 6h1v6h-1zM16 6h1v6h-1zM3 7h8v4h-8zM15 7h1v5h-1zM18 7h2v3h-2zM18 10h1v1h-1zM4 11h7v1h-7zM5 12h1v3h-1zM9 12h1v3h-1zM13 12h1v3h-1z"/>
+      <path class="fam-shade" d="M15 6h1v1h-1z"/>
+      <path class="fam-eye" d="M12 5h1v1h-1zM16 5h1v1h-1z"/>
+    </g>
+    <g class="fam-frame" data-frame="groom">
+      <path class="fam-line" d="M10 2h1v1h-1zM16 2h1v1h-1zM9 3h1v1h-1zM11 3h1v1h-1zM15 3h1v1h-1zM17 3h1v1h-1zM3 4h2v1h-2zM8 4h1v6h-1zM12 4h1v1h-1zM14 4h1v1h-1zM18 4h1v1h-1zM2 5h1v7h-1zM5 5h1v6h-1zM19 5h1v11h-1zM7 9h1v2h-1zM3 12h1v4h-1zM4 15h15v1h-15z"/>
+      <path class="fam-fur" d="M10 3h1v3h-1zM16 3h1v12h-1zM9 4h1v9h-1zM11 4h1v11h-1zM15 4h1v11h-1zM17 4h1v2h-1zM3 5h2v7h-2zM12 5h3v2h-3zM18 5h1v10h-1zM10 7h1v1h-1zM12 7h1v6h-1zM14 7h1v8h-1zM17 7h1v8h-1zM13 8h1v7h-1zM10 9h1v4h-1zM8 10h1v5h-1zM5 11h3v4h-3zM4 12h1v3h-1z"/>
+      <path class="fam-shade" d="M10 6h1v1h-1zM17 6h1v1h-1zM13 7h1v1h-1zM9 13h2v2h-2zM12 13h1v2h-1z"/>
+      <path class="fam-tag" d="M10 8h1v1h-1z"/>
+    </g>
+    <g class="fam-frame" data-frame="alert">
+      <path class="fam-line" d="M10 1h1v1h-1zM18 1h1v1h-1zM9 2h1v7h-1zM11 2h1v2h-1zM17 2h1v2h-1zM19 2h1v14h-1zM3 5h2v1h-2zM2 6h1v10h-1zM5 6h1v5h-1zM8 8h1v2h-1zM7 9h1v2h-1zM3 15h16v1h-16z"/>
+      <path class="fam-fur" d="M10 2h1v13h-1zM18 2h1v13h-1zM11 4h7v1h-7zM12 5h5v1h-5zM3 6h2v9h-2zM11 6h3v2h-3zM15 6h3v9h-3zM14 7h1v8h-1zM12 8h2v7h-2zM9 9h1v4h-1zM11 9h1v4h-1zM8 10h1v3h-1zM5 11h3v4h-3z"/>
+      <path class="fam-shade" d="M14 6h1v1h-1zM8 13h2v2h-2zM11 13h1v2h-1z"/>
+      <path class="fam-eye" d="M11 5h1v1h-1zM17 5h1v1h-1z"/>
+      <path class="fam-tag" d="M11 8h1v1h-1z"/>
+    </g>
+    <g class="fam-frame" data-frame="sleep">
+      <path class="fam-line" d="M4 6h2v1h-2zM14 6h2v1h-2zM3 7h1v1h-1zM6 7h1v1h-1zM13 7h1v1h-1zM16 7h1v1h-1zM2 8h1v1h-1zM7 8h6v1h-6zM17 8h1v1h-1zM1 9h1v1h-1zM18 9h1v1h-1zM0 10h1v4h-1zM19 10h1v4h-1zM1 14h1v1h-1zM18 14h1v1h-1zM2 15h16v1h-16z"/>
+      <path class="fam-fur" d="M4 7h2v4h-2zM14 7h2v4h-2zM3 8h1v3h-1zM6 8h1v7h-1zM13 8h1v7h-1zM16 8h1v3h-1zM2 9h1v3h-1zM7 9h6v6h-6zM17 9h1v6h-1zM1 10h1v4h-1zM18 10h1v4h-1zM5 11h1v4h-1zM14 11h1v4h-1zM3 12h2v3h-2zM15 12h2v3h-2zM2 13h1v2h-1z"/>
+      <path class="fam-shade" d="M3 11h2v1h-2zM15 11h2v1h-2zM2 12h1v1h-1z"/>
+      <g class="fam-zzz"><path d="M0 4h2v1h-2zM2 5h1v1h-1z"/></g>
+    </g>
+  </g>
+  </svg>
+  <span class="fam-gauge"></span>
+  <span class="fam-hint" hidden>hold to rest</span>
+</div>
