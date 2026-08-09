@@ -3013,9 +3013,16 @@ img {
   }
 }
 
-/* Phone widths: everything gets one notch tighter so the menu stays on a
-   single line at 375px. */
-@media (max-width: 420px) {
+/* Small widths: everything gets one notch tighter so the menu stays on a
+   single line as far down as it can.
+
+   The ceiling used to be 420px, back when there were three commands. Blog
+   makes four, and at the standard sizing the command window is 302px wide —
+   which leaves the wordmark less than the 99px it needs until the viewport
+   reaches 516px. So the tight sizing now starts at 515px instead: it takes
+   the window down to 249px, and 90px of name fits from 422px up. Below that
+   the row gives up and wraps — see the block after next. */
+@media (max-width: 515px) {
   .nav-inner {
     gap: 8px;
   }
@@ -3047,16 +3054,21 @@ img {
     height: 14px;
   }
   /* The toggle costs this row about 32px, and .brand is the flex item that
-     gives way — without this the wordmark clipped to "Eric V…" from 414px
-     down. The crest is the cheapest 24px to give up (the name is the site's
-     identity and a gem beside it is not), and another 9 comes off the command
-     gutters, which still leave the cursor 2px clear of the glyphs. */
+     gives way — without this the wordmark clipped to "Eric V…". The crest is
+     the cheapest 24px to give up (the name is the site's identity and a gem
+     beside it is not), and another 9 comes off the command gutters, which
+     still leave the cursor 2px clear of the glyphs. */
   .brand-crest {
     display: none;
   }
   .nav-link {
     padding: 7px 4px 7px 12px;
   }
+}
+
+/* The footer never had the nav's problem — three links and a date, no fourth
+   command — so its own tightening stays where it was. */
+@media (max-width: 420px) {
   .footer-pip {
     display: none;
   }
@@ -3075,20 +3087,29 @@ img {
   }
 }
 
-/* Below about 340px the three commands alone want 199px of a 292px row, and
-   the wordmark cannot have the 90px it needs however hard the gutters are
-   squeezed. So the row stops being a row: brand on one line, commands and
-   toggle beneath it, both centred. The nav is a few pixels taller on a phone
-   from 2016 and the name is whole, which is the better trade — the old layout
-   clipped it at this width too, just less. */
-@media (max-width: 340px) {
+/* Below 422px the four commands alone want 249px of the row, and the wordmark
+   cannot have the 90px it needs however hard the gutters are squeezed. So the
+   row stops being a row: brand on one line, commands and toggle beneath it,
+   both centred. The nav is a few pixels taller on a phone and the name is
+   whole, which is the better trade.
+
+   This used to fire at 340px, which is where three commands ran out of room.
+   Adding Blog moved the line up: the two rows now cost 281px of the 292px a
+   320px phone has, so this is also about as far down as the layout goes. */
+@media (max-width: 421px) {
   .nav-inner {
     flex-wrap: wrap;
     justify-content: center;
     row-gap: 7px;
   }
+  /* The brand owns the first line outright. Left to wrap where it likes, the
+     widths just under the ceiling fit the name and all four commands on one
+     line and push the toggle onto the second by itself — a lone sun in an
+     empty row. Breaking after the name instead gives the same two rows at
+     every width in this band: wordmark, then the menu and its toggle. */
   .brand {
-    flex: 0 0 auto;
+    flex: 0 0 100%;
+    justify-content: center;
   }
 }
 
@@ -4022,8 +4043,10 @@ html:not(.js) .cat {
 
 /* --------------------------------------------------------- index: header */
 
-/* The kicker reads as the window's tab rather than a floating label. */
-.projects .page-header .kicker {
+/* The kicker reads as the window's tab rather than a floating label.
+   Unscoped on purpose: .page-header is the index-page header, and both
+   indexes — /projects/ and /blog/ — are the same piece of furniture. */
+.page-header .kicker {
   display: inline-block;
   padding: 5px 10px;
   border: 2px solid rgb(var(--rgb-gold) / .45);
@@ -4031,7 +4054,7 @@ html:not(.js) .cat {
   box-shadow: 0 2px 0 rgb(var(--rgb-shade) / .35);
 }
 
-.projects .page-header .page-sub {
+.page-header .page-sub {
   margin-top: 18px;
   padding-top: 16px;
   border-top: 2px solid var(--faint);
@@ -4632,6 +4655,19 @@ html:not(.js) .cat {
    card padding, so it keeps running the full height and the cursor lands in
    the same place either way — nothing to undo. */
 
+/* Core already asks for this at 980px, but it asks too early in the file: the
+   two-column default below it is written here, at the same specificity, so it
+   won the cascade on source order and the badge kept its column all the way
+   down to 320px — a sentence in an 8-character gutter. Restated here, after
+   the rule it is meant to override. Both indexes use the notice. */
+@media (max-width: 980px) {
+  .wip-notice {
+    grid-template-columns: 1fr;
+    justify-items: start;
+    gap: 12px;
+  }
+}
+
 @media (max-width: 720px) {
   .projects-grid .project-card {
     padding-left: 28px;
@@ -4673,6 +4709,361 @@ html:not(.js) .cat {
   }
 }
 
+
+/* ==========================================================================
+   blog
+   ========================================================================== */
+
+/* ==========================================================================
+   55-blog — the log book, and the entry page.
+
+   /projects/ is a shop window: one framed card per item, because the work has
+   a result worth photographing. A post has none of that — no hero chart, no
+   deliverable, sometimes no point — so this index is deliberately not a grid
+   of cards. It is a single ledger: dated rows down one window, the way a
+   journal or a save-file screen lists what happened and when.
+
+   Nothing here is new machinery. The date plate is the quest log's stamp, the
+   dotted run into the entry is its tick, and the entry page borrows the whole
+   article/prose stack from 50-projects — a post only adds a byline and the
+   step-back/step-forward pair at the foot.
+   ========================================================================== */
+
+.blog {
+  display: grid;
+  gap: 22px;
+}
+
+/* -------------------------------------------------------- index: the log */
+
+.log {
+  padding: 18px 20px 20px;
+}
+
+.log-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding-bottom: 14px;
+  border-bottom: 2px dotted rgb(var(--rgb-muted) / .24);
+}
+
+.log-head .section-h2 {
+  margin: 0;
+}
+
+/* The feed is a real command, but a quiet one — it sits a size down from the
+   pills on an entry page so it never competes with the entries themselves. */
+.log-feed {
+  padding: 7px 11px;
+  font-size: 11px;
+  box-shadow: 0 3px 0 rgb(var(--rgb-shade) / .4);
+}
+
+.log-feed .icon {
+  width: 14px;
+  height: 14px;
+  color: var(--crystal);
+  transition: color 0.12s var(--ease-step);
+}
+
+.log-feed:hover .icon {
+  color: var(--gold);
+}
+
+.log-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+/* ------------------------------------------------------------ index: row */
+
+/* Stamp | tick | entry. The middle column is the dotted run that ties the
+   date to the text, so the two never read as separate columns of a table. */
+.log-row {
+  display: grid;
+  grid-template-columns: auto 16px minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
+  padding: 14px 16px 15px;
+  color: inherit;
+  background: var(--sunken);
+  border: 2px solid rgb(var(--rgb-frame-mid) / .35);
+  /* the ribbon down the spine — the same 6px gold edge a chapter plate wears */
+  border-left: 6px solid rgb(var(--rgb-gold-deep) / .55);
+  transition:
+    background 0.12s var(--ease-step),
+    border-color 0.12s var(--ease-step),
+    transform 0.12s var(--ease-step);
+}
+
+.log-row:hover,
+.log-row:focus-visible {
+  background: rgb(var(--rgb-gold) / .09);
+  border-color: var(--gold);
+  transform: translateX(2px);
+}
+
+/* Pinned to the title's line rather than the row's middle: a long entry is
+   tall, and a cursor floating beside the third line of an excerpt points at
+   nothing. It hangs in the window's padding, clear of the ribbon. */
+.log-row.has-cursor::after {
+  left: -15px;
+  top: 22px;
+  margin-top: 0;
+}
+
+.log-stamp {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 3px;
+  min-width: 58px;
+  padding: 9px 8px 8px;
+  background: var(--sunken);
+  border: 2px solid rgb(var(--rgb-gold) / .32);
+  box-shadow: inset 0 0 0 1px rgb(var(--rgb-well) / .55);
+  text-shadow: var(--text-shadow);
+  transition:
+    background 0.12s var(--ease-step),
+    border-color 0.12s var(--ease-step);
+}
+
+.log-row:hover .log-stamp,
+.log-row:focus-visible .log-stamp {
+  background: rgb(var(--rgb-gold) / .16);
+  border-color: var(--gold);
+}
+
+.log-stamp-day {
+  font-family: var(--display);
+  font-size: 14px;
+  line-height: 1.2;
+  color: var(--ink-bright);
+}
+
+.log-stamp-mon {
+  font-family: var(--ui);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.log-stamp-yr {
+  font-family: var(--ui);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.log-tick {
+  align-self: start;
+  margin-top: 21px;
+  height: 2px;
+  background-image: linear-gradient(90deg, var(--gold) 50%, transparent 50%);
+  background-size: 4px 2px;
+  opacity: 0.4;
+  transition: opacity 0.12s var(--ease-step);
+}
+
+.log-row:hover .log-tick,
+.log-row:focus-visible .log-tick {
+  opacity: 1;
+}
+
+.log-body {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.log-title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--gold);
+  text-shadow: var(--text-shadow);
+}
+
+.log-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.log-excerpt {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+.log-more {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 7px;
+  padding-top: 2px;
+  font-family: var(--ui);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color 0.12s var(--ease-step);
+}
+
+.log-more .icon {
+  width: 14px;
+  height: 14px;
+  color: var(--gold);
+}
+
+.log-row:hover .log-more,
+.log-row:focus-visible .log-more {
+  color: var(--ink-bright);
+}
+
+/* The state after the placeholders come out and before the first real post
+   goes in. Short enough that the window does not need a list inside it. */
+.log-empty .wip-copy {
+  margin-top: 4px;
+}
+
+/* -------------------------------------------------------- entry: byline */
+
+/* Date first, tags after — the two things you want before deciding to read.
+   Sits between the title and the standfirst, so .page-sub's rule above it
+   still draws the divider it always does. */
+.post-byline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.post-stamp {
+  display: inline-block;
+  padding: 6px 10px;
+  background: var(--sunken);
+  border: 2px solid rgb(var(--rgb-gold) / .32);
+  box-shadow: inset 0 0 0 1px rgb(var(--rgb-well) / .55);
+  font-family: var(--ui);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-shadow: var(--text-shadow);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------ entry: step pair */
+
+.post-nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.post-nav-link {
+  display: grid;
+  align-content: start;
+  gap: 9px;
+  padding: 14px 16px 15px 30px;
+  color: inherit;
+  background: var(--sunken);
+  border: 2px solid rgb(var(--rgb-frame-mid) / .38);
+  box-shadow: 0 3px 0 rgb(var(--rgb-shade) / .4);
+  transition:
+    background 0.12s var(--ease-step),
+    border-color 0.12s var(--ease-step),
+    transform 0.12s var(--ease-step),
+    box-shadow 0.12s var(--ease-step);
+}
+
+/* One end of the log has only one neighbour — let it take the whole row
+   rather than sit in half of one with a hole beside it. */
+.post-nav-link:only-child {
+  grid-column: 1 / -1;
+}
+
+.post-nav-link:hover,
+.post-nav-link:focus-visible {
+  background: rgb(var(--rgb-gold) / .1);
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 0 rgb(var(--rgb-shade) / .45);
+}
+
+/* The gutter in the padding above is the cursor's, so nothing shifts when it
+   lands — the same contract .cmd-link keeps. */
+.post-nav-link.has-cursor::after {
+  left: 11px;
+}
+
+.post-nav-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--ui);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.post-nav-label .icon {
+  width: 13px;
+  height: 13px;
+  color: var(--gold);
+}
+
+.post-nav-title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--gold);
+  text-shadow: var(--text-shadow-sm);
+}
+
+/* ------------------------------------------------------------ responsive */
+
+@media (max-width: 720px) {
+  /* The date stops being a column and becomes a line above the entry — at
+     phone widths a 58px plate costs the excerpt about four characters a
+     line, which is the difference between a paragraph and a stack. */
+  .log-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 13px 14px 14px;
+  }
+  .log-stamp {
+    display: flex;
+    align-items: baseline;
+    justify-self: start;
+    gap: 7px;
+    min-width: 0;
+    padding: 6px 10px;
+  }
+  .log-stamp-day {
+    font-size: 12px;
+  }
+  .log-tick {
+    display: none;
+  }
+  .log-row.has-cursor::after {
+    left: -13px;
+    top: 20px;
+  }
+  .post-nav {
+    grid-template-columns: 1fr;
+  }
+}
 
 /* ==========================================================================
    icons-misc

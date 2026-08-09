@@ -3,6 +3,8 @@
 # ---------------------------------------------------------------------------
 title: "Eric Voss"
 name: "Eric Voss"
+# Read by jekyll-feed for the <author> on every entry in /feed.xml.
+author: "Eric Voss"
 description: "Lead data scientist in St. Paul, Minnesota, working on enterprise AI standards and shared platform capabilities in financial services."
 url: "https://www.ericvoss.com"
 baseurl: ""
@@ -69,6 +71,16 @@ defaults:
       type: portfolio
     values:
       layout: project
+  # The blog runs on plain posts rather than a second collection, so dates,
+  # ordering, and the jekyll-feed RSS at /feed.xml all come for free. The
+  # permalink override is what puts them under /blog/ instead of the
+  # /:collection/:title/ above, which would resolve to /posts/.
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      permalink: /blog/:title/
   - scope:
       path: "_pages"
       type: pages

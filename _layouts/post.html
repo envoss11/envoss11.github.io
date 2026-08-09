@@ -1,0 +1,62 @@
+---
+layout: default
+---
+{%- comment -%}
+The write-up layout's quieter cousin. Same furniture — hero, head, prose — but
+a post is dated and sits in a sequence, so it carries a date plate and the
+step-back/step-forward pair instead of a facts table and outbound links.
+{%- endcomment -%}
+<article class="article post">
+
+  {%- if page.image -%}
+  <div class="article-hero surface reveal{% if page.image_fit == 'contain' %} article-hero--contain{% endif %}">
+    <img src="{{ page.image | relative_url }}" alt="{{ page.title }}">
+    <span class="hero-plate" aria-hidden="true"></span>
+  </div>
+  {%- endif -%}
+
+  <header class="article-head surface reveal">
+    <div class="kicker">Blog</div>
+    <h1 class="page-title">{{ page.title }}</h1>
+
+    <div class="post-byline">
+      <time class="post-stamp" datetime="{{ page.date | date_to_xmlschema }}">
+        {{ page.date | date: "%b %-d, %Y" }}
+      </time>
+      {%- if page.tags_list -%}
+      <div class="project-meta">
+        {%- for tag in page.tags_list -%}<span class="tag">{{ tag }}</span>{%- endfor -%}
+      </div>
+      {%- endif -%}
+    </div>
+
+    {%- if page.excerpt %}<p class="page-sub">{{ page.excerpt | strip_html | strip_newlines }}</p>{% endif -%}
+  </header>
+
+  {%- comment -%} No reveal on the body — see the note in project.html. {%- endcomment -%}
+  <div class="prose surface">
+    {{ content }}
+  </div>
+
+  {%- if page.previous or page.next -%}
+  <nav class="post-nav" aria-label="More posts">
+    {%- if page.next -%}
+    <a class="post-nav-link post-nav-link--prev has-cursor" href="{{ page.next.url | relative_url }}">
+      <span class="post-nav-label">{% include icon.html name="arrow" class="icon icon-flip" %}Newer</span>
+      <span class="post-nav-title">{{ page.next.title }}</span>
+    </a>
+    {%- endif -%}
+    {%- if page.previous -%}
+    <a class="post-nav-link post-nav-link--next has-cursor" href="{{ page.previous.url | relative_url }}">
+      <span class="post-nav-label">Older{% include icon.html name="arrow" %}</span>
+      <span class="post-nav-title">{{ page.previous.title }}</span>
+    </a>
+    {%- endif -%}
+  </nav>
+  {%- endif -%}
+
+  <p class="article-back">
+    <a class="home-link" href="{{ '/blog/' | relative_url }}">{% include icon.html name="arrow" class="icon icon-flip" %}<span>All posts</span></a>
+  </p>
+
+</article>
