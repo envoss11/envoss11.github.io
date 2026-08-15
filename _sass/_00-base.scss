@@ -1,0 +1,1856 @@
+/* ==========================================================================
+   Eric Voss — personal site
+   Palette: a 16-bit menu window open over the sky. At night that is royal
+   blue glass over stars; by day it is parchment over an afternoon. Both run
+   off the same tokens, so a single `data-theme` flip on <html> re-skins the
+   whole site — see the day block below, and 10-skyline for the backdrop.
+
+   How the tokens are organised, and the rule for adding one:
+
+     --rgb-*     bare "R G B" triples, for any colour that appears at more
+                 than one alpha. Rules spell them `rgb(var(--rgb-gold) / .4)`,
+                 so a theme swaps the hue once and every alpha follows.
+     --<name>    a finished value: a colour, a gradient, a whole box-shadow
+                 list. Used where the night and day versions differ by more
+                 than a hue — a four-stop gradient, say.
+
+   Nothing outside this block and the day block below may hardcode a colour.
+   If a new rule needs one, it wants a token.
+   ========================================================================== */
+
+/* ==========================================================================
+   Faces
+
+   Self-hosted, so no page waits on fonts.googleapis.com before it can paint.
+   The files came from @fontsource (the same Google upstream, repackaged) and
+   live in /assets/fonts. Four faces, ~38 KB total: the display face, both
+   Silkscreen weights, and the body face.
+
+   Only the *latin* subset is here, plus one exception. That matters most for
+   DotGothic16, whose full Japanese glyph set is around 1.5 MB against ~10 KB
+   for latin alone. The unicode-range on each face says so out loud: anything
+   outside it falls through to the next family in the --display / --ui /
+   --body stacks defined just below.
+
+   The exception is U+2192, the "→" in career.yml. It is outside everyone's
+   latin subset, so it was being drawn from a 5 KB slice of DotGothic16's
+   Japanese set — Google was quietly shipping that fifth file to anyone who
+   loaded /about/. Dropping it moved the arrow onto a system fallback, which
+   is the one glyph on the site that would not have been pixel art. So the
+   slice ships too, upstream filename intact, narrowed to the single codepoint
+   the site actually wants out of it.
+
+   font-display: swap because the layout is sized in px on a fixed grid; text
+   in a fallback face for a beat is better than text that is not there at all.
+   ========================================================================== */
+
+$latin: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+  U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+  U+2215, U+FEFF, U+FFFD;
+
+@font-face {
+  font-family: "Press Start 2P";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/press-start-2p-latin-400-normal.woff2") format("woff2");
+  unicode-range: $latin;
+}
+
+@font-face {
+  font-family: "Silkscreen";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/silkscreen-latin-400-normal.woff2") format("woff2");
+  unicode-range: $latin;
+}
+
+@font-face {
+  font-family: "Silkscreen";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/assets/fonts/silkscreen-latin-700-normal.woff2") format("woff2");
+  unicode-range: $latin;
+}
+
+@font-face {
+  font-family: "DotGothic16";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/dotgothic16-latin-400-normal.woff2") format("woff2");
+  unicode-range: $latin;
+}
+
+/* The arrow, and nothing else. Upstream this slice also carries ~50 kanji;
+   the narrowed range means a page only fetches it if it has a "→" on it. */
+@font-face {
+  font-family: "DotGothic16";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/dotgothic16-107-400-normal.woff2") format("woff2");
+  unicode-range: U+2192;
+}
+
+:root {
+  /* ------------------------------------------------------------ primitives */
+  --rgb-gold: 255 215 107;
+  --rgb-gold-deep: 192 138 30;
+  --rgb-crystal: 126 240 224;
+  --rgb-frame-lit: 230 235 255;
+  --rgb-frame-mid: 108 122 196;
+  --rgb-frame-dark: 5 6 15;
+  --rgb-muted: 147 160 216;
+  --rgb-window: 41 63 158;
+  --rgb-window-deep: 11 19 74;
+  /* the dark a sunken slot bottoms out at */
+  --rgb-well: 4 7 26;
+  /* every hard drop shadow */
+  --rgb-shade: 0 0 0;
+  /* the lit top edge on a bevel */
+  --rgb-sheen: 255 255 255;
+  /* the 1px offset under every glyph */
+  --rgb-emboss: 0 0 0;
+
+  /* surfaces */
+  --bg: #070a1c;
+  --bg-2: #0d1230;
+  --window-top: rgb(var(--rgb-window) / .92);
+  --window-bot: rgb(var(--rgb-window-deep) / .95);
+  --window-flat: #121c52;
+  --frame-lit: #e6ebff;
+  --frame-mid: #6c7ac4;
+  --frame-dark: #05060f;
+  --sunken: rgb(var(--rgb-well) / .55);
+
+  /* ink */
+  --ink: #f2f5ff;
+  --ink-soft: #cdd6f7;
+  --ink-bright: #ffffff;
+  --muted: #93a0d8;
+  --faint: rgb(var(--rgb-muted) / .28);
+  --sel-ink: #14183a;
+
+  /* accents */
+  --gold: #ffd76b;
+  --gold-deep: #c08a1e;
+  --crystal: #7ef0e0;
+  --magic: #c79bff;
+  --hp: #64d97a;
+  --mp: #6aa8ff;
+  --danger: #ff7a7a;
+
+  /* The familiars. Each cat carries its own four colours because the problem
+     is not the same for both: Artemis is white and needs a rim only to hold
+     her internal edges together, while Apollo is very nearly the colour of
+     this sky and would vanish into it without a light one. Both sets exist in
+     both themes for exactly that reason — see the day block. */
+  --artemis-fur: #f4f7ff;
+  --artemis-shade: #c3cdf0;
+  --artemis-line: #4a56a0;
+  --artemis-eye: #2a3160;
+  --apollo-fur: #171a35;
+  --apollo-shade: #0c0e22;
+  --apollo-line: #7d8ad4;
+  --apollo-eye: #ffd76b;
+
+  /* the hard shadow under every glyph */
+  --text-shadow: 1px 1px 0 rgb(var(--rgb-emboss) / .85);
+  --text-shadow-sm: 1px 1px 0 rgb(var(--rgb-emboss) / .6);
+  /* display type carries a fatter one, plus a crystal bloom at night */
+  --title-shadow: 2px 2px 0 rgb(var(--rgb-emboss) / .85), 0 0 18px rgb(var(--rgb-crystal) / .22);
+  --title-shadow-flat: 2px 2px 0 rgb(var(--rgb-emboss) / .85);
+
+  /* Chunky offset shadows instead of soft ones — a sprite dropped on a table,
+     not a card floating over it. */
+  --shadow: 0 0 0 2px var(--frame-dark), 0 8px 0 rgb(var(--rgb-shade) / .35);
+  --shadow-sm: 0 0 0 2px var(--frame-dark), 0 4px 0 rgb(var(--rgb-shade) / .3);
+  /* the inner bevel + vignette that makes .surface read as glass */
+  --surface-bevel: inset 0 0 0 2px rgb(10 18 70 / .85), inset 0 0 26px rgb(4 8 40 / .55);
+
+  /* ---------------------------------------------------- composite surfaces */
+
+  /* Everything below is a whole background/gradient rather than a colour,
+     because the day version is not the night version with a different hue. */
+
+  /* the page itself: nebula haze over a deep vertical fall */
+  --body-wash:
+    radial-gradient(900px 520px at 12% 0%, rgb(60 48 140 / .5), transparent 68%),
+    radial-gradient(760px 480px at 88% 6%, rgb(24 62 150 / .45), transparent 66%),
+    radial-gradient(1100px 640px at 50% 108%, rgb(96 40 120 / .36), transparent 64%),
+    linear-gradient(180deg, #060818 0%, #0a0f2c 42%, #0b1030 72%, #070a1c 100%);
+  --scanline-ink: rgb(var(--rgb-shade) / .13);
+  --scanline-opacity: .55;
+
+  --navbar-fill: linear-gradient(180deg, rgb(36 55 140 / .96) 0%, rgb(20 32 96 / .96) 46%, rgb(9 14 48 / .97) 100%);
+  --footer-fill: linear-gradient(180deg, rgb(16 25 76 / .97) 0%, rgb(7 11 38 / .98) 55%, rgb(4 6 24 / .99) 100%);
+  /* the command window the nav links sit in */
+  --cmd-fill: linear-gradient(180deg, rgb(9 15 54 / .8), rgb(4 7 30 / .88));
+  /* an inner panel: the quest log, and anything else framed inside a window */
+  --panel-fill: linear-gradient(180deg, rgb(18 28 82 / .72), rgb(8 13 52 / .8));
+  /* the chapter plate a prose h2 sits on */
+  --chapter-fill: linear-gradient(180deg, rgb(18 28 82 / .85), rgb(8 13 52 / .9));
+  /* the ability badge behind a 16px icon */
+  --badge-fill: linear-gradient(180deg, rgb(var(--rgb-window) / .6), rgb(8 14 56 / .85));
+  /* the nameplate the character's name sits on */
+  --nameplate-fill: linear-gradient(180deg, rgb(5 9 36 / .62), rgb(5 9 36 / .22));
+  /* a party member's nameplate bar, resting and selected */
+  --plate-fill: linear-gradient(180deg, rgb(var(--rgb-window) / .9), rgb(var(--rgb-window-deep) / .95));
+  --plate-fill-hot: linear-gradient(180deg, rgb(70 96 205 / .95), rgb(20 32 108 / .95));
+  /* the mat a letterboxed screenshot is hung on */
+  --mat-fill: linear-gradient(155deg, rgb(var(--rgb-window) / .4), rgb(var(--rgb-window-deep) / .6));
+  --mat-fill-soft: linear-gradient(155deg, rgb(var(--rgb-window) / .35), rgb(var(--rgb-window-deep) / .55));
+  --code-fill: rgb(3 5 20 / .85);
+
+  /* the colour the screen flashes through on a theme change */
+  --wipe-ink: #070a1c;
+
+  /* Pixel art has no round corners. Kept as tokens so any stray usage
+     resolves to square rather than needing to be hunted down. */
+  --radius: 0;
+  --radius-sm: 0;
+
+  --max: 1080px;
+  --gutter: 22px;
+  --lh: 1.75;
+
+  --display: "Press Start 2P", ui-monospace, "Courier New", monospace;
+  --ui: "Silkscreen", "Press Start 2P", ui-monospace, monospace;
+  --body: "DotGothic16", "Silkscreen", ui-sans-serif, system-ui, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Legacy aliases — the old theme's font tokens, remapped so nothing that
+     still references them falls back to a system serif. */
+  --serif: var(--display);
+  --sans: var(--body);
+
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-step: steps(5, end);
+}
+
+/* ==========================================================================
+   day
+
+   Same menu, opened in the afternoon instead: the royal-blue glass becomes
+   parchment, the white bevels become a bright page edge over a dark binding,
+   and the ink inverts — dark brown glyphs lifted by a 1px highlight rather
+   than dropped on a black one.
+
+   Two constraints held every value here:
+
+   1. Gold is the site's accent and it lands on labels as small as 10px. A
+      bright #ffd76b on cream is around 1.5:1, so day gold is a brass —
+      #845604 — chosen as the lightest amber that still clears 4.5:1 against
+      the *darkest* thing it sits on (a sunken tan slot). Decoration and text
+      share the token, so the studs and cursors go brass too. That is the
+      right trade: an unreadable label is worse than a duller stud.
+   2. The wells are tan, not grey. A recess in parchment is a darker patch of
+      the same paper — a grey one would read as a hole cut in the page.
+   ========================================================================== */
+
+:root[data-theme="day"] {
+  color-scheme: light;
+
+  /* ------------------------------------------------------------ primitives */
+  --rgb-gold: 132 86 4;
+  --rgb-gold-deep: 85 55 2;
+  --rgb-crystal: 14 107 116;
+  --rgb-frame-lit: 255 252 238;
+  --rgb-frame-mid: 179 135 63;
+  --rgb-frame-dark: 61 44 21;
+  --rgb-muted: 122 106 78;
+  --rgb-window: 255 250 236;
+  --rgb-window-deep: 243 230 200;
+  --rgb-well: 205 178 128;
+  --rgb-shade: 74 54 26;
+  --rgb-sheen: 255 255 255;
+  --rgb-emboss: 255 252 240;
+
+  /* surfaces */
+  --bg: #a9dbf2;
+  --bg-2: #cbe9f7;
+  --window-top: rgb(var(--rgb-window) / .95);
+  --window-bot: rgb(var(--rgb-window-deep) / .96);
+  --window-flat: #f7ecd4;
+  --frame-lit: #fffcee;
+  --frame-mid: #b3873f;
+  --frame-dark: #3d2c15;
+  /* Opaque, where the night value is translucent. Two reasons, and they pull
+     the same way. A sunken slot is the commonest surface on the site after the
+     window itself, and it carries gold and teal labels; letting the parchment
+     tint through put those at 4.1-4.3:1. And a handful of these chips — the
+     back link, the About pill row, the sky toggle's hint — sit on open sky
+     rather than on a window, where a warm translucent tan turns sage-grey
+     against the blue and stops reading as parchment at all. Fixing the tint
+     fixes both: this is the .38 blend over the window, resolved once. */
+  --sunken: #ecdec1;
+
+  /* ink */
+  --ink: #2b2110;
+  --ink-soft: #40331f;
+  --ink-bright: #171008;
+  /* Darker than it looks like it needs to be against a mid-tone parchment:
+     this also has to clear the *bottom* stop of the footer gradient, which is
+     the darkest ground any muted text lands on. */
+  --muted: #655640;
+  --faint: rgb(var(--rgb-muted) / .34);
+  --sel-ink: #fff6e0;
+
+  /* accents */
+  --gold: #845604;
+  --gold-deep: #553702;
+  --crystal: #0e6b74;
+  --magic: #6b3fa0;
+  --hp: #1f7a35;
+  --mp: #1c5aa8;
+  --danger: #a32626;
+
+  /* The familiars, with the problem inverted: on parchment it is Artemis who
+     needs a real outline to exist at all, and Apollo who reads on his own. His
+     eye does not follow day gold down to brass — it is a 3px decorative dot on
+     near-black fur, not a label, and the brass would disappear into him. */
+  --artemis-fur: #fffdf7;
+  --artemis-shade: #ddcaa4;
+  --artemis-line: #6b4f22;
+  --artemis-eye: #3a2a10;
+  --apollo-fur: #2b2438;
+  --apollo-shade: #191428;
+  --apollo-line: #0d0a18;
+  --apollo-eye: #d9a13c;
+
+  /* No crystal bloom by day — a glow needs something dark to glow against. */
+  --title-shadow: 2px 2px 0 rgb(var(--rgb-emboss) / .95);
+  --title-shadow-flat: 2px 2px 0 rgb(var(--rgb-emboss) / .95);
+
+  --surface-bevel: inset 0 0 0 2px rgb(150 112 52 / .4), inset 0 0 26px rgb(176 140 82 / .28);
+
+  /* ---------------------------------------------------- composite surfaces */
+
+  /* Sun bloom in the top right, where the sprite actually hangs, and a warm
+     band along the horizon the ridges rise out of. */
+  --body-wash:
+    radial-gradient(880px 520px at 92% 8%, rgb(255 244 190 / .85), transparent 58%),
+    radial-gradient(760px 460px at 14% 4%, rgb(255 255 255 / .3), transparent 62%),
+    radial-gradient(1200px 700px at 50% 106%, rgb(255 226 164 / .55), transparent 66%),
+    linear-gradient(180deg, #3f9ad8 0%, #6ebde9 34%, #a3d9f2 64%, #dcf0f6 100%);
+  --scanline-ink: rgb(120 92 40 / .08);
+  --scanline-opacity: .4;
+
+  --navbar-fill: linear-gradient(180deg, rgb(255 249 232 / .97) 0%, rgb(246 234 205 / .97) 46%, rgb(228 208 168 / .97) 100%);
+  --footer-fill: linear-gradient(180deg, rgb(252 243 220 / .98) 0%, rgb(240 224 188 / .98) 55%, rgb(228 206 162 / .99) 100%);
+  --cmd-fill: linear-gradient(180deg, rgb(236 220 184 / .85), rgb(224 203 160 / .9));
+  /* Opaque, and lighter than it looks like it needs to be. The quest log is
+     the one inner panel that stands on the sky with nothing behind it, and a
+     warm fill at 82% over that blue comes out sage-grey — measured
+     rgb(217,223,213) — which drops its muted labels and links to 3.2:1 and
+     stops it reading as parchment at all. */
+  --panel-fill: linear-gradient(180deg, #fefaee, #f6ecd6);
+  --chapter-fill: linear-gradient(180deg, rgb(248 236 206 / .92), rgb(238 221 182 / .95));
+  --badge-fill: linear-gradient(180deg, rgb(255 248 226 / .92), rgb(234 214 172 / .95));
+  /* Shallower than the night plate. It still has to read as sunken, but gold
+     sits on it, and every extra point of tan costs the label contrast. */
+  --nameplate-fill: linear-gradient(180deg, rgb(210 180 124 / .34), rgb(210 180 124 / .09));
+  /* Lighter than the night plate is dark: the cat's name on it is gold, and
+     gold needs a pale ground. */
+  --plate-fill: linear-gradient(180deg, #fbf1d8, #f0e0bc);
+  --plate-fill-hot: linear-gradient(180deg, #fff9e6, #f8ead2);
+  --mat-fill: linear-gradient(155deg, rgb(224 206 168 / .6), rgb(198 174 128 / .72));
+  --mat-fill-soft: linear-gradient(155deg, rgb(228 211 175 / .5), rgb(204 181 137 / .62));
+  --code-fill: rgb(238 229 207 / .95);
+
+  --wipe-ink: #bfe6f7;
+}
+
+/* Section headings are the one piece of running text that sits on the open sky
+   rather than on a window, and a brass glyph on an afternoon blue lands around
+   3:1 — the single place where day gold cannot be made to work without
+   dragging it so dark it stops being gold everywhere else. So on the sky it
+   stops being gold: dark ink clears 4.7:1 against every part of that gradient,
+   and the accent survives in the pixel tab beside it. The same heading inside
+   a window keeps the brass, where it reads at 4.6:1 on parchment. */
+:root[data-theme="day"] .section-h2 {
+  color: var(--ink);
+}
+
+:root[data-theme="day"] .surface .section-h2 {
+  color: var(--gold);
+}
+
+/* The selected command inverts with the palette. At night it lights up: a warm
+   band laid over dark glass. By day the command window is already a mid tan,
+   and laying gold over gold leaves the label at 3.7:1 — so instead the
+   selected row goes *pale*, a lit plate pressed into the tan, which is how a
+   light menu marks its selection anyway. The gold-deep underscore and the
+   cursor keep doing the marking; only the ground changes. */
+:root[data-theme="day"] .nav-link.is-active {
+  background: rgb(255 251 238 / .96);
+}
+
+:root[data-theme="day"] .nav-link.is-active:hover {
+  background: rgb(255 253 246 / .98);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Night sky: a deep gradient with a haze of nebula colour near the horizon.
+   Fixed, so the stars sit still while the page scrolls past them. */
+body {
+  min-height: 100%;
+  margin: 0;
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: var(--lh);
+  color: var(--ink);
+  background-color: var(--bg);
+  background-image: var(--body-wash);
+  background-attachment: fixed;
+  text-shadow: var(--text-shadow);
+}
+
+/* A faint CRT scanline wash over everything. Low enough that you read it as
+   texture rather than as stripes. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--scanline-ink) 0 1px,
+    transparent 1px 3px
+  );
+  opacity: var(--scanline-opacity);
+  mix-blend-mode: multiply;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 0;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--sel-ink);
+  text-shadow: none;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* --------------------------------------------------------------- structure */
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  /* The sky below has one live control in it — the moon. .app stacks above the
+     sky and its box covers the viewport, so it would take that click first
+     even though nothing is painted there. Pointer events are handed back to
+     the chrome and the content column only, which leaves the margins either
+     side of the column transparent to the pointer. Anything added to .app
+     outside those three needs its own `pointer-events: auto`. */
+  pointer-events: none;
+}
+
+.navbar,
+.footer,
+.page > .shell {
+  pointer-events: auto;
+}
+
+.shell {
+  width: min(var(--max), calc(100% - var(--gutter) * 2));
+  margin: 0 auto;
+}
+
+.page {
+  flex: 1;
+  padding: 34px 0 120px;
+}
+
+/* ------------------------------------------------------ the menu window */
+
+/* The one primitive everything else is built from: a translucent royal-blue
+   box, a white inner bevel, a hard black ring outside it. */
+.surface {
+  position: relative;
+  background:
+    linear-gradient(180deg, var(--window-top), var(--window-bot));
+  border: 2px solid var(--frame-lit);
+  box-shadow: var(--surface-bevel), var(--shadow);
+}
+
+/* Gold studs pinned to the four corners of the frame. One element, four
+   background layers — cheaper than four pseudo-elements we don't have. */
+.surface::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  pointer-events: none;
+  z-index: 2;
+  background-image:
+    linear-gradient(var(--gold), var(--gold)),
+    linear-gradient(var(--gold), var(--gold)),
+    linear-gradient(var(--gold), var(--gold)),
+    linear-gradient(var(--gold), var(--gold));
+  background-size: 4px 4px;
+  background-repeat: no-repeat;
+  background-position: 0 0, 100% 0, 0 100%, 100% 100%;
+}
+
+/* ------------------------------------------------------------- typography */
+
+/* Silkscreen's ampersand is nearly indistinguishable from a dollar sign, and
+   "AI & Data Science" is the first line on the site — so labels that can carry
+   an "&" use the body face uppercased instead. Still a bitmap font, still on
+   theme, but it spells the word correctly. */
+.kicker {
+  font-family: var(--body);
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-shadow: var(--text-shadow);
+}
+
+.h1 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(19px, 2.9vw, 33px);
+  line-height: 1.36;
+  letter-spacing: 0.01em;
+  margin: 12px 0 0;
+  color: var(--ink-bright);
+  text-shadow: var(--title-shadow);
+}
+
+.lede {
+  margin: 18px 0 0;
+  font-size: 17px;
+  line-height: 1.72;
+  color: var(--ink-soft);
+  max-width: 58ch;
+}
+
+.section-h2 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  margin: 4px 0 10px;
+  color: var(--gold);
+  text-shadow: var(--text-shadow);
+}
+
+.section-h3 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0;
+  color: var(--ink);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* A row of pixels rather than a hairline — a 2px dotted rail. */
+.rule {
+  height: 2px;
+  background-image: linear-gradient(90deg, var(--frame-mid) 50%, transparent 50%);
+  background-size: 6px 2px;
+  opacity: 0.6;
+  margin: 28px 0;
+  border: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ------------------------------------------------------------ theme parts */
+
+/* Ship both strings, render one. Used for the toggles' labels, which have to
+   name the command rather than the state: `display: none` also takes the
+   losing copy out of the accessible name, so the button reads correctly with
+   no script involved. Written as :not() so it also covers the no-JS case,
+   where <html> never gets a data-theme at all. */
+:root:not([data-theme="day"]) .when-day,
+:root[data-theme="day"] .when-night {
+  display: none;
+}
+
+/* Neither toggle does anything without a script, so neither one appears
+   without one. `.js` is set inline in <head>, before first paint. */
+.nav-toggle {
+  display: none;
+}
+
+.js .nav-toggle {
+  display: inline-flex;
+}
+
+/* The screen flash between themes: opacity in four steps, the way a 16-bit
+   scene change faded out. Built by site.js on the first toggle and thrown away
+   after; it sits under the CRT wash (z-index 100) so the scanlines ride over
+   it. Its fill is a token, so it flashes through the outgoing sky's colour and
+   clears through the incoming one. */
+.theme-wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0;
+  background: var(--wipe-ink);
+}
+
+.theme-wipe.is-in {
+  animation: theme-wipe-in 0.18s steps(4, end) forwards;
+}
+
+.theme-wipe.is-out {
+  animation: theme-wipe-out 0.24s steps(4, end) forwards;
+}
+
+@keyframes theme-wipe-in {
+  from { opacity: 0; }
+  to { opacity: 0.94; }
+}
+
+@keyframes theme-wipe-out {
+  from { opacity: 0.94; }
+  to { opacity: 0; }
+}
+
+/* An inline link that fills with a band of gold, the way a selected menu
+   entry lights up. */
+.marker-link {
+  position: relative;
+  display: inline-block;
+  color: var(--crystal);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: rgb(var(--rgb-crystal) / .5);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  z-index: 0;
+}
+
+.marker-link::after {
+  content: "";
+  position: absolute;
+  left: -0.12em;
+  right: -0.12em;
+  bottom: 0.04em;
+  height: 0.5em;
+  background: rgb(var(--rgb-gold) / .34);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.24s var(--ease-step);
+  z-index: -1;
+}
+
+.marker-link:hover,
+.marker-link:focus-visible {
+  color: var(--gold);
+  text-decoration-color: var(--gold);
+}
+
+.marker-link:hover::after,
+.marker-link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* ------------------------------------------------------- the menu cursor */
+
+/* The blinking pointer that sits beside whatever is selected. Drawn as a
+   clipped square so it stays crisp at any zoom. */
+.has-cursor {
+  position: relative;
+}
+
+.has-cursor::after {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 50%;
+  width: 10px;
+  height: 12px;
+  margin-top: -6px;
+  background: var(--gold);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.12s var(--ease-step), transform 0.12s var(--ease-step);
+  pointer-events: none;
+}
+
+.has-cursor:hover::after,
+.has-cursor:focus-visible::after,
+.has-cursor.is-active::after {
+  opacity: 1;
+  transform: translateX(0);
+  animation: cursor-blink 1s steps(1, end) infinite;
+}
+
+@keyframes cursor-blink {
+  0%,
+  60% {
+    opacity: 1;
+  }
+  61%,
+  100% {
+    opacity: 0.25;
+  }
+}
+
+/* -------------------------------------------------------------------- nav */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-bottom: 2px solid var(--frame-mid);
+  background: var(--navbar-fill);
+  box-shadow: 0 4px 0 rgb(var(--rgb-shade) / .4);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.brand-title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.2;
+  color: var(--ink-bright);
+  text-shadow: var(--text-shadow);
+}
+
+.brand-sub {
+  font-family: var(--ui);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-link {
+  position: relative;
+  font-family: var(--ui);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  padding: 9px 12px;
+  border: 2px solid transparent;
+  transition: color 0.14s var(--ease-step), background 0.14s var(--ease-step),
+    border-color 0.14s var(--ease-step);
+}
+
+.nav-link:hover {
+  background: rgb(var(--rgb-gold) / .12);
+  border-color: rgb(var(--rgb-gold) / .4);
+  color: var(--ink-bright);
+}
+
+.nav-link.is-active {
+  color: var(--gold);
+  background: rgb(var(--rgb-gold) / .1);
+  border-color: rgb(var(--rgb-gold) / .55);
+}
+
+/* ----------------------------------------------------------------- footer */
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  border-top: 2px solid var(--frame-mid);
+  background: var(--footer-fill);
+  box-shadow: 0 -4px 0 rgb(var(--rgb-shade) / .35);
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 11px 0;
+  color: var(--muted);
+  font-family: var(--ui);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-link {
+  color: var(--muted);
+  transition: color 0.14s var(--ease-step);
+}
+
+.footer-link:hover {
+  color: var(--gold);
+}
+
+/* ------------------------------------------------------------ small parts */
+
+.pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* An item slot: sunken chip, white frame, gold when you point at it. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 14px;
+  border: 2px solid var(--frame-mid);
+  background: var(--sunken);
+  color: var(--ink-soft);
+  font-family: var(--ui);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 3px 0 rgb(var(--rgb-shade) / .4);
+  transition: transform 0.12s var(--ease-step), border-color 0.12s var(--ease-step),
+    color 0.12s var(--ease-step), background 0.12s var(--ease-step),
+    box-shadow 0.12s var(--ease-step);
+}
+
+.pill:hover {
+  transform: translateY(-2px);
+  background: rgb(var(--rgb-gold) / .14);
+  border-color: var(--gold);
+  color: var(--ink-bright);
+  box-shadow: 0 5px 0 rgb(var(--rgb-shade) / .45);
+}
+
+.pill:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 rgb(var(--rgb-shade) / .4);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border: 2px solid rgb(var(--rgb-gold) / .42);
+  background: rgb(var(--rgb-gold) / .1);
+  font-family: var(--ui);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  line-height: 1.4;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+.icon-flip {
+  transform: rotate(180deg);
+}
+
+/* ------------------------------------------------------------------- home */
+
+.home {
+  display: grid;
+  gap: 14px;
+}
+
+.hero {
+  padding: 26px;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 28px;
+  align-items: center;
+}
+
+.portrait-wrap {
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+/* The character portrait, framed like a party member's window slot. */
+.portrait {
+  width: 208px;
+  height: 208px;
+  object-fit: cover;
+  object-position: center 22%;
+  border: 2px solid var(--frame-lit);
+  background: var(--sunken);
+  box-shadow: 0 0 0 2px var(--frame-dark), 0 6px 0 rgb(var(--rgb-shade) / .4);
+  image-rendering: pixelated;
+}
+
+.panel {
+  padding: 22px 24px;
+}
+
+.copy {
+  max-width: 72ch;
+}
+
+.copy p {
+  margin: 0 0 16px;
+  font-size: 16.5px;
+  line-height: 1.8;
+  color: var(--ink-soft);
+}
+
+.copy p:last-child {
+  margin-bottom: 0;
+}
+
+.home-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--ui);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--crystal);
+  padding: 5px 0;
+  transition: color 0.14s var(--ease-step), transform 0.14s var(--ease-step);
+}
+
+.home-link:hover {
+  color: var(--gold);
+  transform: translateX(3px);
+}
+
+.section {
+  display: grid;
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* --------------------------------------------------------------- timeline */
+
+/* A quest log: entries stacked down a lit rail, each with a node on it. */
+.timeline {
+  display: grid;
+  gap: 4px;
+  padding: 14px 14px 14px 42px;
+  position: relative;
+  border: 2px solid var(--frame-mid);
+  background: var(--panel-fill);
+  box-shadow: var(--shadow-sm);
+}
+
+/* the rail */
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 18px;
+  bottom: 18px;
+  width: 2px;
+  background-image: linear-gradient(180deg, var(--gold) 50%, transparent 50%);
+  background-size: 2px 6px;
+  opacity: 0.7;
+}
+
+.tl-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 14px;
+  align-items: baseline;
+  padding: 11px 10px;
+  position: relative;
+  transition: background 0.12s var(--ease-step);
+}
+
+.tl-row:hover {
+  background: rgb(var(--rgb-gold) / .09);
+}
+
+/* the node on the rail */
+.tl-row::before {
+  content: "";
+  position: absolute;
+  left: -27px;
+  top: 20px;
+  width: 8px;
+  height: 8px;
+  background: var(--window-flat);
+  border: 2px solid var(--gold);
+  transition: background 0.12s var(--ease-step);
+}
+
+.tl-row:hover::before {
+  background: var(--gold);
+}
+
+.tl-primary {
+  font-size: 16px;
+  color: var(--ink-bright);
+  font-weight: 400;
+}
+
+.tl-secondary {
+  margin-top: 5px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  max-width: 64ch;
+}
+
+.tl-meta {
+  margin-top: 8px;
+  font-family: var(--ui);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tl-date {
+  font-family: var(--ui);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  white-space: nowrap;
+  text-align: right;
+}
+
+/* ------------------------------------------------------------- disclosure */
+
+.career-chevron {
+  display: inline-block;
+  font-family: var(--ui);
+  font-size: 12px;
+  color: var(--gold);
+  transition: transform 0.16s var(--ease-step);
+}
+
+/* ------------------------------------------------------------- simple list */
+
+.simple-list {
+  display: grid;
+  gap: 4px;
+}
+
+.simple-item {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 10px 10px 10px 12px;
+  transition: background 0.12s var(--ease-step);
+}
+
+.simple-item:hover {
+  background: rgb(var(--rgb-gold) / .08);
+}
+
+.simple-icon {
+  color: var(--crystal);
+  margin-top: 4px;
+}
+
+.simple-body {
+  display: grid;
+  gap: 4px;
+}
+
+.simple-category {
+  font-family: var(--ui);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.simple-title {
+  font-size: 16px;
+  color: var(--ink-bright);
+}
+
+.simple-desc {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+/* ------------------------------------------------------------------ about */
+
+.about {
+  display: grid;
+  gap: 24px;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 22px;
+  align-items: start;
+}
+
+.about-main {
+  display: grid;
+  gap: 24px;
+}
+
+.about-aside {
+  display: grid;
+  gap: 16px;
+  position: sticky;
+  top: 86px;
+}
+
+.about-card {
+  padding: 16px;
+}
+
+.cat-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.cat {
+  margin: 0;
+  display: grid;
+  gap: 9px;
+  justify-items: center;
+}
+
+.cat-icon {
+  display: inline-flex;
+  color: var(--gold);
+}
+
+.cat img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  border: 2px solid var(--frame-mid);
+  background: var(--sunken);
+  image-rendering: pixelated;
+}
+
+.cat-plate {
+  font-family: var(--ui);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.about-card-body {
+  padding-top: 14px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+.about-card-divider {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 2px solid var(--faint);
+}
+
+/* A stat line: label left, value right, dotted leader between. */
+.fact-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  font-size: 15px;
+  border-bottom: 2px dotted rgb(var(--rgb-muted) / .22);
+}
+
+.fact-row:last-child {
+  border-bottom: 0;
+}
+
+.fact-label {
+  font-family: var(--ui);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.fact-value {
+  text-align: right;
+  color: var(--gold);
+}
+
+/* --------------------------------------------------------------- projects */
+
+.projects {
+  display: grid;
+  gap: 22px;
+}
+
+.page-header {
+  padding: 26px;
+}
+
+.page-title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(16px, 2.2vw, 24px);
+  line-height: 1.45;
+  margin: 12px 0 0;
+  color: var(--ink-bright);
+  text-shadow: var(--title-shadow-flat);
+}
+
+.page-sub {
+  margin: 16px 0 0;
+  color: var(--ink-soft);
+  max-width: 66ch;
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.projects-section {
+  display: grid;
+  gap: 14px;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.project-card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  color: inherit;
+  transition: transform 0.14s var(--ease-step), border-color 0.14s var(--ease-step),
+    box-shadow 0.14s var(--ease-step);
+}
+
+.project-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px var(--frame-dark), 0 11px 0 rgb(var(--rgb-shade) / .4);
+}
+
+/* A lone featured project reads better laid out sideways than stretched
+   across the full grid. */
+.project-card--wide {
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  grid-template-rows: auto;
+}
+
+.project-card--wide .project-img {
+  height: 100%;
+  min-height: 280px;
+}
+
+.project-card--wide .project-body {
+  padding: 24px 26px 26px;
+  align-content: center;
+}
+
+.project-card--wide .project-name {
+  font-size: 15px;
+}
+
+.project-media {
+  background: var(--sunken);
+  line-height: 0;
+  height: 100%;
+  overflow: hidden;
+  border-right: 2px solid rgb(var(--rgb-frame-mid) / .4);
+}
+
+.project-img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  display: block;
+}
+
+/* UI screenshots and charts get letterboxed rather than cropped — a sliver of
+   a dashboard tells you nothing. */
+.project-img--contain {
+  object-fit: contain;
+  padding: 16px;
+  background: var(--mat-fill);
+}
+
+.project-body {
+  padding: 18px 18px 20px;
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.project-name {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--gold);
+  text-shadow: var(--text-shadow);
+}
+
+.project-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.project-desc {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-self: end;
+  padding-top: 4px;
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border: 2px solid var(--frame-mid);
+  background: var(--sunken);
+  font-family: var(--ui);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  transition: border-color 0.12s var(--ease-step), background 0.12s var(--ease-step),
+    color 0.12s var(--ease-step);
+}
+
+.project-card:hover .project-link,
+.project-link:hover {
+  border-color: var(--gold);
+  background: rgb(var(--rgb-gold) / .14);
+  color: var(--ink-bright);
+}
+
+.archive {
+  padding: 18px 20px;
+}
+
+.archive-summary {
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  color: var(--gold);
+  font-family: var(--body); /* see .kicker — this label contains an "&" */
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.archive-summary::-webkit-details-marker {
+  display: none;
+}
+
+.archive[open] .career-chevron {
+  transform: rotate(180deg);
+}
+
+.archive-list {
+  margin-top: 16px;
+  display: grid;
+  gap: 8px;
+}
+
+.archive-row {
+  display: grid;
+  gap: 7px;
+  padding: 12px 14px;
+  color: inherit;
+  background: var(--sunken);
+  border: 2px solid rgb(var(--rgb-frame-mid) / .35);
+  transition: border-color 0.12s var(--ease-step), background 0.12s var(--ease-step);
+}
+
+.archive-row:hover {
+  border-color: var(--gold);
+  background: rgb(var(--rgb-gold) / .09);
+}
+
+.archive-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.archive-name {
+  font-family: var(--ui);
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  color: var(--ink-bright);
+}
+
+.archive-desc {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+/* ------------------------------------------------------- article / prose */
+
+.article {
+  display: grid;
+  gap: 20px;
+}
+
+.article-hero {
+  overflow: hidden;
+  padding: 0;
+}
+
+.article-hero img {
+  width: 100%;
+  display: block;
+  max-height: 320px;
+  object-fit: cover;
+}
+
+/* Defined after the rule above so it wins on source order. */
+.article-hero--contain img {
+  object-fit: contain;
+  max-height: 420px;
+  padding: 22px;
+  background: var(--mat-fill-soft);
+}
+
+.article-head {
+  padding: 24px 26px;
+}
+
+.article-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+/* The dialogue box: long-form text still has to be comfortable to read, so
+   the body face stays at a generous size and line-height. */
+.prose {
+  padding: 26px 28px;
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--ink-soft);
+}
+
+.prose > *:first-child {
+  margin-top: 0;
+}
+
+.prose > *:last-child {
+  margin-bottom: 0;
+}
+
+.prose p {
+  margin: 0 0 20px;
+  max-width: 70ch;
+}
+
+.prose h2 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--gold);
+  margin: 38px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--faint);
+  text-shadow: var(--text-shadow);
+}
+
+.prose h3 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--crystal);
+  margin: 30px 0 12px;
+}
+
+.prose h4 {
+  font-family: var(--ui);
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-bright);
+  margin: 24px 0 8px;
+}
+
+.prose ul,
+.prose ol {
+  margin: 0 0 20px;
+  padding-left: 24px;
+  max-width: 70ch;
+}
+
+.prose li {
+  margin-bottom: 8px;
+}
+
+.prose li::marker {
+  color: var(--gold);
+}
+
+.prose a {
+  color: var(--crystal);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgb(var(--rgb-crystal) / .5);
+  text-underline-offset: 4px;
+  transition: color 0.14s var(--ease-step), text-decoration-color 0.14s var(--ease-step);
+}
+
+.prose a:hover {
+  color: var(--gold);
+  text-decoration-color: var(--gold);
+}
+
+.prose img {
+  border: 2px solid var(--frame-mid);
+  box-shadow: var(--shadow-sm);
+  margin: 6px 0;
+  background: var(--sunken);
+}
+
+.prose blockquote {
+  margin: 0 0 20px;
+  padding: 4px 0 4px 18px;
+  border-left: 4px solid var(--gold);
+  color: var(--muted);
+}
+
+.prose code {
+  font-family: var(--mono);
+  font-size: 0.84em;
+  background: var(--sunken);
+  border: 2px solid rgb(var(--rgb-frame-mid) / .35);
+  padding: 1px 5px;
+  color: var(--crystal);
+  text-shadow: none;
+}
+
+.prose pre {
+  background: var(--code-fill);
+  color: var(--ink-soft);
+  border: 2px solid var(--frame-mid);
+  padding: 16px 18px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 13.5px;
+  line-height: 1.65;
+  text-shadow: none;
+}
+
+.prose pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+}
+
+.prose hr {
+  border: 0;
+  height: 2px;
+  background-image: linear-gradient(90deg, var(--frame-mid) 50%, transparent 50%);
+  background-size: 6px 2px;
+  opacity: 0.6;
+  margin: 32px 0;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 20px;
+  font-size: 15px;
+  border: 2px solid var(--frame-mid);
+}
+
+.prose th,
+.prose td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 2px solid var(--faint);
+}
+
+.prose th {
+  font-family: var(--ui);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: var(--sunken);
+}
+
+/* Side-by-side figures, as used in the project write-ups. They get the full
+   column width — text stays at a readable measure, charts don't need to. */
+.prose p:has(> img + img) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  align-items: center;
+  max-width: none;
+  margin-bottom: 26px;
+}
+
+.prose p:has(> img) {
+  max-width: none;
+}
+
+/* -------------------------------------------------------------- 404 page */
+
+.notfound {
+  padding: 64px 26px;
+  text-align: center;
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+}
+
+.notfound-num {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(44px, 9vw, 76px);
+  line-height: 1;
+  color: var(--gold);
+  margin: 0;
+  text-shadow: 4px 4px 0 rgb(var(--rgb-shade) / .7);
+}
+
+/* ---------------------------------------------------------------- reveal */
+
+/* Sections open the way a menu window does — a stepped wipe out from the
+   middle, not a smooth fade. */
+.js .reveal {
+  opacity: 0;
+  clip-path: inset(42% 0 42% 0);
+}
+
+.js .reveal.is-visible {
+  opacity: 1;
+  clip-path: inset(0 0 0 0);
+  transition: opacity 0.18s var(--ease-step), clip-path 0.3s var(--ease-step);
+}
+
+/* ------------------------------------------------------------ responsive */
+
+@media (max-width: 980px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+  /* Badge over copy — side by side it squeezes the sentence to a column. */
+  .wip-notice {
+    grid-template-columns: 1fr;
+    justify-items: start;
+    gap: 12px;
+  }
+  .project-card--wide {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  .project-card--wide .project-img {
+    height: 240px;
+    min-height: 0;
+  }
+  .project-card--wide .project-body {
+    padding: 18px 18px 20px;
+  }
+  .project-media {
+    border-right: 0;
+    border-bottom: 2px solid rgb(var(--rgb-frame-mid) / .4);
+  }
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+  .about-aside {
+    position: static;
+  }
+}
+
+@media (max-width: 860px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    justify-items: start;
+    gap: 20px;
+  }
+  .hero {
+    padding: 22px;
+  }
+  .portrait-wrap {
+    justify-items: start;
+  }
+  .portrait {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+@media (max-width: 720px) {
+  :root {
+    --gutter: 14px;
+  }
+  body {
+    font-size: 16px;
+  }
+  .nav-links {
+    gap: 2px;
+  }
+  .nav-link {
+    padding: 8px 6px;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+  }
+  .brand-sub {
+    display: none;
+  }
+  .footer-inner {
+    font-size: 10px;
+    gap: 10px;
+  }
+  .footer-links {
+    gap: 12px;
+  }
+  .timeline {
+    padding-left: 34px;
+  }
+  .tl-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .tl-date {
+    order: -1;
+    text-align: left;
+  }
+  .prose,
+  .article-head,
+  .page-header {
+    padding: 20px 18px;
+  }
+  .page {
+    padding-bottom: 130px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .js .reveal {
+    opacity: 1;
+    clip-path: none;
+  }
+}
+
+

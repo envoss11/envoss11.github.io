@@ -22,7 +22,6 @@ plugins:
 markdown: kramdown
 highlighter: rouge
 encoding: "utf-8"
-markdown_ext: "markdown,mkdown,mkdn,mkd,md"
 
 kramdown:
   input: GFM
@@ -47,23 +46,16 @@ collections:
 include:
   - _pages
 
+# This replaces Jekyll's default exclude list rather than adding to it, so the
+# toolchain files have to be named here too. Anything starting with a dot
+# (.github, .bundle, .jekyll-cache) Jekyll already skips on its own.
 exclude:
   - Gemfile
   - Gemfile.lock
   - vendor
-  - .bundle
-  - .jekyll-cache
-  - .sass-cache
   - node_modules
+  - Makefile
   - README.md
-  - resume.docx
-  - resume.pdf
-  - Eric_Voss_Resume.pdf
-  - .Rhistory
-  - .DS_Store
-
-keep_files:
-  - .git
 
 defaults:
   - scope:

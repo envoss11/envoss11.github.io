@@ -1,0 +1,23 @@
+---
+# Front matter is empty on purpose — its presence is what tells Jekyll to run
+# this file through jekyll-sass-converter. Output is one minified file at
+# /assets/css/site.css (see `sass: style: compressed` in _config.yml), so the
+# split below costs no extra request.
+#
+# Order is load order, and it matters: 00-base defines the tokens every other
+# partial reads, and later sections override earlier ones by cascade position
+# rather than by specificity.
+---
+
+// `as *` because a partial name starting with a digit is not a valid Sass
+// identifier, so it cannot serve as a default namespace. Nothing here reaches
+// across partials for a Sass member anyway — this is plain CSS in sections.
+@use "00-base" as *;
+@use "10-skyline" as *;
+@use "20-chrome" as *;
+@use "30-home" as *;
+@use "40-about" as *;
+@use "50-projects" as *;
+@use "55-blog" as *;
+@use "60-icons-misc" as *;
+@use "70-familiar" as *;
