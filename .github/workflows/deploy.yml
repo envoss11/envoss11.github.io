@@ -27,11 +27,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
+      # No ruby-version here on purpose: setup-ruby's default already reads
+      # .ruby-version, and there is no `ruby-version-file` input to point at it
+      # — passing one is ignored with a warning.
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version-file: .ruby-version
           bundler-cache: true
 
       - name: Build
@@ -44,7 +46,7 @@ jobs:
       - name: Check output
         run: bundle exec htmlproofer ./_site --disable-external
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
 
   deploy:
     needs: build
@@ -54,4 +56,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
