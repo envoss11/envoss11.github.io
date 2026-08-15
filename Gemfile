@@ -1,18 +1,16 @@
 source "https://rubygems.org"
 
-# GitHub Pages builds this site, so pin to the gem that mirrors its
-# environment rather than to Jekyll directly.
-gem "github-pages", group: :jekyll_plugins
+# Jekyll directly, not the `github-pages` shim. The shim pins Jekyll 3.10 and
+# restricts plugins to GitHub's allowlist; the site builds in Actions now
+# (.github/workflows/deploy.yml), so neither limit applies.
+gem "jekyll", "~> 4.4"
 
 group :jekyll_plugins do
   gem "jekyll-feed"
   gem "jekyll-sitemap"
 end
 
-# Windows and JRuby don't ship zoneinfo files.
-platforms :mingw, :x64_mingw, :mswin, :jruby do
-  gem "tzinfo", ">= 1", "< 3"
-  gem "tzinfo-data"
+group :development do
+  # `make check`, and the same gate CI runs before it deploys.
+  gem "html-proofer", "~> 5.0"
 end
-
-gem "wdm", "~> 0.1.1", :platforms => [:mingw, :x64_mingw, :mswin]

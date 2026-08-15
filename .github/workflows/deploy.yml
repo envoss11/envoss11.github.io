@@ -1,0 +1,57 @@
+name: Deploy site
+
+# Replaces GitHub Pages' legacy "Deploy from a branch" builder, which pinned
+# Jekyll 3.10 and reported failures by email. Building here means Jekyll 4, any
+# plugin, and a real log.
+#
+# One-time setup: Settings -> Pages -> Build and deployment -> Source must be
+# set to "GitHub Actions". Until that flip the legacy builder still serves the
+# site, however green this workflow runs.
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it mid-publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version-file: .ruby-version
+          bundler-cache: true
+
+      - name: Build
+        env:
+          JEKYLL_ENV: production
+        run: bundle exec jekyll build
+
+      # --disable-external on purpose: a third-party outage should not be able
+      # to fail a deploy. Check outbound links on demand instead.
+      - name: Check output
+        run: bundle exec htmlproofer ./_site --disable-external
+
+      - uses: actions/upload-pages-artifact@v3
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
