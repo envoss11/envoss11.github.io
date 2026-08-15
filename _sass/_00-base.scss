@@ -18,6 +18,66 @@
    If a new rule needs one, it wants a token.
    ========================================================================== */
 
+/* ==========================================================================
+   Faces
+
+   Self-hosted, so no page waits on fonts.googleapis.com before it can paint.
+   The files came from @fontsource (the same Google upstream, repackaged) and
+   live in /assets/fonts. Four faces, ~38 KB total: the display face, both
+   Silkscreen weights, and the body face.
+
+   Only the *latin* subset is here. That matters most for DotGothic16, whose
+   full Japanese glyph set is around 1.5 MB against ~10 KB for latin alone. The
+   unicode-range below says so out loud: anything outside it falls through to
+   the next family in the --display / --ui / --body stacks defined just below.
+   The one character on the site that lands there today is the "→" in
+   career.yml, which is outside Google's latin subset too — so it fell back
+   before this change as well.
+
+   font-display: swap because the layout is sized in px on a fixed grid; text
+   in a fallback face for a beat is better than text that is not there at all.
+   ========================================================================== */
+
+$latin: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+  U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+  U+2215, U+FEFF, U+FFFD;
+
+@font-face {
+  font-family: "Press Start 2P";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/press-start-2p-latin-400-normal.woff2") format("woff2");
+  unicode-range: $latin;
+}
+
+@font-face {
+  font-family: "Silkscreen";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/silkscreen-latin-400-normal.woff2") format("woff2");
+  unicode-range: $latin;
+}
+
+@font-face {
+  font-family: "Silkscreen";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/assets/fonts/silkscreen-latin-700-normal.woff2") format("woff2");
+  unicode-range: $latin;
+}
+
+@font-face {
+  font-family: "DotGothic16";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/dotgothic16-latin-400-normal.woff2") format("woff2");
+  unicode-range: $latin;
+}
+
 :root {
   /* ------------------------------------------------------------ primitives */
   --rgb-gold: 255 215 107;

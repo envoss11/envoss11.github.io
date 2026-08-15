@@ -10,8 +10,8 @@
 ---
 
 // `as *` because a partial name starting with a digit is not a valid Sass
-// identifier, so it cannot be a default namespace. These are plain CSS with no
-// Sass members to reference, so there is nothing for a namespace to qualify.
+// identifier, so it cannot serve as a default namespace. Nothing here reaches
+// across partials for a Sass member anyway — this is plain CSS in sections.
 @use "00-base" as *;
 @use "10-skyline" as *;
 @use "20-chrome" as *;
