@@ -26,13 +26,19 @@
    live in /assets/fonts. Four faces, ~38 KB total: the display face, both
    Silkscreen weights, and the body face.
 
-   Only the *latin* subset is here. That matters most for DotGothic16, whose
-   full Japanese glyph set is around 1.5 MB against ~10 KB for latin alone. The
-   unicode-range below says so out loud: anything outside it falls through to
-   the next family in the --display / --ui / --body stacks defined just below.
-   The one character on the site that lands there today is the "→" in
-   career.yml, which is outside Google's latin subset too — so it fell back
-   before this change as well.
+   Only the *latin* subset is here, plus one exception. That matters most for
+   DotGothic16, whose full Japanese glyph set is around 1.5 MB against ~10 KB
+   for latin alone. The unicode-range on each face says so out loud: anything
+   outside it falls through to the next family in the --display / --ui /
+   --body stacks defined just below.
+
+   The exception is U+2192, the "→" in career.yml. It is outside everyone's
+   latin subset, so it was being drawn from a 5 KB slice of DotGothic16's
+   Japanese set — Google was quietly shipping that fifth file to anyone who
+   loaded /about/. Dropping it moved the arrow onto a system fallback, which
+   is the one glyph on the site that would not have been pixel art. So the
+   slice ships too, upstream filename intact, narrowed to the single codepoint
+   the site actually wants out of it.
 
    font-display: swap because the layout is sized in px on a fixed grid; text
    in a fallback face for a beat is better than text that is not there at all.
@@ -76,6 +82,17 @@ $latin: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
   font-display: swap;
   src: url("/assets/fonts/dotgothic16-latin-400-normal.woff2") format("woff2");
   unicode-range: $latin;
+}
+
+/* The arrow, and nothing else. Upstream this slice also carries ~50 kanji;
+   the narrowed range means a page only fetches it if it has a "→" on it. */
+@font-face {
+  font-family: "DotGothic16";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/dotgothic16-107-400-normal.woff2") format("woff2");
+  unicode-range: U+2192;
 }
 
 :root {
