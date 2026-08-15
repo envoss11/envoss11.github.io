@@ -1,0 +1,270 @@
+/* ==========================================================================
+   icons-misc
+   ========================================================================== */
+
+/* ==========================================================================
+   60-icons-misc — pixel icon set, icon slots, and the 404 "empty chest" screen
+   Loads after 00-base. Never redefines :root tokens. No radius. No blur.
+   ========================================================================== */
+
+/* ------------------------------------------------------------------- icons */
+
+/* The glyphs are 16x16 pixel art drawn on integer coordinates. Core already
+   sets width/height/display on .icon — keep this deliberately thin so the
+   other sections stay in charge of colour and layout. */
+.icon {
+  shape-rendering: crispEdges;
+}
+
+/* Opt-in sizes. Only multiples of 16 so the pixel grid stays whole. */
+.icon-lg {
+  width: 32px;
+  height: 32px;
+}
+
+.icon-xl {
+  width: 48px;
+  height: 48px;
+}
+
+/* A framed "item slot" that an icon sits inside — the little sunken square
+   FF menus park an equipment glyph in. Usable anywhere: wrap an .icon in
+   <span class="icon-slot">. */
+.icon-slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  color: var(--crystal);
+  background: var(--sunken);
+  border: 2px solid var(--frame-mid);
+  box-shadow: inset 0 0 0 1px rgb(var(--rgb-shade) / .55);
+  transition: color 0.12s var(--ease-step), border-color 0.12s var(--ease-step),
+    background 0.12s var(--ease-step);
+}
+
+.icon-slot > .icon {
+  display: block;
+}
+
+.icon-slot-gold {
+  color: var(--gold);
+  border-color: rgb(var(--rgb-gold) / .5);
+  background: rgb(var(--rgb-gold) / .08);
+}
+
+a:hover > .icon-slot,
+a:focus-visible > .icon-slot {
+  color: var(--gold);
+  border-color: var(--gold);
+  background: rgb(var(--rgb-gold) / .12);
+}
+
+/* --------------------------------------------------------------------- 404 */
+
+.notfound {
+  padding-top: 44px;
+  padding-bottom: 52px;
+}
+
+/* The void: a sunken star-lit well the numeral and the looted chest sit in. */
+.notfound-void {
+  position: relative;
+  width: min(100%, 460px);
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 22px 16px 16px;
+  margin-bottom: 6px;
+  background: var(--sunken);
+  border: 2px solid var(--frame-mid);
+  box-shadow: inset 0 0 0 2px var(--frame-dark);
+  overflow: hidden;
+}
+
+.notfound-stars {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Hard 2px square stars — box-shadow copies, so they stay crisp. */
+.notfound-stars::before,
+.notfound-stars::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 2px;
+}
+
+.notfound-stars::before {
+  background: var(--muted);
+  opacity: 0.55;
+  box-shadow:
+    22px 18px 0 var(--muted), 58px 46px 0 var(--muted),
+    96px 12px 0 var(--muted), 132px 70px 0 var(--muted),
+    168px 30px 0 var(--muted), 204px 96px 0 var(--muted),
+    238px 22px 0 var(--muted), 272px 62px 0 var(--muted),
+    308px 14px 0 var(--muted), 344px 88px 0 var(--muted),
+    378px 40px 0 var(--muted), 412px 74px 0 var(--muted),
+    442px 26px 0 var(--muted), 40px 124px 0 var(--muted),
+    118px 148px 0 var(--muted), 262px 136px 0 var(--muted),
+    398px 152px 0 var(--muted), 150px 190px 0 var(--muted),
+    352px 198px 0 var(--muted);
+}
+
+.notfound-stars::after {
+  background: var(--gold);
+  box-shadow:
+    74px 92px 0 var(--gold), 188px 138px 0 var(--gold),
+    330px 54px 0 var(--gold), 430px 116px 0 var(--gold),
+    16px 178px 0 var(--crystal), 286px 186px 0 var(--crystal);
+  animation: nf-twinkle 1.9s steps(1, end) infinite;
+}
+
+@keyframes nf-twinkle {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0.18;
+  }
+}
+
+/* The opened, emptied treasure chest. */
+.notfound-chest {
+  position: relative;
+  z-index: 1;
+  width: clamp(72px, 17vw, 104px);
+  height: auto;
+  display: block;
+  animation: nf-bob 2.4s steps(1, end) infinite;
+}
+
+.nf-dark {
+  fill: var(--frame-dark);
+}
+
+.nf-wood {
+  fill: var(--gold-deep);
+}
+
+.nf-gold {
+  fill: var(--gold);
+}
+
+.nf-lit {
+  fill: var(--frame-lit);
+}
+
+.nf-spark {
+  fill: var(--crystal);
+}
+
+@keyframes nf-bob {
+  0%,
+  24% {
+    transform: translateY(0);
+  }
+  25%,
+  49% {
+    transform: translateY(-2px);
+  }
+  50%,
+  74% {
+    transform: translateY(-4px);
+  }
+  75%,
+  100% {
+    transform: translateY(-2px);
+  }
+}
+
+/* Game-over numeral: gold face, deep-gold bevel on all four sides, hard drop. */
+.notfound-num {
+  position: relative;
+  z-index: 1;
+  margin-top: 4px;
+  letter-spacing: 0.08em;
+  text-shadow:
+    2px 0 0 var(--gold-deep),
+    -2px 0 0 var(--gold-deep),
+    0 2px 0 var(--gold-deep),
+    0 -2px 0 var(--gold-deep),
+    4px 6px 0 rgb(var(--rgb-shade) / .75);
+}
+
+.notfound .section-h2 {
+  margin: 0;
+}
+
+.notfound .muted {
+  max-width: 42ch;
+}
+
+.notfound-actions {
+  margin-top: 10px;
+  justify-content: center;
+}
+
+@media (max-width: 560px) {
+  .notfound {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .notfound-void {
+    padding: 18px 12px 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notfound-chest,
+  .notfound-stars::after {
+    animation: none;
+  }
+
+  .notfound-chest {
+    transform: none;
+  }
+
+  .notfound-stars::after {
+    opacity: 1;
+  }
+}
+
+
+/* ==========================================================================
+   Content-face corrections
+
+   Silkscreen has no usable ampersand — its "&" is all but identical to a "$",
+   so "AI & Machine Learning" renders as "AI $ Machine Learning". That is fine
+   for the fixed chrome (nav, dates, footer, button labels never contain one),
+   but any label fed from _data/ can, and several do: five skills categories,
+   a focus category, and "Texas A&M University".
+
+   So: labels that render authored content use the body bitmap face, which has
+   a correct ampersand and is still a pixel font. Sizes are nudged up because
+   DotGothic16 sets smaller than Silkscreen at the same px.
+
+   Rule of thumb for future work — Silkscreen is only safe for strings written
+   in the template. Anything coming out of a data file belongs here.
+   ========================================================================== */
+
+.simple-category {
+  font-family: var(--body);
+  font-size: 13px;
+}
+
+.tl-primary > .muted {
+  font-family: var(--body);
+  font-size: 13.5px;
+}
+

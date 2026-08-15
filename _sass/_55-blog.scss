@@ -1,0 +1,355 @@
+/* ==========================================================================
+   blog
+   ========================================================================== */
+
+/* ==========================================================================
+   55-blog — the log book, and the entry page.
+
+   /projects/ is a shop window: one framed card per item, because the work has
+   a result worth photographing. A post has none of that — no hero chart, no
+   deliverable, sometimes no point — so this index is deliberately not a grid
+   of cards. It is a single ledger: dated rows down one window, the way a
+   journal or a save-file screen lists what happened and when.
+
+   Nothing here is new machinery. The date plate is the quest log's stamp, the
+   dotted run into the entry is its tick, and the entry page borrows the whole
+   article/prose stack from 50-projects — a post only adds a byline and the
+   step-back/step-forward pair at the foot.
+   ========================================================================== */
+
+.blog {
+  display: grid;
+  gap: 22px;
+}
+
+/* -------------------------------------------------------- index: the log */
+
+.log {
+  padding: 18px 20px 20px;
+}
+
+.log-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding-bottom: 14px;
+  border-bottom: 2px dotted rgb(var(--rgb-muted) / .24);
+}
+
+.log-head .section-h2 {
+  margin: 0;
+}
+
+/* The feed is a real command, but a quiet one — it sits a size down from the
+   pills on an entry page so it never competes with the entries themselves. */
+.log-feed {
+  padding: 7px 11px;
+  font-size: 11px;
+  box-shadow: 0 3px 0 rgb(var(--rgb-shade) / .4);
+}
+
+.log-feed .icon {
+  width: 14px;
+  height: 14px;
+  color: var(--crystal);
+  transition: color 0.12s var(--ease-step);
+}
+
+.log-feed:hover .icon {
+  color: var(--gold);
+}
+
+.log-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+/* ------------------------------------------------------------ index: row */
+
+/* Stamp | tick | entry. The middle column is the dotted run that ties the
+   date to the text, so the two never read as separate columns of a table. */
+.log-row {
+  display: grid;
+  grid-template-columns: auto 16px minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
+  padding: 14px 16px 15px;
+  color: inherit;
+  background: var(--sunken);
+  border: 2px solid rgb(var(--rgb-frame-mid) / .35);
+  /* the ribbon down the spine — the same 6px gold edge a chapter plate wears */
+  border-left: 6px solid rgb(var(--rgb-gold-deep) / .55);
+  transition:
+    background 0.12s var(--ease-step),
+    border-color 0.12s var(--ease-step),
+    transform 0.12s var(--ease-step);
+}
+
+.log-row:hover,
+.log-row:focus-visible {
+  background: rgb(var(--rgb-gold) / .09);
+  border-color: var(--gold);
+  transform: translateX(2px);
+}
+
+/* Pinned to the title's line rather than the row's middle: a long entry is
+   tall, and a cursor floating beside the third line of an excerpt points at
+   nothing. It hangs in the window's padding, clear of the ribbon. */
+.log-row.has-cursor::after {
+  left: -15px;
+  top: 22px;
+  margin-top: 0;
+}
+
+.log-stamp {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 3px;
+  min-width: 58px;
+  padding: 9px 8px 8px;
+  background: var(--sunken);
+  border: 2px solid rgb(var(--rgb-gold) / .32);
+  box-shadow: inset 0 0 0 1px rgb(var(--rgb-well) / .55);
+  text-shadow: var(--text-shadow);
+  transition:
+    background 0.12s var(--ease-step),
+    border-color 0.12s var(--ease-step);
+}
+
+.log-row:hover .log-stamp,
+.log-row:focus-visible .log-stamp {
+  background: rgb(var(--rgb-gold) / .16);
+  border-color: var(--gold);
+}
+
+.log-stamp-day {
+  font-family: var(--display);
+  font-size: 14px;
+  line-height: 1.2;
+  color: var(--ink-bright);
+}
+
+.log-stamp-mon {
+  font-family: var(--ui);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.log-stamp-yr {
+  font-family: var(--ui);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.log-tick {
+  align-self: start;
+  margin-top: 21px;
+  height: 2px;
+  background-image: linear-gradient(90deg, var(--gold) 50%, transparent 50%);
+  background-size: 4px 2px;
+  opacity: 0.4;
+  transition: opacity 0.12s var(--ease-step);
+}
+
+.log-row:hover .log-tick,
+.log-row:focus-visible .log-tick {
+  opacity: 1;
+}
+
+.log-body {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.log-title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--gold);
+  text-shadow: var(--text-shadow);
+}
+
+.log-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.log-excerpt {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+.log-more {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 7px;
+  padding-top: 2px;
+  font-family: var(--ui);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color 0.12s var(--ease-step);
+}
+
+.log-more .icon {
+  width: 14px;
+  height: 14px;
+  color: var(--gold);
+}
+
+.log-row:hover .log-more,
+.log-row:focus-visible .log-more {
+  color: var(--ink-bright);
+}
+
+/* The state after the placeholders come out and before the first real post
+   goes in. Short enough that the window does not need a list inside it. */
+.log-empty .wip-copy {
+  margin-top: 4px;
+}
+
+/* -------------------------------------------------------- entry: byline */
+
+/* Date first, tags after — the two things you want before deciding to read.
+   Sits between the title and the standfirst, so .page-sub's rule above it
+   still draws the divider it always does. */
+.post-byline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.post-stamp {
+  display: inline-block;
+  padding: 6px 10px;
+  background: var(--sunken);
+  border: 2px solid rgb(var(--rgb-gold) / .32);
+  box-shadow: inset 0 0 0 1px rgb(var(--rgb-well) / .55);
+  font-family: var(--ui);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-shadow: var(--text-shadow);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------ entry: step pair */
+
+.post-nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.post-nav-link {
+  display: grid;
+  align-content: start;
+  gap: 9px;
+  padding: 14px 16px 15px 30px;
+  color: inherit;
+  background: var(--sunken);
+  border: 2px solid rgb(var(--rgb-frame-mid) / .38);
+  box-shadow: 0 3px 0 rgb(var(--rgb-shade) / .4);
+  transition:
+    background 0.12s var(--ease-step),
+    border-color 0.12s var(--ease-step),
+    transform 0.12s var(--ease-step),
+    box-shadow 0.12s var(--ease-step);
+}
+
+/* One end of the log has only one neighbour — let it take the whole row
+   rather than sit in half of one with a hole beside it. */
+.post-nav-link:only-child {
+  grid-column: 1 / -1;
+}
+
+.post-nav-link:hover,
+.post-nav-link:focus-visible {
+  background: rgb(var(--rgb-gold) / .1);
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 0 rgb(var(--rgb-shade) / .45);
+}
+
+/* The gutter in the padding above is the cursor's, so nothing shifts when it
+   lands — the same contract .cmd-link keeps. */
+.post-nav-link.has-cursor::after {
+  left: 11px;
+}
+
+.post-nav-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--ui);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.post-nav-label .icon {
+  width: 13px;
+  height: 13px;
+  color: var(--gold);
+}
+
+.post-nav-title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--gold);
+  text-shadow: var(--text-shadow-sm);
+}
+
+/* ------------------------------------------------------------ responsive */
+
+@media (max-width: 720px) {
+  /* The date stops being a column and becomes a line above the entry — at
+     phone widths a 58px plate costs the excerpt about four characters a
+     line, which is the difference between a paragraph and a stack. */
+  .log-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 13px 14px 14px;
+  }
+  .log-stamp {
+    display: flex;
+    align-items: baseline;
+    justify-self: start;
+    gap: 7px;
+    min-width: 0;
+    padding: 6px 10px;
+  }
+  .log-stamp-day {
+    font-size: 12px;
+  }
+  .log-tick {
+    display: none;
+  }
+  .log-row.has-cursor::after {
+    left: -13px;
+    top: 20px;
+  }
+  .post-nav {
+    grid-template-columns: 1fr;
+  }
+}
+

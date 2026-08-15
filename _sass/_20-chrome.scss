@@ -1,0 +1,525 @@
+/* ==========================================================================
+   chrome
+   ========================================================================== */
+
+/* ==========================================================================
+   20-chrome — site chrome.
+
+   Top bar: the command menu. A hard-bevelled window edge pinned to the top of
+   the screen, with the three page links sitting inside their own little
+   command window. Point at one and the gold cursor snaps beside it; the page
+   you are on keeps the cursor lit.
+
+   Bottom bar: the status HUD. A slim strip that has to stay readable over the
+   skyline behind it, so it is near-opaque with a lit top bevel and a gold
+   pixel rail.
+   ========================================================================== */
+
+/* ------------------------------------------------------------------ navbar */
+
+/* No soft shadow — a lit bevel at the top, a rail and a black line at the
+   bottom, the way a menu window's top edge is drawn. */
+.navbar {
+  border-bottom: 2px solid var(--frame-dark);
+  background: var(--navbar-fill);
+  box-shadow:
+    inset 0 2px 0 rgb(var(--rgb-frame-lit) / .5),
+    inset 0 -2px 0 rgb(var(--rgb-frame-mid) / .9),
+    0 2px 0 rgb(var(--rgb-shade) / .6),
+    0 5px 0 rgb(var(--rgb-shade) / .22);
+}
+
+.nav-inner {
+  gap: 14px;
+  padding: 10px 0 11px;
+}
+
+/* --------------------------------------------------------- the nameplate */
+
+/* The nameplate is the only part allowed to give up room — the command
+   window keeps its full width so the menu never overflows the screen. */
+.brand {
+  flex-direction: row;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  flex: 0 1 auto;
+}
+
+/* The crest sits in its own slot, like a party member's portrait frame. */
+.brand-crest {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgb(var(--rgb-frame-mid) / .8);
+  background: var(--sunken);
+  box-shadow: 0 0 0 2px var(--frame-dark);
+  transition: border-color 0.14s var(--ease-step), background 0.14s var(--ease-step);
+}
+
+.crest {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+
+.crest-edge {
+  fill: var(--gold-deep);
+}
+
+.crest-core {
+  fill: var(--gold);
+}
+
+.crest-glint {
+  fill: var(--frame-lit);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.brand-title,
+.brand-sub {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.brand-title {
+  transition: color 0.14s var(--ease-step);
+}
+
+.brand-sub {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  text-shadow: var(--text-shadow-sm);
+}
+
+.brand:hover .brand-crest,
+.brand:focus-visible .brand-crest {
+  border-color: var(--gold);
+  background: rgb(var(--rgb-gold) / .14);
+}
+
+.brand:hover .brand-title,
+.brand:focus-visible .brand-title {
+  color: var(--gold);
+}
+
+/* Two frames of sparkle, not a fade. */
+.brand:hover .crest-glint {
+  animation: crest-sparkle 0.5s steps(2, end) infinite;
+}
+
+@keyframes crest-sparkle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+/* ------------------------------------------------------ the command window */
+
+.nav-links {
+  position: relative;
+  flex: 0 0 auto;
+  gap: 2px;
+  padding: 3px;
+  border: 2px solid var(--frame-mid);
+  background: var(--cmd-fill);
+  box-shadow:
+    inset 0 0 0 1px rgb(var(--rgb-well) / .7),
+    0 3px 0 rgb(var(--rgb-shade) / .42);
+}
+
+/* Gold studs pinned to the window's four corners — the same trick .surface
+   uses, at a smaller size to suit a 40px-tall box. */
+.nav-links::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--gold), var(--gold)),
+    linear-gradient(var(--gold), var(--gold)),
+    linear-gradient(var(--gold), var(--gold)),
+    linear-gradient(var(--gold), var(--gold));
+  background-size: 3px 3px;
+  background-repeat: no-repeat;
+  background-position: 0 0, 100% 0, 0 100%, 100% 100%;
+}
+
+/* A command row, not a button: the left padding is the cursor's gutter, and
+   selection is a lit band rather than an outline. */
+.nav-link {
+  padding: 8px 12px 8px 24px;
+  border-color: transparent;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  text-shadow: var(--text-shadow-sm);
+}
+
+/* Reposition the shared .has-cursor pointer into that gutter so it never
+   lands on the glyphs. Everything else about it comes from core. */
+.nav-link::after {
+  left: 8px;
+  width: 8px;
+  height: 10px;
+  margin-top: -5px;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+  background: rgb(var(--rgb-gold) / .16);
+  border-color: transparent;
+  color: var(--ink-bright);
+}
+
+.nav-link.is-active {
+  color: var(--gold);
+  background: rgb(var(--rgb-gold) / .13);
+  border-color: transparent;
+  box-shadow: inset 0 -2px 0 rgb(var(--rgb-gold-deep) / .9);
+}
+
+.nav-link.is-active:hover {
+  background: rgb(var(--rgb-gold) / .2);
+  color: var(--gold);
+}
+
+/* ----------------------------------------------------------- theme toggle */
+
+/* Drawn as an equipment slot rather than a button — the same sunken well and
+   hard black ring the brand crest sits in, so it reads as part of the HUD
+   instead of a widget bolted onto it. It carries the sun by night and the
+   moon by day: what you would be switching to, matching the label. */
+.nav-toggle {
+  position: relative;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  color: var(--gold);
+  border: 2px solid rgb(var(--rgb-frame-mid) / .8);
+  background: var(--sunken);
+  box-shadow: 0 0 0 2px var(--frame-dark), 0 2px 0 rgb(var(--rgb-shade) / .4);
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: color 0.12s var(--ease-step), border-color 0.12s var(--ease-step),
+    background 0.12s var(--ease-step), transform 0.12s var(--ease-step),
+    box-shadow 0.12s var(--ease-step);
+}
+
+.nav-toggle-glyph {
+  display: block;
+  line-height: 0;
+}
+
+.nav-toggle .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.nav-toggle:hover,
+.nav-toggle:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--gold);
+  background: rgb(var(--rgb-gold) / .16);
+  box-shadow: 0 0 0 2px var(--frame-dark), 0 4px 0 rgb(var(--rgb-shade) / .45);
+}
+
+.nav-toggle:active {
+  transform: translateY(1px);
+  box-shadow: 0 0 0 2px var(--frame-dark), 0 1px 0 rgb(var(--rgb-shade) / .4);
+}
+
+/* --------------------------------------------------------------- status HUD */
+
+/* Near-opaque so the skyline behind it never eats the text, with the white
+   menu bevel along the top edge. */
+.footer {
+  border-top: 2px solid rgb(var(--rgb-frame-lit) / .72);
+  background: var(--footer-fill);
+  box-shadow:
+    inset 0 2px 0 rgb(var(--rgb-window) / .9),
+    0 -3px 0 rgb(var(--rgb-shade) / .5);
+}
+
+/* A dashed gold rail tucked under the bevel — the HUD divider. */
+.footer::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  pointer-events: none;
+  background-image: linear-gradient(90deg, rgb(var(--rgb-gold) / .5) 50%, transparent 50%);
+  background-size: 8px 2px;
+}
+
+.footer-inner {
+  padding: 9px 0 10px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+}
+
+.footer-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 0 1 auto;
+  white-space: nowrap;
+}
+
+/* The indicator lamp: a gold square with a punched-out dark centre. */
+.footer-pip {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  box-shadow: inset 0 0 0 2px rgb(var(--rgb-frame-dark) / .85);
+}
+
+.footer-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: var(--text-shadow);
+}
+
+.footer-links {
+  flex: 0 0 auto;
+  gap: 18px;
+}
+
+.footer-link {
+  position: relative;
+  font-family: var(--ui);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  padding: 2px 0;
+  text-shadow: var(--text-shadow);
+}
+
+/* A 3px gold square in the gap instead of empty space. */
+.footer-link + .footer-link::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  margin-top: -1px;
+  width: 3px;
+  height: 3px;
+  background: var(--gold-deep);
+  pointer-events: none;
+}
+
+/* Selection underscores the entry, the way a HUD marks the live slot. */
+.footer-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.14s var(--ease-step);
+  pointer-events: none;
+}
+
+.footer-link:hover,
+.footer-link:focus-visible {
+  color: var(--gold);
+}
+
+.footer-link:hover::after,
+.footer-link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* ------------------------------------------------------------- responsive */
+
+@media (max-width: 720px) {
+  .nav-inner {
+    gap: 10px;
+    padding: 9px 0 10px;
+  }
+  .brand {
+    gap: 7px;
+  }
+  .brand-crest {
+    width: 18px;
+    height: 18px;
+  }
+  .crest {
+    width: 14px;
+    height: 14px;
+  }
+  .brand-title {
+    font-size: 11px;
+  }
+  .nav-links {
+    gap: 0;
+    padding: 2px;
+  }
+  .nav-link {
+    padding: 8px 7px 8px 17px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+  .nav-link::after {
+    left: 5px;
+    width: 7px;
+    height: 9px;
+    margin-top: -4px;
+  }
+  .nav-toggle {
+    width: 27px;
+    height: 27px;
+  }
+  .footer-inner {
+    padding: 8px 0 9px;
+  }
+  .footer-links {
+    gap: 15px;
+  }
+  .footer-link + .footer-link::before {
+    left: -9px;
+  }
+}
+
+/* Small widths: everything gets one notch tighter so the menu stays on a
+   single line as far down as it can.
+
+   The ceiling used to be 420px, back when there were three commands. Blog
+   makes four, and at the standard sizing the command window is 302px wide —
+   which leaves the wordmark less than the 99px it needs until the viewport
+   reaches 516px. So the tight sizing now starts at 515px instead: it takes
+   the window down to 249px, and 90px of name fits from 422px up. Below that
+   the row gives up and wraps — see the block after next. */
+@media (max-width: 515px) {
+  .nav-inner {
+    gap: 8px;
+  }
+  .brand {
+    gap: 6px;
+  }
+  .brand-title {
+    font-size: 10px;
+  }
+  .nav-link {
+    padding: 7px 5px 7px 14px;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+  }
+  .nav-link::after {
+    left: 4px;
+    width: 6px;
+    height: 8px;
+    margin-top: -4px;
+  }
+  /* Down to a 14px glyph in a 24px slot — the smallest the sun reads at
+     before its rays close up into the disc. */
+  .nav-toggle {
+    width: 24px;
+    height: 24px;
+  }
+  .nav-toggle .icon {
+    width: 14px;
+    height: 14px;
+  }
+  /* The toggle costs this row about 32px, and .brand is the flex item that
+     gives way — without this the wordmark clipped to "Eric V…". The crest is
+     the cheapest 24px to give up (the name is the site's identity and a gem
+     beside it is not), and another 9 comes off the command gutters, which
+     still leave the cursor 2px clear of the glyphs. */
+  .brand-crest {
+    display: none;
+  }
+  .nav-link {
+    padding: 7px 4px 7px 12px;
+  }
+}
+
+/* The footer never had the nav's problem — three links and a date, no fourth
+   command — so its own tightening stays where it was. */
+@media (max-width: 420px) {
+  .footer-pip {
+    display: none;
+  }
+  .footer-status {
+    gap: 0;
+  }
+  .footer-link {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+  .footer-links {
+    gap: 13px;
+  }
+  .footer-link + .footer-link::before {
+    left: -8px;
+  }
+}
+
+/* Below 422px the four commands alone want 249px of the row, and the wordmark
+   cannot have the 90px it needs however hard the gutters are squeezed. So the
+   row stops being a row: brand on one line, commands and toggle beneath it,
+   both centred. The nav is a few pixels taller on a phone and the name is
+   whole, which is the better trade.
+
+   This used to fire at 340px, which is where three commands ran out of room.
+   Adding Blog moved the line up: the two rows now cost 281px of the 292px a
+   320px phone has, so this is also about as far down as the layout goes. */
+@media (max-width: 421px) {
+  .nav-inner {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 7px;
+  }
+  /* The brand owns the first line outright. Left to wrap where it likes, the
+     widths just under the ceiling fit the name and all four commands on one
+     line and push the toggle onto the second by itself — a lone sun in an
+     empty row. Breaking after the name instead gives the same two rows at
+     every width in this band: wordmark, then the menu and its toggle. */
+  .brand {
+    flex: 0 0 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .footer-inner {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand:hover .crest-glint {
+    animation: none;
+  }
+}
+
+

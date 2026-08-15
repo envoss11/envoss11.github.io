@@ -1,0 +1,305 @@
+/* ===========================================================================
+   70-familiar — the cat that follows you.
+
+   Summoned from the party window on the About page, then it lives in the
+   viewport on every page until you send it home. Three things keep it honest:
+
+   1. It is fixed to the viewport, not the document, so scrolling does not drag
+      it and it never has to know how tall the page is.
+   2. z-index 60 puts it over .app and the sticky navbar but under the theme
+      wipe (90) and the CRT wash (100) — so the scanlines ride over the cat the
+      way they ride over everything else, and a theme change flashes it out
+      with the rest of the scene rather than leaving it stranded on top.
+   3. The sprite animation is CSS. site.js moves the cat; it does not draw it.
+      The walk cycle is two frames alternated by a stepped opacity keyframe,
+      which is why there is still no per-frame script anywhere on this site.
+
+   Transforms are split deliberately. .familiar carries the position and only
+   the position, set from script. The sprite inside carries the facing (`scale`)
+   and the hop (`translate`) as separate CSS properties, so neither one fights
+   the other and the hint tag never ends up mirrored.
+   ======================================================================== */
+
+.familiar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 60;
+  width: 60px;
+  height: 48px;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Belt and braces: this element is display-less by default so [hidden] works,
+   but it is fixed-position decoration and a stray display rule would strand a
+   cat on screen with no way to dismiss it. */
+.familiar[hidden] {
+  display: none;
+}
+
+/* 20x16 at exactly 3x. Only the sprite takes pointer events — the box around
+   it does not, or the hint tag would eat clicks meant for the page. */
+.familiar-sprite {
+  display: block;
+  width: 60px;
+  height: 48px;
+  pointer-events: auto;
+  cursor: pointer;
+  transform-origin: 50% 100%;
+}
+
+.familiar[data-facing="left"] .familiar-sprite {
+  scale: -1 1;
+}
+
+/* ------------------------------------------------------------------ palette */
+
+.familiar[data-cat="artemis"] {
+  --fam-fur: var(--artemis-fur);
+  --fam-shade: var(--artemis-shade);
+  --fam-line: var(--artemis-line);
+  --fam-eye: var(--artemis-eye);
+}
+
+.familiar[data-cat="apollo"] {
+  --fam-fur: var(--apollo-fur);
+  --fam-shade: var(--apollo-shade);
+  --fam-line: var(--apollo-line);
+  --fam-eye: var(--apollo-eye);
+}
+
+.fam-fur { fill: var(--fam-fur); }
+.fam-shade { fill: var(--fam-shade); }
+.fam-line { fill: var(--fam-line); }
+.fam-eye { fill: var(--fam-eye); }
+/* the collar tag and the Zzz are site accents, not cat colours */
+.fam-tag { fill: var(--gold); }
+.fam-zzz { fill: var(--crystal); }
+
+/* --------------------------------------------------------- which cat, which
+   pose
+
+   Both cats and all six of their frames are in the document at once; this is
+   the whole of the switching logic.
+   ------------------------------------------------------------------------ */
+
+.fam-cat,
+.fam-frame {
+  display: none;
+}
+
+.familiar[data-cat="artemis"] .fam-cat[data-cat="artemis"],
+.familiar[data-cat="apollo"] .fam-cat[data-cat="apollo"],
+.familiar[data-pose="sit"] .fam-frame[data-frame="sit"],
+.familiar[data-pose="groom"] .fam-frame[data-frame="groom"],
+.familiar[data-pose="alert"] .fam-frame[data-frame="alert"],
+.familiar[data-pose="sleep"] .fam-frame[data-frame="sleep"],
+.familiar[data-pose="walk"] .fam-frame[data-frame="walk-a"],
+.familiar[data-pose="walk"] .fam-frame[data-frame="walk-b"],
+.familiar[data-pose="run"] .fam-frame[data-frame="walk-a"],
+.familiar[data-pose="run"] .fam-frame[data-frame="walk-b"] {
+  display: block;
+}
+
+/* Walking renders both frames stacked and alternates them on a hard cutoff —
+   no blending, a sprite either is or is not the next frame. walk-b rests
+   transparent so the still state is a whole frame rather than a double
+   exposure. */
+.fam-frame[data-frame="walk-b"] {
+  opacity: 0;
+}
+
+.familiar[data-pose="walk"] .fam-frame[data-frame="walk-a"],
+.familiar[data-pose="walk"] .fam-frame[data-frame="walk-b"],
+.familiar[data-pose="run"] .fam-frame[data-frame="walk-a"],
+.familiar[data-pose="run"] .fam-frame[data-frame="walk-b"] {
+  animation: fam-step 0.36s steps(1, end) infinite;
+}
+
+.familiar[data-pose="walk"] .fam-frame[data-frame="walk-b"] {
+  animation-delay: 0.18s;
+}
+
+.familiar[data-pose="run"] .fam-frame[data-frame="walk-a"],
+.familiar[data-pose="run"] .fam-frame[data-frame="walk-b"] {
+  animation-duration: 0.2s;
+}
+
+.familiar[data-pose="run"] .fam-frame[data-frame="walk-b"] {
+  animation-delay: 0.1s;
+}
+
+@keyframes fam-step {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+/* A sitting cat that is perfectly still reads as a decal. One pixel of breath
+   is enough to stop that. */
+.familiar[data-pose="sit"] .familiar-sprite,
+.familiar[data-pose="groom"] .familiar-sprite {
+  animation: fam-breathe 3.4s var(--ease-step) infinite;
+}
+
+@keyframes fam-breathe {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 1px; }
+}
+
+/* Units here are viewBox units, not device pixels: 1 is a whole fat sprite
+   pixel, which is as far as a Zzz needs to drift. */
+.familiar[data-pose="sleep"] .fam-zzz {
+  animation: fam-zzz 2.6s var(--ease-step) infinite;
+}
+
+@keyframes fam-zzz {
+  0% { opacity: 0; translate: 0 1px; }
+  30% { opacity: 1; translate: 0 0; }
+  70% { opacity: 1; translate: 0 -1px; }
+  100% { opacity: 0; translate: 0 -2px; }
+}
+
+/* ------------------------------------------------------------ being handled */
+
+/* Ordered after fam-breathe on purpose: the two rules match at the same
+   specificity, and a petted cat should hop rather than keep breathing. */
+.familiar.is-petted .familiar-sprite {
+  animation: fam-hop 0.42s var(--ease-step);
+}
+
+@keyframes fam-hop {
+  0% { translate: 0 0; }
+  35% { translate: 0 -7px; }
+  60% { translate: 0 0; }
+  78% { translate: 0 -3px; }
+  100% { translate: 0 0; }
+}
+
+.fam-heart {
+  position: absolute;
+  left: 50%;
+  top: 2px;
+  width: 14px;
+  height: 12px;
+  margin-left: -7px;
+  pointer-events: none;
+  background: var(--magic);
+  -webkit-mask-image: var(--fam-heart-mask);
+  mask-image: var(--fam-heart-mask);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  animation: fam-float 0.9s var(--ease-step) forwards;
+}
+
+.familiar {
+  /* A pixel heart on a 7x6 grid, used as a mask so the fill stays a token. */
+  --fam-heart-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 6' shape-rendering='crispEdges'%3E%3Cpath d='M1 0h2v1h-2zM4 0h2v1h-2zM0 1h7v2h-7zM1 3h5v1h-5zM2 4h3v1h-3zM3 5h1v1h-1z'/%3E%3C/svg%3E");
+}
+
+@keyframes fam-float {
+  0% { opacity: 0; translate: 0 0; }
+  25% { opacity: 1; }
+  100% { opacity: 0; translate: 0 -22px; }
+}
+
+/* The hold-to-dismiss gauge. It only appears once you are already holding, so
+   it reads as confirmation rather than as a control bolted to the cat. */
+.fam-gauge {
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  width: 26px;
+  height: 4px;
+  margin-left: -13px;
+  pointer-events: none;
+  opacity: 0;
+  background: rgb(var(--rgb-well) / .82);
+  box-shadow: 0 0 0 2px var(--frame-dark);
+}
+
+.fam-gauge::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--gold);
+}
+
+.familiar.is-holding .fam-gauge {
+  opacity: 1;
+}
+
+.familiar.is-holding .fam-gauge::after {
+  animation: fam-fill 700ms linear forwards;
+}
+
+@keyframes fam-fill {
+  to { width: 100%; }
+}
+
+/* Shown once, ever. After that the gesture is known and the tag is noise. */
+.fam-hint {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 4px);
+  transform: translateX(-50%);
+  padding: 3px 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  font-family: var(--ui);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-shadow: var(--text-shadow);
+  background: var(--plate-fill);
+  border: 2px solid var(--frame-mid);
+}
+
+.fam-hint[hidden] {
+  display: none;
+}
+
+/* ------------------------------------------------------------ reduced motion
+
+   Core already clamps every animation, but a clamped animation lands on its
+   *last* keyframe — which for the Zzz is opacity 0 and for the walk cycle is a
+   blank frame. Land each one on a resting state instead. site.js does the rest:
+   with reduced motion it repositions the cat in steps rather than gliding it.
+   ------------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .familiar[data-pose="walk"] .fam-frame[data-frame="walk-a"],
+  .familiar[data-pose="walk"] .fam-frame[data-frame="walk-b"],
+  .familiar[data-pose="run"] .fam-frame[data-frame="walk-a"],
+  .familiar[data-pose="run"] .fam-frame[data-frame="walk-b"],
+  .familiar[data-pose="sit"] .familiar-sprite,
+  .familiar[data-pose="groom"] .familiar-sprite,
+  .familiar[data-pose="sleep"] .fam-zzz,
+  .familiar.is-petted .familiar-sprite,
+  .familiar.is-holding .fam-gauge::after,
+  .fam-heart {
+    animation: none;
+  }
+
+  /* walk-a is the whole frame; keep b out of the way */
+  .familiar[data-pose="walk"] .fam-frame[data-frame="walk-b"],
+  .familiar[data-pose="run"] .fam-frame[data-frame="walk-b"] {
+    opacity: 0;
+  }
+
+  .familiar[data-pose="sleep"] .fam-zzz {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  /* holding still has to show progress, so the gauge simply reads full */
+  .familiar.is-holding .fam-gauge::after {
+    width: 100%;
+  }
+
+  .fam-heart {
+    opacity: 1;
+  }
+}

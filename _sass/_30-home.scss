@@ -1,0 +1,452 @@
+/* ==========================================================================
+   home
+   ========================================================================== */
+
+/* ==========================================================================
+   30-home — the landing page as a character status window.
+
+   Three pieces:
+     1. .status-window  — portrait in a sprite slot, name on a nameplate bar.
+     2. .crest          — the gold rail + crystals that replaces the old sprig.
+     3. .simple-list    — the ability list (shared with the About page, so
+                          those rules stay generic; home-only rules are
+                          scoped under .home).
+   ========================================================================== */
+
+/* ------------------------------------------------- 1. the status window */
+
+.home .status-window {
+  padding: 28px 28px 30px;
+}
+
+/* Wider left column so the portrait's slot frame has room to breathe. */
+.home .hero-grid {
+  grid-template-columns: 244px 1fr;
+  gap: 30px;
+}
+
+/* The sprite slot: a sunken well with a faint checker weave showing through
+   the margin around the portrait, the way an empty equipment square looks
+   before you drop something into it. */
+.home .sprite-slot {
+  padding: 12px;
+  justify-self: center;
+  border: 2px solid var(--frame-mid);
+  background-color: rgb(var(--rgb-well) / .72);
+  background-image:
+    linear-gradient(45deg, rgb(var(--rgb-frame-mid) / .14) 25%, transparent 25% 75%, rgb(var(--rgb-frame-mid) / .14) 75%),
+    linear-gradient(45deg, rgb(var(--rgb-frame-mid) / .14) 25%, transparent 25% 75%, rgb(var(--rgb-frame-mid) / .14) 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 4px 4px;
+  box-shadow:
+    inset 0 0 0 2px rgb(var(--rgb-well) / .8),
+    0 0 0 2px var(--frame-dark),
+    0 5px 0 rgb(var(--rgb-shade) / .4);
+  transition: border-color 0.14s var(--ease-step);
+}
+
+/* Four gold rivets pinned into the slot's corners — one element, four
+   background layers, same trick core uses on .surface. */
+.home .sprite-slot::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: 2;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--gold), var(--gold)),
+    linear-gradient(var(--gold), var(--gold)),
+    linear-gradient(var(--gold), var(--gold)),
+    linear-gradient(var(--gold), var(--gold));
+  background-size: 4px 4px;
+  background-repeat: no-repeat;
+  background-position: 0 0, 100% 0, 0 100%, 100% 100%;
+}
+
+.home .sprite-slot .portrait {
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 0 2px var(--frame-dark);
+}
+
+.home .sprite-slot:hover {
+  border-color: var(--gold);
+}
+
+/* ---------------------------------------------------------- nameplate */
+
+/* The bar the character's name sits on: a shallow sunken plate with a lit
+   top edge, a hard bottom shadow, and gold brackets on opposite corners. */
+.home .nameplate {
+  position: relative;
+  display: block;
+  width: -moz-fit-content;
+  width: fit-content;
+  max-width: 100%;
+  padding: 12px 22px 15px 20px;
+  background: var(--nameplate-fill);
+  border-top: 2px solid rgb(var(--rgb-frame-lit) / .3);
+  border-bottom: 2px solid rgb(var(--rgb-frame-dark) / .8);
+}
+
+.home .nameplate::after,
+.home .nameplate::before {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--gold), var(--gold)),
+    linear-gradient(var(--gold), var(--gold));
+  background-repeat: no-repeat;
+  background-size: 16px 2px, 2px 16px;
+}
+
+.home .nameplate::after {
+  top: -2px;
+  right: -2px;
+  background-position: 100% 0, 100% 0;
+}
+
+.home .nameplate::before {
+  bottom: -2px;
+  left: -2px;
+  background-position: 0 100%, 0 100%;
+}
+
+/* The kicker reads as the class line above the name, so it gets a menu
+   bullet in front of it. */
+.home .hero-class {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11.5px;
+  letter-spacing: 0.2em;
+}
+
+.home .hero-class::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  box-shadow: 0 0 0 2px rgb(var(--rgb-frame-dark) / .65);
+}
+
+.home .hero-name {
+  margin-top: 10px;
+}
+
+.home .status-window .lede {
+  margin-top: 20px;
+}
+
+/* --------------------------------------------------- 2. the crest rail */
+
+.home .crest {
+  display: block;
+  width: 100%;
+  max-width: 384px;
+  height: auto;
+  margin: 24px 0 2px;
+  overflow: visible;
+}
+
+.home .crest-rail {
+  fill: var(--gold-deep);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: crest-open 0.45s var(--ease-step) both;
+}
+
+.home .crest-caps {
+  fill: var(--gold);
+  animation: crest-fade 0.2s steps(2, end) both;
+  animation-delay: 0.44s;
+}
+
+.home .crest-gem {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: crest-gem-pop 0.28s steps(4, end) both;
+}
+
+.home .crest-gem--crystal {
+  fill: var(--crystal);
+}
+
+.home .crest-gem--magic {
+  fill: var(--magic);
+}
+
+.home .crest-gem--gold {
+  fill: var(--gold);
+}
+
+.home .crest-glint {
+  fill: #fff;
+  opacity: 0.85;
+}
+
+@keyframes crest-open {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes crest-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes crest-gem-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.45);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ------------------------------------------------------ the dialogue box */
+
+/* Body copy inside the intro window reads as the dialogue line: generous
+   leading, the opening paragraph in the brighter ink. */
+.home .copy {
+  max-width: 68ch;
+  font-size: 16.5px;
+}
+
+.home .copy p {
+  line-height: 1.85;
+}
+
+.home .copy p:first-child {
+  color: var(--ink);
+}
+
+/* ---------------------------------------------- the command menu row */
+
+/* The social links become a row of menu commands, fenced off from the
+   dialogue above by the same pixel rail core uses for .rule. */
+.home-links {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+  padding-top: 22px;
+}
+
+.home-links::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background-image: linear-gradient(90deg, var(--frame-mid) 50%, transparent 50%);
+  background-size: 6px 2px;
+  opacity: 0.6;
+}
+
+/* A selectable command slot. The left gutter is reserved for the cursor so
+   nothing shifts when it appears. */
+.cmd-link {
+  padding: 9px 14px 9px 28px;
+  border: 2px solid var(--frame-mid);
+  background: var(--sunken);
+  color: var(--ink-soft);
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  box-shadow: 0 3px 0 rgb(var(--rgb-shade) / .4);
+  transition: transform 0.12s var(--ease-step), border-color 0.12s var(--ease-step),
+    color 0.12s var(--ease-step), background 0.12s var(--ease-step),
+    box-shadow 0.12s var(--ease-step);
+}
+
+.cmd-link .icon {
+  color: var(--crystal);
+  transition: color 0.12s var(--ease-step);
+}
+
+.cmd-link:hover,
+.cmd-link:focus-visible {
+  transform: translateY(-2px);
+  background: rgb(var(--rgb-gold) / .14);
+  border-color: var(--gold);
+  color: var(--ink-bright);
+  box-shadow: 0 5px 0 rgb(var(--rgb-shade) / .45);
+}
+
+.cmd-link:hover .icon,
+.cmd-link:focus-visible .icon {
+  color: var(--gold);
+}
+
+.cmd-link:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 rgb(var(--rgb-shade) / .4);
+}
+
+.cmd-link.has-cursor::after {
+  left: 9px;
+}
+
+.home .section-head {
+  align-items: center;
+}
+
+/* --------------------------------------------- 3. the ability list rows */
+
+/* Shared with the About page's skills section — keep these generic. The
+   markup contract is only what core already assumes: an optional
+   .simple-icon, then .simple-body. */
+
+.simple-list {
+  display: grid;
+  gap: 6px;
+}
+
+.simple-item {
+  position: relative;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 14px;
+  padding: 12px 14px 13px 28px;
+  background: var(--sunken);
+  border: 2px solid rgb(var(--rgb-frame-mid) / .32);
+  box-shadow: inset 0 2px 0 rgb(var(--rgb-frame-lit) / .06);
+  transition: background 0.12s var(--ease-step), border-color 0.12s var(--ease-step),
+    box-shadow 0.12s var(--ease-step);
+}
+
+.simple-item:hover,
+.simple-item:focus-within {
+  background: rgb(var(--rgb-gold) / .1);
+  border-color: var(--gold);
+  box-shadow: inset 0 2px 0 rgb(var(--rgb-gold) / .14);
+}
+
+/* Align the cursor with the category label rather than the row's midpoint —
+   these rows run two or three lines tall. */
+.simple-item.has-cursor::after {
+  left: 9px;
+  top: 22px;
+  margin-top: 0;
+}
+
+/* The icon gets its own framed slot, like an ability's element badge. */
+.simple-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin-top: 0;
+  color: var(--crystal);
+  border: 2px solid var(--frame-mid);
+  background: var(--badge-fill);
+  box-shadow: inset 0 0 0 1px rgb(var(--rgb-frame-dark) / .7), 0 2px 0 rgb(var(--rgb-shade) / .4);
+  transition: color 0.12s var(--ease-step), border-color 0.12s var(--ease-step),
+    background 0.12s var(--ease-step);
+}
+
+.simple-icon .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.simple-item:hover .simple-icon,
+.simple-item:focus-within .simple-icon {
+  color: var(--gold);
+  border-color: var(--gold);
+  background: rgb(var(--rgb-gold) / .16);
+}
+
+.simple-body {
+  gap: 6px;
+  padding-top: 1px;
+}
+
+.simple-category {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-shadow: var(--text-shadow);
+}
+
+.simple-desc {
+  max-width: 68ch;
+}
+
+/* The rows carry their own frames, so the window around them sits tight. */
+.home .section .panel {
+  padding: 14px;
+}
+
+/* ------------------------------------------------------------ responsive */
+
+@media (max-width: 860px) {
+  .home .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .home .status-window {
+    padding: 22px 22px 24px;
+  }
+  .home .sprite-slot {
+    justify-self: start;
+    padding: 10px;
+  }
+  .home .nameplate {
+    padding: 11px 18px 13px 16px;
+  }
+}
+
+@media (max-width: 720px) {
+  .home .crest {
+    margin-top: 20px;
+  }
+  .simple-item {
+    padding: 11px 12px 12px 26px;
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 12px;
+  }
+  .simple-icon {
+    width: 30px;
+    height: 30px;
+  }
+  .cmd-link {
+    padding: 8px 12px 8px 26px;
+    font-size: 11px;
+    letter-spacing: 0.09em;
+  }
+}
+
+/* ---------------------------------------------------------- reduced motion */
+
+/* Core already clamps every animation to a hair's duration; these land on
+   their finished state explicitly so nothing can be left invisible. */
+@media (prefers-reduced-motion: reduce) {
+  .home .crest-rail,
+  .home .crest-caps,
+  .home .crest-gem {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
