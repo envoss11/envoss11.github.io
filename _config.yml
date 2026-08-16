@@ -39,9 +39,14 @@ sass:
 permalink: /:collection/:title/
 
 collections:
-  portfolio:
+  # Work in progress: live, but quiet. A separate collection rather than a flag
+  # on a post, because that is what keeps these out of /feed.xml — jekyll-feed
+  # has no per-entry exclusion and reads site.posts only, unless a collection is
+  # named under a `feed: collections:` key. This config does not have one and
+  # must not gain one.
+  wip:
     output: true
-    permalink: /projects/:path/
+    permalink: /posts/wip/:path/
 
 include:
   - _pages
@@ -58,21 +63,27 @@ exclude:
   - README.md
 
 defaults:
-  - scope:
-      path: ""
-      type: portfolio
-    values:
-      layout: project
-  # The blog runs on plain posts rather than a second collection, so dates,
-  # ordering, and the jekyll-feed RSS at /feed.xml all come for free. The
-  # permalink override is what puts them under /blog/ instead of the
-  # /:collection/:title/ above, which would resolve to /posts/.
+  # Everything finished is a post: one section, one layout, dates and ordering
+  # and the jekyll-feed RSS at /feed.xml for free. The permalink here is what
+  # the global /:collection/:title/ would resolve to anyway — spelled out so it
+  # sits next to /posts/wip/ below, where the relationship is visible.
   - scope:
       path: ""
       type: posts
     values:
       layout: post
-      permalink: /blog/:title/
+      permalink: /posts/:title/
+  # A WIP note is a real page at a real URL — it just does not go looking for
+  # readers. sitemap: false is the same mechanism the redirect stubs use;
+  # noindex renders the robots meta in head.html.
+  - scope:
+      path: ""
+      type: wip
+    values:
+      layout: post
+      sitemap: false
+      noindex: true
+      kicker: "Work in progress"
   - scope:
       path: "_pages"
       type: pages

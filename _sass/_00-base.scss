@@ -1267,9 +1267,13 @@ img {
   color: var(--gold);
 }
 
-/* --------------------------------------------------------------- projects */
+/* ------------------------------------------------------------------ posts */
 
-.projects {
+/* The /posts/ wrapper. `.projects-*` below keeps its prefix on purpose — those
+   are the card-grid components, and `.projects-section` is also the About
+   page's section wrapper, so the sweep would cost more than the name is
+   worth. */
+.posts {
   display: grid;
   gap: 22px;
 }
@@ -1458,6 +1462,10 @@ img {
   gap: 8px;
 }
 
+/* Two element types land here: the works-in-progress drawer's rows are <a>s
+   pointing at real pages, the _data/archive.yml rows below are <div>s that go
+   nowhere. No anchor reset needed — the global `a` rule above already gives
+   both `color: inherit` and no underline. */
 .archive-row {
   display: grid;
   gap: 7px;
@@ -1744,12 +1752,6 @@ img {
 @media (max-width: 980px) {
   .projects-grid {
     grid-template-columns: 1fr;
-  }
-  /* Badge over copy — side by side it squeezes the sentence to a column. */
-  .wip-notice {
-    grid-template-columns: 1fr;
-    justify-items: start;
-    gap: 12px;
   }
   .project-card--wide {
     grid-template-columns: 1fr;

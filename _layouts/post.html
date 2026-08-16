@@ -2,9 +2,14 @@
 layout: default
 ---
 {%- comment -%}
-The write-up layout's quieter cousin. Same furniture — hero, head, prose — but
-a post is dated and sits in a sequence, so it carries a date plate and the
-step-back/step-forward pair instead of a facts table and outbound links.
+One layout for everything with a date on it — the long write-up with a facts
+table and outbound links, the Sunday note that is two paragraphs and out, and
+the half-formed WIP note in between. Every block below the title is guarded, so
+an entry that has none of the optional front matter still holds together.
+
+Serves both `_posts` and the `wip` collection. The differences are small enough
+to be two guards: WIP notes get the standing banner, and they do not get the
+step-back/step-forward pair.
 {%- endcomment -%}
 <article class="article post">
 
@@ -16,9 +21,15 @@ step-back/step-forward pair instead of a facts table and outbound links.
   {%- endif -%}
 
   <header class="article-head surface reveal">
-    <div class="kicker">Blog</div>
+    {%- comment -%} The `wip` defaults scope supplies "Work in progress". {%- endcomment -%}
+    <div class="kicker">{{ page.kicker | default: "Post" }}</div>
     <h1 class="page-title">{{ page.title }}</h1>
 
+    {%- comment -%}
+    Date first, tags after. A date is universal now, so the byline is the right
+    home for both — a separate tag row above the links would repeat furniture
+    the byline already owns.
+    {%- endcomment -%}
     <div class="post-byline">
       <time class="post-stamp" datetime="{{ page.date | date_to_xmlschema }}">
         {{ page.date | date: "%b %-d, %Y" }}
@@ -31,32 +42,86 @@ step-back/step-forward pair instead of a facts table and outbound links.
     </div>
 
     {%- if page.excerpt %}<p class="page-sub">{{ page.excerpt | strip_html | strip_newlines }}</p>{% endif -%}
+
+    {%- if page.links -%}
+    <div class="article-links">
+      {%- for link in page.links -%}
+      <a class="pill" href="{{ link.url | relative_url }}"{% if link.url contains "http" %} rel="noopener"{% endif %}>
+        {%- include icon.html name=link.icon -%}
+        <span>{{ link.label }}</span>
+      </a>
+      {%- endfor -%}
+    </div>
+    {%- endif -%}
+
+    {%- if page.facts -%}
+    {%- comment -%} Status window: label, dotted leader, value. {%- endcomment -%}
+    <div class="article-facts">
+      {%- for fact in page.facts -%}
+      <div class="fact-row">
+        <span class="fact-label">{{ fact.label }}</span>
+        <span class="fact-lead" aria-hidden="true"></span>
+        <span class="fact-value">{{ fact.value }}</span>
+      </div>
+      {%- endfor -%}
+    </div>
+    {%- endif -%}
   </header>
 
-  {%- comment -%} No reveal on the body — see the note in project.html. {%- endcomment -%}
+  {%- comment -%}
+  The sign taped to the window, moved off the index pages and onto the notes it
+  is actually about. No .reveal: it is short, above the fold, and the first
+  thing a reader needs in order to judge what they are looking at.
+  {%- endcomment -%}
+  {%- if page.collection == 'wip' -%}
+  <aside class="wip-notice" aria-label="Page status">
+    <span class="wip-badge">
+      <span class="wip-blip" aria-hidden="true"></span>
+      <span>Work in progress</span>
+    </span>
+    <p class="wip-copy">
+      This one is being written in public and is not finished. Expect gaps, loose
+      ends, and conclusions I may walk back. It is out of the feed and out of the
+      sitemap until it earns a date on the log.
+    </p>
+  </aside>
+  {%- endif -%}
+
+  {%- comment -%}
+  No reveal on the body: it is tall enough that fading it in leaves a blank
+  screen while you scroll.
+  {%- endcomment -%}
   <div class="prose surface">
     {{ content }}
   </div>
 
+  {%- comment -%}
+  The guard is explicit rather than leaning on `page.previous` being empty.
+  Jekyll's DocumentDrop defines `previous`/`next` for collection documents too,
+  so WIP notes would happily chain to each other — and chaining unrelated
+  half-formed research notes is noise, not navigation.
+  {%- endcomment -%}
+  {%- unless page.collection == 'wip' -%}
   {%- if page.previous or page.next -%}
   <nav class="post-nav" aria-label="More posts">
     {%- if page.next -%}
-    <a class="post-nav-link post-nav-link--prev has-cursor" href="{{ page.next.url | relative_url }}">
+    <a class="post-nav-link has-cursor" href="{{ page.next.url | relative_url }}">
       <span class="post-nav-label">{% include icon.html name="arrow" class="icon icon-flip" %}Newer</span>
       <span class="post-nav-title">{{ page.next.title }}</span>
     </a>
     {%- endif -%}
     {%- if page.previous -%}
-    <a class="post-nav-link post-nav-link--next has-cursor" href="{{ page.previous.url | relative_url }}">
+    <a class="post-nav-link has-cursor" href="{{ page.previous.url | relative_url }}">
       <span class="post-nav-label">Older{% include icon.html name="arrow" %}</span>
       <span class="post-nav-title">{{ page.previous.title }}</span>
     </a>
     {%- endif -%}
   </nav>
   {%- endif -%}
+  {%- endunless -%}
 
   <p class="article-back">
-    <a class="home-link" href="{{ '/blog/' | relative_url }}">{% include icon.html name="arrow" class="icon icon-flip" %}<span>All posts</span></a>
+    <a class="home-link" href="{{ '/posts/' | relative_url }}">{% include icon.html name="arrow" class="icon icon-flip" %}<span>All posts</span></a>
   </p>
 
 </article>

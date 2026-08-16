@@ -1,26 +1,28 @@
 /* ==========================================================================
-   projects
+   posts
    ========================================================================== */
 
 /* ==========================================================================
-   50-projects — the shop window and the lore page.
+   50-posts — the shop window and the lore page.
 
    Two rooms:
-   1. /projects/  — a list of treasure. Each card is an item slot: a rarity
-      rail down the left gutter, a landing strip for the menu cursor, and a
-      framed portrait of the goods. The archive below it is the records
-      drawer you pull open at the bottom of the same menu.
-   2. /projects/<x>/ — the write-up. Furniture gets the 16-bit treatment
-      (section plates, sunken wells, stat lines) but the running text stays
-      at a size you can read for ten minutes. Charts are never pixelated:
-      a blurred ROC curve is just a lie.
+   1. The top of /posts/ — a shelf of treasure. Each card is an item slot: a
+      rarity rail down the left gutter, a landing strip for the menu cursor,
+      and a framed portrait of the goods. Only entries carrying
+      `featured: true` get one. The two drawers at the bottom of the page are
+      the records you pull open at the end of the same menu.
+   2. /posts/<x>/ and /posts/wip/<x>/ — the entry itself. Furniture gets the
+      16-bit treatment (section plates, sunken wells, stat lines) but the
+      running text stays at a size you can read for ten minutes. Charts are
+      never pixelated: a blurred ROC curve is just a lie.
+
+   The ledger half of /posts/ — the dated log under the grid — is 55-log.
    ========================================================================== */
 
 /* --------------------------------------------------------- index: header */
 
-/* The kicker reads as the window's tab rather than a floating label.
-   Unscoped on purpose: .page-header is the index-page header, and both
-   indexes — /projects/ and /blog/ — are the same piece of furniture. */
+/* The kicker reads as the window's tab rather than a floating label. Left
+   unscoped: .page-header is the index-page header, and there is one index. */
 .page-header .kicker {
   display: inline-block;
   padding: 5px 10px;
@@ -35,12 +37,16 @@
   border-top: 2px solid var(--faint);
 }
 
-/* --------------------------------------------------------- index: notice */
+/* ------------------------------------------------------- article: notice */
 
-/* The "back shortly" sign taped to the shop window. Sits between the header
-   and the grid, so it is the first thing read after the page title. Sunken
-   rather than a .surface of its own: it is a note about the room, not another
-   window in it. Temporary — see the matching comment in _pages/projects.html. */
+/* The sign taped to the window, on the pages it is actually about: a WIP note
+   carries it between the header and the prose, so it is the first thing read
+   after the title and the standfirst. Sunken rather than a .surface of its
+   own — it is a note about the room, not another window in it.
+
+   This started life as the "back shortly" notice on the two index pages. The
+   styling was always written for a note about the page it sits on, so moving
+   it onto the notes themselves fits it better than it fitted an index. */
 .wip-notice {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
@@ -418,10 +424,6 @@
   border-top: 2px solid var(--faint);
 }
 
-.article-head .article-tags {
-  margin-top: 16px;
-}
-
 /* The command row. */
 .article-head .article-links {
   margin-top: 18px;
@@ -630,11 +632,10 @@
    card padding, so it keeps running the full height and the cursor lands in
    the same place either way — nothing to undo. */
 
-/* Core already asks for this at 980px, but it asks too early in the file: the
-   two-column default below it is written here, at the same specificity, so it
-   won the cascade on source order and the badge kept its column all the way
-   down to 320px — a sentence in an 8-character gutter. Restated here, after
-   the rule it is meant to override. Both indexes use the notice. */
+/* Badge over copy — side by side it squeezes the sentence into a column. Core
+   used to carry a copy of this rule too, and lost the cascade to the
+   two-column default written below it here; the duplicate is gone and this is
+   the only one. */
 @media (max-width: 980px) {
   .wip-notice {
     grid-template-columns: 1fr;

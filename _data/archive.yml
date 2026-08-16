@@ -1,7 +1,7 @@
 # Smaller pieces of work that don't have a full write-up of their own.
 #
 # Renders as the collapsible "Other analyses & coursework" list at the bottom
-# of /projects/. Each row takes:
+# of /posts/, under the works-in-progress drawer. Each row takes:
 #
 #   name        required — the heading on the row
 #   tag         optional — the small pill beside the name, e.g. "Python · SQL"

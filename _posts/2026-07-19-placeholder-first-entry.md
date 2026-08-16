@@ -14,15 +14,17 @@ tags_list:
 open — replace it with something worth reading.
 
 A post starts wherever it wants to. There is no question being answered here and
-no deliverable at the end, which is the whole difference between this and the
-projects page: that one is for work I set out to do, and this one is for
-whatever I happened to be thinking about that week.
+no deliverable at the end, which is the whole difference between this and a
+write-up: those are for work I set out to do, and this is for whatever I
+happened to be thinking about that week. Both live in the same section, and the
+ones with a result worth photographing get `featured: true` and a card at the
+top of it.
 
 ## A heading, if it needs one
 
-Second-level headings get a chapter plate, the same as a project write-up. Most
+Second-level headings get a chapter plate, the same as a full write-up. Most
 posts will not need more than one or two — if an entry has grown a table of
-contents it has probably turned into a project.
+contents it has probably turned into a write-up.
 
 Body copy supports the usual Markdown: *emphasis*, `inline code`,
 [links](https://example.com/), lists, and block quotes.
@@ -34,7 +36,7 @@ Body copy supports the usual Markdown: *emphasis*, `inline code`,
 
 The filename carries the date — `_posts/YYYY-MM-DD-some-title.md` — and that
 date is what sorts the log and stamps the plate beside the entry. The slug after
-the date becomes the URL, so `/blog/some-title/`.
+the date becomes the URL, so `/posts/some-title/`.
 
 Everything in the front matter above `tags_list` is optional except the title.
 Drop the tags and the row closes up; add an image and the post gets a hero. The

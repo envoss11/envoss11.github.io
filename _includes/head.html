@@ -12,6 +12,13 @@
 <title>{{ page_title }}</title>
 <meta name="description" content="{{ page_desc }}">
 <meta name="author" content="{{ profile.name }}">
+{%- comment -%}
+Set by the `wip` defaults scope in _config.yml. Keeping a half-formed note out
+of the sitemap only stops it being volunteered; this is what asks a crawler
+that found it anyway not to index it. The page stays reachable by anyone with
+the link, which is the whole point of the tier.
+{%- endcomment -%}
+{%- if page.noindex %}<meta name="robots" content="noindex, follow">{% endif %}
 <link rel="canonical" href="{{ page.url | absolute_url }}">
 
 <meta property="og:type" content="website">

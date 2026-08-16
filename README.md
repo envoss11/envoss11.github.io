@@ -1,8 +1,8 @@
 # ericvoss.com
 
-A career landing page, a blog, and project write-ups, on a hand-written Jekyll
-theme. No framework, no build step beyond Jekyll: the site ships as plain HTML,
-one stylesheet, and one JavaScript file.
+A career landing page and everything I write, on a hand-written Jekyll theme.
+No framework, no build step beyond Jekyll: the site ships as plain HTML, one
+stylesheet, and one JavaScript file.
 
 Live at **https://www.ericvoss.com** (custom domain, set by `CNAME`).
 
@@ -43,10 +43,10 @@ images, which is most of what actually breaks here.
 | | |
 |---|---|
 | `_data/` | The content that repeats: `profile.yml` (name, tagline, portrait, links), `career.yml`, `education.yml`, `certifications.yml`, `skills.yml`, `focus.yml`, `archive.yml`, `navigation.yml`. Each file's header comment documents its fields. Edit these, not the markup. |
-| `_posts/` | Blog entries, `YYYY-MM-DD-slug.md`, served at `/blog/<slug>/`. |
+| `_posts/` | Everything finished, `YYYY-MM-DD-slug.md`, served at `/posts/<slug>/`. |
+| `_wip/` | Notes being drafted in public. Live at `/posts/wip/<slug>/`, out of the feed and the sitemap, listed in a collapsed drawer. |
 | `_drafts/` | Unfinished posts. Visible under `make serve`, never published. |
-| `_portfolio/` | Project write-ups, served at `/projects/<slug>/`. |
-| `_pages/` | The standalone pages — About, Projects, Blog — plus six redirect stubs preserving URLs from the pre-2026 site. |
+| `_pages/` | The standalone pages — About and Posts — plus the redirect stubs preserving URLs from the pre-2026 site. |
 | `_layouts/`, `_includes/` | The theme. `head.html` does canonical, OG, and Twitter card by hand. |
 | `_sass/` | Nine partials, loaded in order by `assets/css/site.scss` and compiled to one minified `/assets/css/site.css`. Section numbering is load order. |
 | `assets/` | `js/site.js`, the four self-hosted woff2 faces, images, favicons. |
@@ -71,19 +71,37 @@ that shouldn't be cropped.
 silently will not publish.** `make publish` stamps today, so this only bites if
 you hand-name a file with tomorrow's date.
 
-### Adding a project
+### Write-ups
 
-Copy `_portfolio/placeholder-one.md` to `_portfolio/<slug>.md` and fill it in.
-It documents every field: the `facts` table under the header, the `links` pill
-buttons (`icon: external | github | file`), tags, and the hero image. `order`
-sorts the cards on `/projects/`, lowest first.
+A project write-up is a post with more front matter, not a separate section.
+Add `featured: true` and it also gets a card in the grid at the top of
+`/posts/`; `order` sorts that grid, lowest first, and does nothing anywhere
+else. `_posts/2026-06-14-placeholder-full-write-up.md` documents the rest — the
+`facts` table under the header and the `links` pill buttons
+(`icon: external | github | file`).
+
+One section rather than two: the difference between a write-up and a Sunday
+note is real, but it's a difference in treatment, not in URL. Both get date
+ordering, newer/older links, and `/feed.xml`.
 
 Small pieces of work that don't merit a page go in `_data/archive.yml` instead
-and render as the collapsible list at the bottom of `/projects/`.
+and render as the collapsible list at the bottom of `/posts/`.
 
-Posts and projects stay separate on purpose: posts get date ordering,
-newer/older links, and the RSS feed at `/feed.xml` for free; projects get the
-facts table and outbound links, and no date.
+### Works in progress
+
+`_wip/<slug>.md` is the tier between `_drafts/` and `_posts/`: live at
+`/posts/wip/<slug>/`, but `noindex`, out of `/sitemap.xml`, out of `/feed.xml`,
+and listed only inside a collapsed drawer on `/posts/`. It exists so a rough
+note can be published and iterated on without landing in the feed.
+
+The front matter is a post's, minus the date-in-the-filename convention. Give
+every note a `date` in its front matter instead: the drawer sorts on it, and a
+note without one falls back to sorting by filename. `layout`, `sitemap`,
+`noindex`, and the kicker all come from the `wip` defaults scope in
+`_config.yml` — don't set them per-note.
+
+Moving one into `_posts/` when it's finished is a rename: add the date to the
+filename, drop the `date` from the front matter.
 
 ## Deploys
 

@@ -1,8 +1,10 @@
 ---
-layout: project
-order: 1
 title: "Placeholder — Full Project Write-up"
-excerpt: "Placeholder copy. This card shows every field a project write-up can use: a hero image, tags, a facts table, and outbound links. Replace it with a real project."
+excerpt: "Placeholder copy. This card shows every field a write-up can use: a hero image, tags, a facts table, and outbound links. Replace it with a real one."
+# featured: true promotes an entry into the card grid at the top of /posts/.
+# order sorts that grid, lowest first — it does nothing anywhere else.
+featured: true
+order: 1
 # An image is optional. Drop the file in /assets/images/ and point at it here.
 # image_fit: contain letterboxes charts and screenshots instead of cropping them.
 # image: /assets/images/example-header.png
@@ -33,7 +35,7 @@ links:
 ---
 
 **Placeholder page.** Everything below is filler that exists to preserve the layout —
-replace it when there is a real project to write up.
+replace it when there is a real piece of work to write up.
 
 The opening paragraph sets up the question. What was the problem, who had it, and why was
 the obvious approach not good enough? Prose runs the full width of the window here, so a
@@ -53,5 +55,5 @@ Body copy supports the usual Markdown — *emphasis*, `inline code`, and
 ## How it did
 
 Close on results. Numbers if there are numbers, an honest read on the limitations if there
-are not. The "All projects" link at the bottom of this page comes from the layout, so
-there is no need to add one.
+are not. The "All posts" link at the bottom of this page comes from the layout, so there
+is no need to add one.
