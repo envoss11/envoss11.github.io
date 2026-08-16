@@ -43,7 +43,7 @@ images, which is most of what actually breaks here.
 
 | | |
 |---|---|
-| `_data/` | The content that repeats: `profile.yml` (name, tagline, portrait, links), `career.yml`, `education.yml`, `certifications.yml`, `skills.yml`, `focus.yml`, `archive.yml`, `navigation.yml`. Each file's header comment documents its fields. Edit these, not the markup. |
+| `_data/` | The content that repeats: `profile.yml` (name, tagline, portrait, links), `career.yml`, `education.yml`, `certifications.yml`, `skills.yml`, `focus.yml`, `navigation.yml`. Each file's header comment documents its fields. Edit these, not the markup. |
 | `_posts/` | Everything finished, `YYYY-MM-DD-slug.md`, served at `/posts/<slug>/`. |
 | `_wip/` | Notes being drafted in public. Live at `/posts/wip/<slug>/`, out of the feed and the sitemap, listed in a collapsed drawer. |
 | `_drafts/` | Unfinished posts. Visible under `make serve`, never published. |
@@ -77,18 +77,16 @@ you hand-name a file with tomorrow's date.
 ### Write-ups
 
 A project write-up is a post with more front matter, not a separate section.
-Add `featured: true` and it also gets a card in the grid at the top of
-`/posts/`; `order` sorts that grid, lowest first, and does nothing anywhere
-else. `_posts/2026-06-14-placeholder-full-write-up.md` documents the rest — the
+`_posts/2026-06-14-placeholder-full-write-up.md` documents the extras — the
 `facts` table under the header and the `links` pill buttons
 (`icon: external | github | file`).
 
-One section rather than two: the difference between a write-up and a Sunday
-note is real, but it's a difference in treatment, not in URL. Both get date
-ordering, newer/older links, and `/feed.xml`.
-
-Small pieces of work that don't merit a page go in `_data/archive.yml` instead
-and render as the collapsible list at the bottom of `/posts/`.
+One section rather than two, and now one treatment rather than two: the
+difference between a write-up and a Sunday note is real, but it's a difference
+in how much front matter an entry carries, not in URL and not in billing. A card
+grid used to sit above the log for entries marked `featured: true`; it re-showed
+entries the log already listed, so it's gone, and so are `featured` and `order`.
+Everything is one dated log with newer/older links and `/feed.xml`.
 
 ### Works in progress
 

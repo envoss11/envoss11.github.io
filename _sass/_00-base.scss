@@ -1269,10 +1269,10 @@ img {
 
 /* ------------------------------------------------------------------ posts */
 
-/* The /posts/ wrapper. `.projects-*` below keeps its prefix on purpose — those
-   are the card-grid components, and `.projects-section` is also the About
-   page's section wrapper, so the sweep would cost more than the name is
-   worth. */
+/* The /posts/ wrapper. The two `.project*` classes that outlived the card grid
+   keep their prefix on purpose: `.projects-section` is the About page's section
+   wrapper as well, and `.project-meta` is the tag row in an entry's byline.
+   Renaming either would touch more than the name is worth. */
 .posts {
   display: grid;
   gap: 22px;
@@ -1305,128 +1305,10 @@ img {
   gap: 14px;
 }
 
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-}
-
-.project-card {
-  display: grid;
-  grid-template-rows: auto 1fr;
-  color: inherit;
-  transition: transform 0.14s var(--ease-step), border-color 0.14s var(--ease-step),
-    box-shadow 0.14s var(--ease-step);
-}
-
-.project-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--gold);
-  box-shadow: 0 0 0 2px var(--frame-dark), 0 11px 0 rgb(var(--rgb-shade) / .4);
-}
-
-/* A lone featured project reads better laid out sideways than stretched
-   across the full grid. */
-.project-card--wide {
-  grid-column: 1 / -1;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-  grid-template-rows: auto;
-}
-
-.project-card--wide .project-img {
-  height: 100%;
-  min-height: 280px;
-}
-
-.project-card--wide .project-body {
-  padding: 24px 26px 26px;
-  align-content: center;
-}
-
-.project-card--wide .project-name {
-  font-size: 15px;
-}
-
-.project-media {
-  background: var(--sunken);
-  line-height: 0;
-  height: 100%;
-  overflow: hidden;
-  border-right: 2px solid rgb(var(--rgb-frame-mid) / .4);
-}
-
-.project-img {
-  width: 100%;
-  height: 240px;
-  object-fit: cover;
-  display: block;
-}
-
-/* UI screenshots and charts get letterboxed rather than cropped — a sliver of
-   a dashboard tells you nothing. */
-.project-img--contain {
-  object-fit: contain;
-  padding: 16px;
-  background: var(--mat-fill);
-}
-
-.project-body {
-  padding: 18px 18px 20px;
-  display: grid;
-  gap: 12px;
-  align-content: start;
-}
-
-.project-name {
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 1.5;
-  color: var(--gold);
-  text-shadow: var(--text-shadow);
-}
-
 .project-meta {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-}
-
-.project-desc {
-  font-size: 15px;
-  line-height: 1.7;
-  color: var(--ink-soft);
-}
-
-.project-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-self: end;
-  padding-top: 4px;
-}
-
-.project-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 7px 12px;
-  border: 2px solid var(--frame-mid);
-  background: var(--sunken);
-  font-family: var(--ui);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  transition: border-color 0.12s var(--ease-step), background 0.12s var(--ease-step),
-    color 0.12s var(--ease-step);
-}
-
-.project-card:hover .project-link,
-.project-link:hover {
-  border-color: var(--gold);
-  background: rgb(var(--rgb-gold) / .14);
-  color: var(--ink-bright);
 }
 
 .archive {
@@ -1462,10 +1344,10 @@ img {
   gap: 8px;
 }
 
-/* Two element types land here: the works-in-progress drawer's rows are <a>s
-   pointing at real pages, the _data/archive.yml rows below are <div>s that go
-   nowhere. No anchor reset needed — the global `a` rule above already gives
-   both `color: inherit` and no underline. */
+/* Every row here is an <a> pointing at a real page — the drawer's one caller is
+   the works-in-progress list. It used to have to cover the _data/archive.yml
+   rows too, which were <div>s that went nowhere, so the rule stays element-
+   agnostic: `color: inherit` comes from the global `a` rule above, not here. */
 .archive-row {
   display: grid;
   gap: 7px;
@@ -1750,24 +1632,6 @@ img {
 /* ------------------------------------------------------------ responsive */
 
 @media (max-width: 980px) {
-  .projects-grid {
-    grid-template-columns: 1fr;
-  }
-  .project-card--wide {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
-  }
-  .project-card--wide .project-img {
-    height: 240px;
-    min-height: 0;
-  }
-  .project-card--wide .project-body {
-    padding: 18px 18px 20px;
-  }
-  .project-media {
-    border-right: 0;
-    border-bottom: 2px solid rgb(var(--rgb-frame-mid) / .4);
-  }
   .about-grid {
     grid-template-columns: 1fr;
   }

@@ -49,7 +49,6 @@ whatever is missing.
 | `date` | **Required in `_wip/`**, where there is no date in the filename. In `_posts/` the filename carries it. |
 | `tags_list` | A list of strings, renders as pills. |
 | `image` / `image_fit` | Hero image from `assets/images/`. `image_fit: contain` letterboxes charts and screenshots instead of cropping them. |
-| `featured` / `order` | `featured: true` also puts the entry in the card grid at the top of `/posts/`; `order` sorts that grid, lowest first. Only for entries with a result worth showing. |
 | `facts` | `label`/`value` pairs, renders as the dotted-leader table under the header. |
 | `links` | `label`/`icon`/`url` pill buttons. `icon` must be one of `external`, `github`, `file`. |
 

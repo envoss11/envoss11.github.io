@@ -3,15 +3,14 @@
    ========================================================================== */
 
 /* ==========================================================================
-   55-log — the ledger half of /posts/, and the entry's byline.
+   55-log — the body of /posts/, and the entry's byline.
 
-   The card grid above it is a shop window: one framed card per item, because
-   that work has a result worth photographing. Most posts have none of that —
-   no hero chart, no deliverable, sometimes no point — so the complete record
-   is deliberately not a grid of cards. It is a single ledger: dated rows down
-   one window, the way a journal or a save-file screen lists what happened and
-   when. Both treatments render the same collection; `featured: true` is what
-   promotes an entry into the window as well.
+   There was a shop window above this once: one framed card per entry with a
+   result worth photographing. Most posts have none of that — no hero chart, no
+   deliverable, sometimes no point — and a spotlight that skips most of the
+   collection is a second treatment for the sake of having one. So the ledger
+   is the whole record now: dated rows down one window, the way a journal or a
+   save-file screen lists what happened and when.
 
    Nothing here is new machinery. The date plate is the quest log's stamp, the
    dotted run into the entry is its tick, and the entry page borrows the whole

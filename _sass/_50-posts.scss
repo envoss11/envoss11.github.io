@@ -3,20 +3,19 @@
    ========================================================================== */
 
 /* ==========================================================================
-   50-posts — the shop window and the lore page.
+   50-posts — the index furniture and the lore page.
 
    Two rooms:
-   1. The top of /posts/ — a shelf of treasure. Each card is an item slot: a
-      rarity rail down the left gutter, a landing strip for the menu cursor,
-      and a framed portrait of the goods. Only entries carrying
-      `featured: true` get one. The two drawers at the bottom of the page are
-      the records you pull open at the end of the same menu.
+   1. /posts/ — the page header, and the records drawer you pull open at the
+      end of the menu. There used to be a shelf of framed cards above the log
+      for entries carrying `featured: true`; it and its styles came out when
+      the page went down to two sections, and git has them.
    2. /posts/<x>/ and /posts/wip/<x>/ — the entry itself. Furniture gets the
       16-bit treatment (section plates, sunken wells, stat lines) but the
       running text stays at a size you can read for ten minutes. Charts are
       never pixelated: a blurred ROC curve is just a lie.
 
-   The ledger half of /posts/ — the dated log under the grid — is 55-log.
+   The ledger that is now the whole top of /posts/ is 55-log.
    ========================================================================== */
 
 /* --------------------------------------------------------- index: header */
@@ -91,172 +90,6 @@
   font-size: 14.5px;
   line-height: 1.7;
   color: var(--ink-soft);
-}
-
-/* ---------------------------------------------------------- index: cards */
-
-/* Every card carries a left gutter — the strip the cursor lands in. The
-   card itself stays a grid, so the gutter is padding plus one absolutely
-   positioned rail rather than a third column that would fight the
-   stacked/wide switch. */
-.projects-grid .project-card {
-  padding-left: 38px;
-}
-
-.projects-grid .card-rail {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 38px;
-  pointer-events: none;
-  background: var(--sunken);
-  border-right: 2px solid rgb(var(--rgb-frame-mid) / .35);
-  transition: background 0.14s var(--ease-step), border-color 0.14s var(--ease-step);
-}
-
-/* The rarity bar: a dashed column of pixels that fills solid gold when the
-   entry is selected. */
-.projects-grid .card-rail::before {
-  content: "";
-  position: absolute;
-  left: 7px;
-  top: 14px;
-  bottom: 14px;
-  width: 5px;
-  background-image: linear-gradient(180deg, var(--gold-deep) 50%, transparent 50%);
-  background-size: 5px 8px;
-  opacity: 0.5;
-  transition: opacity 0.14s var(--ease-step);
-}
-
-/* End caps, so the rail terminates instead of just stopping. */
-.projects-grid .card-rail::after {
-  content: "";
-  position: absolute;
-  left: 7px;
-  top: 0;
-  bottom: 0;
-  width: 5px;
-  background-image:
-    linear-gradient(var(--gold), var(--gold)),
-    linear-gradient(var(--gold), var(--gold));
-  background-size: 5px 4px;
-  background-repeat: no-repeat;
-  background-position: 0 5px, 0 calc(100% - 5px);
-  opacity: 0.55;
-  transition: opacity 0.14s var(--ease-step);
-}
-
-.projects-grid .project-card:hover .card-rail,
-.projects-grid .project-card:focus-visible .card-rail {
-  background: rgb(var(--rgb-gold) / .09);
-  border-right-color: rgb(var(--rgb-gold) / .5);
-}
-
-.projects-grid .project-card:hover .card-rail::before,
-.projects-grid .project-card:focus-visible .card-rail::before {
-  background-image: linear-gradient(180deg, var(--gold), var(--gold));
-  opacity: 1;
-}
-
-.projects-grid .project-card:hover .card-rail::after,
-.projects-grid .project-card:focus-visible .card-rail::after {
-  opacity: 1;
-}
-
-/* Park the shared cursor primitive in the gutter, clear of the rarity bar,
-   instead of hanging off the card's left edge. */
-.projects-grid .project-card.has-cursor::after {
-  left: 19px;
-  top: 50%;
-  z-index: 3;
-}
-
-/* Chunkier lift than the baseline: item slots press in when you commit. */
-.projects-grid .project-card:active {
-  transform: translateY(0);
-  box-shadow: 0 0 0 2px var(--frame-dark), 0 4px 0 rgb(var(--rgb-shade) / .4);
-}
-
-/* ---------------------------------------------------------- index: media */
-
-.projects-grid .project-media {
-  position: relative;
-}
-
-/* A mat inside the picture slot, with a gold rivet pinned to each corner.
-   The chart itself is never touched — no pixelation, no filters. */
-.projects-grid .media-frame {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  box-shadow: inset 0 0 0 2px rgb(var(--rgb-well) / .5);
-  background-image:
-    linear-gradient(var(--gold), var(--gold)),
-    linear-gradient(var(--gold), var(--gold)),
-    linear-gradient(var(--gold), var(--gold)),
-    linear-gradient(var(--gold), var(--gold));
-  background-size: 3px 3px;
-  background-repeat: no-repeat;
-  background-position:
-    6px 6px,
-    calc(100% - 6px) 6px,
-    6px calc(100% - 6px),
-    calc(100% - 6px) calc(100% - 6px);
-  opacity: 0.65;
-  transition: opacity 0.14s var(--ease-step);
-}
-
-.projects-grid .project-card:hover .media-frame {
-  opacity: 1;
-}
-
-/* ----------------------------------------------------------- index: body */
-
-.projects-grid .project-body {
-  gap: 13px;
-}
-
-/* An item glyph beside the name, the way every shop list has one. */
-.projects-grid .project-name {
-  display: flex;
-  align-items: flex-start;
-  gap: 11px;
-}
-
-.projects-grid .project-name::before {
-  content: "";
-  flex: 0 0 auto;
-  width: 10px;
-  height: 10px;
-  margin-top: 6px;
-  background: var(--crystal);
-  box-shadow:
-    0 0 0 2px var(--frame-dark),
-    inset 0 0 0 2px rgb(var(--rgb-well) / .55);
-  transition: background 0.14s var(--ease-step);
-}
-
-.projects-grid .project-card:hover .project-name::before {
-  background: var(--gold);
-}
-
-/* The confirm button. It lifts when the entry is selected. */
-.projects-grid .project-link {
-  box-shadow: 0 3px 0 rgb(var(--rgb-shade) / .4);
-  transition: border-color 0.12s var(--ease-step), background 0.12s var(--ease-step),
-    color 0.12s var(--ease-step), box-shadow 0.12s var(--ease-step),
-    transform 0.12s var(--ease-step);
-}
-
-.projects-grid .project-card:hover .project-link {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 0 rgb(var(--rgb-shade) / .45);
-}
-
-.projects-grid .project-link .icon {
-  color: var(--gold);
 }
 
 /* -------------------------------------------------- index: records drawer */
@@ -628,10 +461,6 @@
 
 /* ------------------------------------------------------------ responsive */
 
-/* Below 980px the wide card stacks (art on top, body below). The gutter is
-   card padding, so it keeps running the full height and the cursor lands in
-   the same place either way — nothing to undo. */
-
 /* Badge over copy — side by side it squeezes the sentence into a column. Core
    used to carry a copy of this rule too, and lost the cascade to the
    two-column default written below it here; the duplicate is gone and this is
@@ -645,26 +474,6 @@
 }
 
 @media (max-width: 720px) {
-  .projects-grid .project-card {
-    padding-left: 28px;
-  }
-  .projects-grid .card-rail {
-    width: 28px;
-  }
-  .projects-grid .card-rail::before,
-  .projects-grid .card-rail::after {
-    left: 5px;
-    width: 4px;
-  }
-  .projects-grid .card-rail::before {
-    background-size: 4px 8px;
-  }
-  .projects-grid .card-rail::after {
-    background-size: 4px 4px;
-  }
-  .projects-grid .project-card.has-cursor::after {
-    left: 14px;
-  }
   .archive .archive-summary {
     padding: 10px 11px;
   }
