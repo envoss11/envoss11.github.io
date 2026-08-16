@@ -1,6 +1,6 @@
 ---
 layout: redirect
-permalink: /portfolio/LendingClub/
+permalink: /projects/
 redirect_to: /posts/
 sitemap: false
 ---

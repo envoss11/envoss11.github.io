@@ -58,4 +58,4 @@ publish: ## Move a draft into _posts/, stamped with today's date
 	@test ! -f '_posts/$(DATE)-$(DRAFT).md' || { echo '_posts/$(DATE)-$(DRAFT).md already exists'; exit 1; }
 	@git mv '_drafts/$(DRAFT).md' '_posts/$(DATE)-$(DRAFT).md' 2>/dev/null \
 	  || mv '_drafts/$(DRAFT).md' '_posts/$(DATE)-$(DRAFT).md'
-	@echo 'published _posts/$(DATE)-$(DRAFT).md  ->  /blog/$(DRAFT)/'
+	@echo 'published _posts/$(DATE)-$(DRAFT).md  ->  /posts/$(DRAFT)/'

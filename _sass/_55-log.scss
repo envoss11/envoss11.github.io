@@ -1,26 +1,23 @@
 /* ==========================================================================
-   blog
+   log
    ========================================================================== */
 
 /* ==========================================================================
-   55-blog — the log book, and the entry page.
+   55-log — the ledger half of /posts/, and the entry's byline.
 
-   /projects/ is a shop window: one framed card per item, because the work has
-   a result worth photographing. A post has none of that — no hero chart, no
-   deliverable, sometimes no point — so this index is deliberately not a grid
-   of cards. It is a single ledger: dated rows down one window, the way a
-   journal or a save-file screen lists what happened and when.
+   The card grid above it is a shop window: one framed card per item, because
+   that work has a result worth photographing. Most posts have none of that —
+   no hero chart, no deliverable, sometimes no point — so the complete record
+   is deliberately not a grid of cards. It is a single ledger: dated rows down
+   one window, the way a journal or a save-file screen lists what happened and
+   when. Both treatments render the same collection; `featured: true` is what
+   promotes an entry into the window as well.
 
    Nothing here is new machinery. The date plate is the quest log's stamp, the
    dotted run into the entry is its tick, and the entry page borrows the whole
-   article/prose stack from 50-projects — a post only adds a byline and the
+   article/prose stack from 50-posts — an entry only adds a byline and the
    step-back/step-forward pair at the foot.
    ========================================================================== */
-
-.blog {
-  display: grid;
-  gap: 22px;
-}
 
 /* -------------------------------------------------------- index: the log */
 
@@ -216,7 +213,8 @@
 }
 
 /* The state after the placeholders come out and before the first real post
-   goes in. Short enough that the window does not need a list inside it. */
+   goes in. Short enough that the window does not need a list inside it.
+   `.wip-copy` is 50-posts' banner copy, borrowed for the one sentence. */
 .log-empty .wip-copy {
   margin-top: 4px;
 }

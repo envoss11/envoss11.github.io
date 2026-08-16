@@ -1,6 +1,6 @@
 ---
 layout: redirect
 permalink: /portfolio/
-redirect_to: /projects/
+redirect_to: /posts/
 sitemap: false
 ---

@@ -3,7 +3,7 @@ main:
     url: "/"
   - title: "About"
     url: "/about/"
-  - title: "Projects"
-    url: "/projects/"
-  - title: "Blog"
-    url: "/blog/"
+  # One item, and the active-state test in _includes/nav.html is an unanchored
+  # `contains`, so it lights up on /posts/wip/<slug>/ too.
+  - title: "Posts"
+    url: "/posts/"
