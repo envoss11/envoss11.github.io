@@ -1,14 +1,18 @@
 # The few things my current work actually consists of. Rendered on the home page
 # in place of a career timeline — the shape of the work, not the chronology.
+#
+# Three entries, and it stays three. The regulated-industry constraint is not a
+# fourth item because it is not a separate line of work — it is the condition
+# every one of these is built under, so it shows up inside each entry instead.
 
-- category: "Enterprise AI standards"
-  icon: "tool"
-  items: "Defining how AI gets built, evaluated, and operated across the company — engineering and testing practices, deployment and monitoring patterns, and the model governance a regulated industry requires."
+- category: "Intelligent document processing"
+  icon: "file"
+  items: "Designing and building AI pipelines that turn applications, policy documents, and correspondence into structured data — classification, extraction, validation, and the confidence thresholds that decide what a person still has to review before anything downstream trusts it."
 
-- category: "Shared platform capabilities"
-  icon: "package"
-  items: "Designing AI services as reusable building blocks rather than one-off projects, so document processing, summarization, and decision support can be picked up by the next team instead of rebuilt."
+- category: "Agentic AI architecture"
+  icon: "code"
+  items: "Architecting and building agentic systems on AWS, primarily Amazon Bedrock AgentCore — tool and memory design, orchestration across steps that can fail, and the identity, isolation, and guardrail boundaries an agent needs before it is allowed near PII or PHI."
 
-- category: "Applied AI & machine learning"
+- category: "Evaluation & enterprise AI standards"
   icon: "chart"
-  items: "Still close to the build: LLM and generative AI solutions on AWS, NLP and document processing, statistical modeling, and the evaluation design that tells you whether any of it is actually working."
+  items: "Systematic evaluation of AI systems: test sets, scoring, and regression checks that produce evidence rather than a demo — and the standards and practices that define how AI gets built, reviewed, and operated across the company."

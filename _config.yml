@@ -5,7 +5,7 @@ title: "Eric Voss"
 name: "Eric Voss"
 # Read by jekyll-feed for the <author> on every entry in /feed.xml.
 author: "Eric Voss"
-description: "Lead data scientist in St. Paul, Minnesota, working on enterprise AI standards and shared platform capabilities in financial services."
+description: "Lead data scientist in St. Paul, Minnesota, building intelligent document processing pipelines and agentic AI systems in financial services, and the evaluation standards they are held to."
 url: "https://www.ericvoss.com"
 baseurl: ""
 locale: "en-US"
