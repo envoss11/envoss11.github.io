@@ -61,6 +61,7 @@ exclude:
   - node_modules
   - Makefile
   - README.md
+  - CLAUDE.md
 
 defaults:
   # Everything finished is a post: one section, one layout, dates and ordering

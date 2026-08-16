@@ -33,7 +33,8 @@ a precompiled `arm64-darwin` gem — no compiler toolchain required.
 | `make build` | Production build into `_site/` |
 | `make check` | Build, then the same html-proofer run CI gates on |
 | `make draft TITLE="..."` | Scaffold `_drafts/<slug>.md` with front matter filled in |
-| `make publish DRAFT=<slug>` | Move a draft into `_posts/`, stamped with today's date |
+| `make wip TITLE="..."` | Scaffold `_wip/<slug>.md` plus `_research/<slug>/` |
+| `make publish SLUG=<slug>` | Move a note out of `_wip/` or `_drafts/` into `_posts/`, stamped today |
 
 Run `make check` before pushing. It catches broken internal links and missing
 images, which is most of what actually breaks here.
@@ -46,17 +47,19 @@ images, which is most of what actually breaks here.
 | `_posts/` | Everything finished, `YYYY-MM-DD-slug.md`, served at `/posts/<slug>/`. |
 | `_wip/` | Notes being drafted in public. Live at `/posts/wip/<slug>/`, out of the feed and the sitemap, listed in a collapsed drawer. |
 | `_drafts/` | Unfinished posts. Visible under `make serve`, never published. |
+| `_research/` | Raw material behind a note — data pulls, scripts, sources. Committed, never built. |
 | `_pages/` | The standalone pages — About and Posts — plus the redirect stubs preserving URLs from the pre-2026 site. |
 | `_layouts/`, `_includes/` | The theme. `head.html` does canonical, OG, and Twitter card by hand. |
 | `_sass/` | Nine partials, loaded in order by `assets/css/site.scss` and compiled to one minified `/assets/css/site.css`. Section numbering is load order. |
 | `assets/` | `js/site.js`, the four self-hosted woff2 faces, images, favicons. |
+| `CLAUDE.md`, `.claude/` | The briefing a Claude Code session gets, and the `wip-note` skill it runs. See below. |
 
 ### Adding a post
 
 ```sh
 make draft TITLE="What I learned shipping an eval harness"
 # write it, preview with `make serve`
-make publish DRAFT=what-i-learned-shipping-an-eval-harness
+make publish SLUG=what-i-learned-shipping-an-eval-harness
 ```
 
 Only `title` is required. `excerpt` is what the log page shows and what falls
@@ -94,14 +97,53 @@ and render as the collapsible list at the bottom of `/posts/`.
 and listed only inside a collapsed drawer on `/posts/`. It exists so a rough
 note can be published and iterated on without landing in the feed.
 
+```sh
+make wip TITLE="Something I want to think about in public"
+# ... later, when it's finished:
+make publish SLUG=something-i-want-to-think-about-in-public
+```
+
 The front matter is a post's, minus the date-in-the-filename convention. Give
 every note a `date` in its front matter instead: the drawer sorts on it, and a
 note without one falls back to sorting by filename. `layout`, `sitemap`,
 `noindex`, and the kicker all come from the `wip` defaults scope in
 `_config.yml` — don't set them per-note.
 
-Moving one into `_posts/` when it's finished is a rename: add the date to the
-filename, drop the `date` from the front matter.
+`make wip` also creates `_research/<slug>/` for the raw material behind a note:
+data pulls, scripts, source notes. It's committed but never built — Jekyll skips
+`_`-prefixed directories on its own, so it needs no `exclude:` entry.
+
+`make publish` moves a note out of either `_wip/` or `_drafts/` and stamps
+today's date onto the filename. Drop the now-redundant `date:` line from the
+front matter afterwards; it reminds you.
+
+## Writing from a phone
+
+The reason `_wip/` exists. Start a Claude Code session at
+[claude.ai/code](https://claude.ai/code) on this repo, paste a raw idea with no
+other instruction, and it scaffolds the note, does a research pass, and opens a
+PR. The PR runs the build and html-proofer, so a green tick is visible from the
+GitHub mobile app — merge there and it deploys.
+
+`CLAUDE.md` is what makes that work: a cloud session gets the repo's `CLAUDE.md`
+and `.claude/`, and nothing from `~/.claude/`, so everything a session needs to
+know is committed. `.claude/skills/wip-note/SKILL.md` owns the procedure.
+
+Two settings have to be right on the cloud environment, and neither lives in the
+repo:
+
+- **Network access must be Full, or Custom with the data sources listed.** The
+  default Trusted level reaches package registries, GitHub, and cloud SDKs only
+  — not Census, arXiv, or a state data portal. The research half does nothing
+  without it.
+- Optionally a setup script installing analysis libraries; pandas is not
+  preinstalled. It's cached as a filesystem snapshot, so it costs about once a
+  week.
+
+A cloud session can't build the site: `.ruby-version` pins 3.4 and those VMs
+ship 3.1–3.3, so `bundle install` fails. That's deliberate — the session writes
+Markdown and CI validates. `CLAUDE.md` says so, and lists the traps that a local
+build would otherwise have caught.
 
 ## Deploys
 
