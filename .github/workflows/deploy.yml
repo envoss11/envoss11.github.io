@@ -8,8 +8,15 @@ name: Deploy site
 # set to "GitHub Actions". Until that flip the legacy builder still serves the
 # site, however green this workflow runs.
 
+# One workflow, not two. A separate PR-check workflow would duplicate the build
+# steps, and any drift between the copies would let a change pass the check and
+# then fail the deploy. Instead the same job runs on both events and the
+# publishing half is gated off for pull requests.
+
 on:
   push:
+    branches: [master]
+  pull_request:
     branches: [master]
   workflow_dispatch:
 
@@ -17,11 +24,6 @@ permissions:
   contents: read
   pages: write
   id-token: write
-
-# Let a running deploy finish rather than cancelling it mid-publish.
-concurrency:
-  group: pages
-  cancel-in-progress: false
 
 jobs:
   build:
@@ -46,11 +48,21 @@ jobs:
       - name: Check output
         run: bundle exec htmlproofer ./_site --disable-external
 
+      # A pull request stops here: build and link check, no artifact, no
+      # deploy. That is the whole check — a green tick before the merge.
       - uses: actions/upload-pages-artifact@v5
+        if: github.event_name != 'pull_request'
 
   deploy:
     needs: build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+    # Scoped to this job rather than the workflow: at the top it would serialize
+    # every PR check against the same `pages` group for no reason. Let a running
+    # deploy finish rather than cancelling it mid-publish.
+    concurrency:
+      group: pages
+      cancel-in-progress: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
