@@ -5,18 +5,17 @@ permalink: /posts/
 description: "Writing by Eric Voss — project write-ups, notes, tangents, and half-formed thoughts on whatever currently has his attention."
 ---
 {%- comment -%}
-Two treatments, one section, and the reason both survive the merge is the one
-_55-log.scss opens with: a shop window is "one framed card per item, because the
-work has a result worth photographing," while a post "has none of that — no hero
-chart, no deliverable, sometimes no point." That distinction is real. It just
-isn't a reason to keep two URLs — so it became `featured: true` instead.
+Two sections, and that is the whole page. The log is the complete chronological
+record — every post, newest first, one treatment, nothing promoted above it. The
+drawer under it holds the WIP notes, which are live but not announced.
 
-The grid is a spotlight; the log is the complete chronological record. Featured
-entries appear in both on purpose, because filtering them out of the log would
-leave holes in the chronology. One `where_exp` here flips that if it ever reads
-wrong.
+There used to be a card grid above the log for entries carrying `featured: true`
+and a second drawer below it for `_data/archive.yml`. Both are gone. A spotlight
+section only works when there is enough behind it to be worth picking from, and
+a list of odds and ends is a third way of saying "here is some writing" on a
+page that already says it twice. Git has the markup and the styles if either
+earns its way back.
 {%- endcomment -%}
-{%- assign featured = site.posts | where: "featured", true | sort: "order" -%}
 {%- assign wip = site.wip | reverse -%}
 <div class="posts">
 
@@ -31,39 +30,6 @@ wrong.
       subject.
     </p>
   </header>
-
-  {%- if featured.size > 0 -%}
-  <section class="projects-section reveal" aria-label="Featured write-ups">
-    <h2 class="section-h2">Write-ups</h2>
-    <div class="projects-grid">
-      {%- for post in featured -%}
-      <a class="project-card surface has-cursor{% if featured.size == 1 %} project-card--wide{% endif %}" href="{{ post.url | relative_url }}">
-        {%- comment -%} Slot gutter: rarity rail + the cursor's landing strip. {%- endcomment -%}
-        <span class="card-rail" aria-hidden="true"></span>
-        {%- if post.image -%}
-        <div class="project-media">
-          <img class="project-img{% if post.image_fit == 'contain' %} project-img--contain{% endif %}"
-               src="{{ post.image | relative_url }}" alt="{{ post.title }}" loading="lazy">
-          <span class="media-frame" aria-hidden="true"></span>
-        </div>
-        {%- endif -%}
-        <div class="project-body">
-          <div class="project-name">{{ post.title }}</div>
-          {%- if post.tags_list -%}
-          <div class="project-meta">
-            {%- for tag in post.tags_list -%}<span class="tag">{{ tag }}</span>{%- endfor -%}
-          </div>
-          {%- endif -%}
-          <div class="project-desc">{{ post.excerpt | strip_html | strip_newlines }}</div>
-          <div class="project-links">
-            <span class="project-link">{% include icon.html name="arrow" %} Read the write-up</span>
-          </div>
-        </div>
-      </a>
-      {%- endfor -%}
-    </div>
-  </section>
-  {%- endif -%}
 
   {%- if site.posts.size > 0 -%}
   <section class="log surface reveal" aria-label="Entries">
@@ -110,10 +76,10 @@ wrong.
   {%- endif -%}
 
   {%- comment -%}
-  Two stacked drawers, and they are different things: unfinished new work above,
-  finished minor work below. They inherit the .archive component wholesale — the
-  chevron flip and its sizing are both keyed on `.archive`, so a drawer with its
-  own class would have to generalize both for nothing.
+  The drawer keeps the `.archive` class it was built on. The name is historical
+  — it was written for the coursework list that used to sit below it — but the
+  chevron flip and its sizing are both keyed on `.archive`, and renaming a
+  component to suit its one remaining caller buys nothing.
 
   .reveal goes on the <details> itself, never inside it: a .reveal in a closed
   drawer has a zero-size bounding rect, never trips the IntersectionObserver,
@@ -141,31 +107,6 @@ wrong.
       Notes I am drafting in the open. They are not finished, they are not in the
       <a class="marker-link" href="{{ '/feed.xml' | relative_url }}">feed</a>, and
       some of them will never make it out of this drawer.
-    </p>
-  </details>
-  {%- endif -%}
-
-  {%- if site.data.archive.size > 0 -%}
-  <details class="archive surface reveal">
-    <summary class="archive-summary">
-      <span class="career-chevron"><svg class="pixel-chevron" viewBox="0 0 8 8" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true" focusable="false"><rect x="1" y="2" width="6" height="1"/><rect x="2" y="3" width="4" height="1"/><rect x="3" y="4" width="2" height="1"/></svg></span>
-      <span>Other analyses &amp; coursework</span>
-      <span class="archive-handle" aria-hidden="true"></span>
-    </summary>
-    <div class="archive-list">
-      {%- for item in site.data.archive -%}
-      <div class="archive-row has-cursor">
-        <div class="archive-top">
-          <span class="archive-name">{{ item.name }}</span>
-          {%- if item.tag %}<span class="tag">{{ item.tag }}</span>{% endif -%}
-        </div>
-        <div class="archive-desc">{{ item.description }}</div>
-      </div>
-      {%- endfor -%}
-    </div>
-    <p class="archive-desc archive-foot">
-      Odds and ends live on
-      <a class="marker-link" href="https://github.com/envoss11/" rel="noopener">GitHub</a>.
     </p>
   </details>
   {%- endif -%}
