@@ -6,8 +6,8 @@ location: "Minnesota"
 email: "envoss11@gmail.com"
 portrait: "/assets/images/portrait.jpg"
 
-kicker: "AI & Data Science"
-tagline: "I help businesses in highly regulated industries build AI solutions and quantify their impact."
+kicker: "AI Systems & Evaluation"
+tagline: "I build document processing and agentic AI systems for regulated industries, and the evaluation practices that show whether they work."
 
 links:
   - label: "LinkedIn"
