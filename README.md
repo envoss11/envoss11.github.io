@@ -91,8 +91,10 @@ Push to `master`. `.github/workflows/deploy.yml` builds with Jekyll 4, runs
 html-proofer, and publishes to GitHub Pages. Failures show up as a workflow
 log, not an email.
 
-`workflow_dispatch` is enabled, so you can run it by hand from the Actions tab
-to check a branch before merging.
+The same workflow runs on every pull request against `master`, but stops after
+the build and the link check — no artifact, no deploy. So a branch gets a real
+green tick before it merges, which is legible from a phone. `workflow_dispatch`
+is still enabled for running it by hand from the Actions tab.
 
 `jekyll-feed` generates `/feed.xml` and `jekyll-sitemap` generates
 `/sitemap.xml`; the redirect stubs carry `sitemap: false` so they stay out of
