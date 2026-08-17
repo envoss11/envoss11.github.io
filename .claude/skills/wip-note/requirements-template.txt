@@ -1,0 +1,10 @@
+# Copy to _research/<slug>/requirements.txt and cut it down to what the analysis
+# actually imports. Floors rather than pins: this exists so the script runs on a
+# laptop a year from now, not so it reproduces a byte-identical PNG.
+#
+#   pip install -r requirements.txt && python analysis.py
+
+pandas>=2.0
+matplotlib>=3.7
+requests>=2.31
+tabulate>=0.9
