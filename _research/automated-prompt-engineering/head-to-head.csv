@@ -1,0 +1,51 @@
+source,year,task,model,metric,scale,human,auto,optimizer,baseline_strength,delta_comparable,url
+battle2024,2024,GSM8K CoT n=10,Mistral-7B,exact match,0-1,0.400,0.400,APO,tuned,True,https://arxiv.org/abs/2402.10949
+battle2024,2024,GSM8K CoT n=25,Mistral-7B,exact match,0-1,0.400,0.380,APO,tuned,True,https://arxiv.org/abs/2402.10949
+battle2024,2024,GSM8K CoT n=50,Mistral-7B,exact match,0-1,0.420,0.420,APO,tuned,True,https://arxiv.org/abs/2402.10949
+battle2024,2024,GSM8K CoT n=100,Mistral-7B,exact match,0-1,0.330,0.410,APO,tuned,True,https://arxiv.org/abs/2402.10949
+battle2024,2024,GSM8K CoT n=10,Llama2-13B,exact match,0-1,0.400,0.500,APO,tuned,True,https://arxiv.org/abs/2402.10949
+battle2024,2024,GSM8K CoT n=25,Llama2-13B,exact match,0-1,0.380,0.460,APO,tuned,True,https://arxiv.org/abs/2402.10949
+battle2024,2024,GSM8K CoT n=50,Llama2-13B,exact match,0-1,0.380,0.430,APO,tuned,True,https://arxiv.org/abs/2402.10949
+battle2024,2024,GSM8K CoT n=100,Llama2-13B,exact match,0-1,0.360,0.430,APO,tuned,True,https://arxiv.org/abs/2402.10949
+battle2024,2024,GSM8K CoT n=10,Llama2-70B,exact match,0-1,0.500,0.450,APO,tuned,True,https://arxiv.org/abs/2402.10949
+battle2024,2024,GSM8K CoT n=25,Llama2-70B,exact match,0-1,0.600,0.620,APO,tuned,True,https://arxiv.org/abs/2402.10949
+battle2024,2024,GSM8K CoT n=50,Llama2-70B,exact match,0-1,0.560,0.590,APO,tuned,True,https://arxiv.org/abs/2402.10949
+battle2024,2024,GSM8K CoT n=100,Llama2-70B,exact match,0-1,0.545,0.605,APO,tuned,True,https://arxiv.org/abs/2402.10949
+ape2022_cot,2022,MultiArith zero-shot CoT,text-davinci-002,accuracy,0-100,78.7,82.0,APE,tuned,True,https://arxiv.org/abs/2211.01910
+ape2022_cot,2022,GSM8K zero-shot CoT,text-davinci-002,accuracy,0-100,40.7,43.0,APE,tuned,True,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,causal judgment,InstructGPT,normalized,normalized,18.0,18.0,APE,default,False,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,disambiguation qa,InstructGPT,normalized,normalized,-0.4,5.6,APE,default,False,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,dyck languages,InstructGPT,normalized,normalized,3.0,18.0,APE,default,False,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,epistemic reasoning,InstructGPT,normalized,normalized,36.0,38.0,APE,default,False,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,gender inclusive sentences german,InstructGPT,normalized,normalized,13.0,22.0,APE,default,False,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,implicatures,InstructGPT,normalized,normalized,60.0,60.0,APE,default,False,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,linguistics puzzles,InstructGPT,normalized,normalized,0.0,0.0,APE,default,False,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,logical fallacy detection,InstructGPT,normalized,normalized,24.0,12.0,APE,default,False,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,movie recommendation,InstructGPT,normalized,normalized,-2.7,12.0,APE,default,False,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,navigate,InstructGPT,normalized,normalized,-8.0,12.0,APE,default,False,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,object counting,InstructGPT,normalized,normalized,2.0,44.0,APE,default,False,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,operators,InstructGPT,normalized,normalized,48.0,47.0,APE,default,False,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,presuppositions as nli,InstructGPT,normalized,normalized,13.0,5.5,APE,default,False,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,question selection,InstructGPT,normalized,normalized,-2.6,-0.9,APE,default,False,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,ruin names,InstructGPT,normalized,normalized,1.3,-14.7,APE,default,False,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,snarks,InstructGPT,normalized,normalized,2.0,4.0,APE,default,False,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,sports understanding,InstructGPT,normalized,normalized,36.0,36.0,APE,default,False,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,tense,InstructGPT,normalized,normalized,84.0,85.0,APE,default,False,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,winowhy,InstructGPT,normalized,normalized,-12.0,12.0,APE,default,False,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,word sorting,InstructGPT,normalized,normalized,11.0,30.0,APE,default,False,https://arxiv.org/abs/2211.01910
+ape2022_bbh,2022,word unscrambling,InstructGPT,normalized,normalized,10.0,15.0,APE,default,False,https://arxiv.org/abs/2211.01910
+mipro2024,2024,ScoNe,Llama-3-8B,exact match,0-100,69.1,79.4,MIPRO,default,True,https://arxiv.org/abs/2406.11695
+mipro2024,2024,HotPotQA,Llama-3-8B,exact match,0-100,36.1,46.4,MIPRO,default,True,https://arxiv.org/abs/2406.11695
+mipro2024,2024,HoVer,Llama-3-8B,retrieval@21,0-100,25.3,39.0,MIPRO,default,True,https://arxiv.org/abs/2406.11695
+mipro2024,2024,HotPotQA Conditional,Llama-3-8B,custom,0-100,6.0,23.3,MIPRO,default,True,https://arxiv.org/abs/2406.11695
+mipro2024,2024,Iris,Llama-3-8B,accuracy,0-100,32.0,68.7,MIPRO,default,True,https://arxiv.org/abs/2406.11695
+mipro2024,2024,Heart Disease,Llama-3-8B,accuracy,0-100,26.8,74.2,MIPRO,default,True,https://arxiv.org/abs/2406.11695
+kg2025,2025,SynthIE triples Predict (T),Llama3.3-70B,triple F1,0-1,0.63,0.72,DSPy,default,True,https://arxiv.org/abs/2506.19773
+kg2025,2025,SynthIE triples CoT (T),Llama3.3-70B,triple F1,0-1,0.64,0.73,DSPy,default,True,https://arxiv.org/abs/2506.19773
+kg2025,2025,SynthIE triples ECR (T),Llama3.3-70B,triple F1,0-1,0.59,0.72,DSPy,default,True,https://arxiv.org/abs/2506.19773
+kg2025,2025,SynthIE triples Predict (E-R-T),Llama3.3-70B,triple F1,0-1,0.62,0.72,DSPy,default,True,https://arxiv.org/abs/2506.19773
+kg2025,2025,SynthIE triples CoT (E-R-T),Llama3.3-70B,triple F1,0-1,0.63,0.71,DSPy,default,True,https://arxiv.org/abs/2506.19773
+kg2025,2025,SynthIE triples ECR (E-R-T),Llama3.3-70B,triple F1,0-1,0.53,0.69,DSPy,default,True,https://arxiv.org/abs/2506.19773
+valdi2026,2026,Valdi task 2 fast generation,GPT-4o-mini,macro F1,0-1,0.4273,0.3848,MIPROv2,expert,True,https://arxiv.org/abs/2605.09893
+valdi2026,2026,Valdi task 3 slow generation,GPT-4o-mini,macro F1,0-1,0.3759,0.3762,MIPROv2,expert,True,https://arxiv.org/abs/2605.09893
+promptreport2024,2024,Reddit entrapment detection,GPT-4-0125-preview,F1,0-1,0.53,0.548,DSPy,expert,False,https://arxiv.org/abs/2406.06608
