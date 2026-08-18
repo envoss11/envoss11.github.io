@@ -55,10 +55,11 @@ whatever is missing.
 Do **not** set `layout`, `permalink`, `sitemap`, `noindex`, or `kicker` on a WIP
 note. The `wip` defaults scope in `_config.yml` supplies all five.
 
-Three placeholder files document every field by example:
-`_posts/2026-06-14-placeholder-full-write-up.md` (everything),
-`_posts/2026-08-04-placeholder-second-entry.md` (the minimum), and
-`_wip/placeholder-note.md` (the WIP shape).
+Two placeholder files document every field by example:
+`_posts/2026-06-14-placeholder-full-write-up.md` (everything) and
+`_posts/2026-08-04-placeholder-second-entry.md` (the minimum). A WIP note takes
+the same front matter with `date` moved in from the filename —
+`_wip/automated-prompt-engineering.md` is the live example.
 
 ## Rules for cloud sessions
 
