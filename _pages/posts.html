@@ -6,15 +6,9 @@ description: "Writing by Eric Voss — project write-ups, notes, tangents, and h
 ---
 {%- comment -%}
 Two sections, and that is the whole page. The log is the complete chronological
-record — every post, newest first, one treatment, nothing promoted above it. The
+record — every post, newest first, nothing promoted above it. The
 drawer under it holds the WIP notes, which are live but not announced.
 
-There used to be a card grid above the log for entries carrying `featured: true`
-and a second drawer below it for `_data/archive.yml`. Both are gone. A spotlight
-section only works when there is enough behind it to be worth picking from, and
-a list of odds and ends is a third way of saying "here is some writing" on a
-page that already says it twice. Git has the markup and the styles if either
-earns its way back.
 {%- endcomment -%}
 {%- assign wip = site.wip | reverse -%}
 <div class="posts">
