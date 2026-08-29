@@ -26,6 +26,27 @@ permissions:
   id-token: write
 
 jobs:
+  # The notebook gate, separate from the Jekyll build because it shares nothing
+  # with it — a different toolchain, and no reason to serialize the two. An
+  # exploration's page body is generated from `_notebooks/<slug>.py`, so a
+  # notebook can be committed without the page it feeds. That would deploy a
+  # published page which disagrees with the notebook printed underneath it, and
+  # nothing else here would notice. `make notebooks` lints the notebooks and
+  # re-runs the export to prove every page is what its notebook produces.
+  notebooks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # uv reads .python-version and pyproject.toml, so the version and the one
+      # dependency both stay in the repo rather than in this file.
+      - uses: astral-sh/setup-uv@v10
+        with:
+          enable-cache: true
+
+      - name: Check notebooks
+        run: make notebooks
+
   build:
     runs-on: ubuntu-latest
     steps:
@@ -54,7 +75,7 @@ jobs:
         if: github.event_name != 'pull_request'
 
   deploy:
-    needs: build
+    needs: [build, notebooks]
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     # Scoped to this job rather than the workflow: at the top it would serialize
