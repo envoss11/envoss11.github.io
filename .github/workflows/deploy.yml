@@ -40,7 +40,12 @@ jobs:
 
       # uv reads .python-version and pyproject.toml, so the version and the one
       # dependency both stay in the repo rather than in this file.
-      - uses: astral-sh/setup-uv@v10
+      #
+      # Pinned to a full version on purpose. Unlike actions/checkout@v7 and
+      # ruby/setup-ruby@v1 above, setup-uv stopped publishing a moving major
+      # tag after v7.6 — `@v10` does not resolve and fails the job at "Set up
+      # job", before any step runs. Bump this by hand.
+      - uses: astral-sh/setup-uv@v10.0.1
         with:
           enable-cache: true
 
