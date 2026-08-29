@@ -7,12 +7,12 @@
 
 - category: "Intelligent document processing"
   icon: "file"
-  items: "Designing and building AI pipelines that turn applications, policy documents, and correspondence into structured data — classification, extraction, validation, and the confidence thresholds that decide what a person still has to review before anything downstream trusts it."
+  items: "Designing and building AI pipelines that turn messy, low-quality documents into structured, enriched data for consumption by human and AI users."
 
 - category: "Agentic AI architecture"
   icon: "code"
-  items: "Architecting and building agentic systems on AWS, primarily Amazon Bedrock AgentCore — tool and memory design, orchestration across steps that can fail, and the identity, isolation, and guardrail boundaries an agent needs before it is allowed near PII or PHI."
+  items: "Architecting and building agentic systems on AWS, primarily Amazon Bedrock AgentCore — tool and memory design, orchestration (both deterministic and agentic), and the necessary guardrails an agent needs before it is allowed near sensitive workflows."
 
 - category: "Evaluation & enterprise AI standards"
   icon: "chart"
-  items: "Systematic evaluation of AI systems: test sets, scoring, and regression checks that produce evidence rather than a demo — and the standards and practices that define how AI gets built, reviewed, and operated across the company."
+  items: "Systematic evaluation of AI systems: error taxonomies, test sets, and regression checks — and the standards and practices that define how AI gets built, reviewed, and operated across the company."

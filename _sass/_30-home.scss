@@ -115,27 +115,10 @@
   background-position: 0 100%, 0 100%;
 }
 
-/* The kicker reads as the class line above the name, so it gets a menu
-   bullet in front of it. */
-.home .hero-class {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 11.5px;
-  letter-spacing: 0.2em;
-}
-
-.home .hero-class::before {
-  content: "";
-  flex: 0 0 auto;
-  width: 6px;
-  height: 6px;
-  background: var(--gold);
-  box-shadow: 0 0 0 2px rgb(var(--rgb-frame-dark) / .65);
-}
-
+/* The name is the only thing on the plate, so the plate's own padding sets
+   the spacing — .h1's default top margin would double it. */
 .home .hero-name {
-  margin-top: 10px;
+  margin-top: 0;
 }
 
 .home .status-window .lede {
