@@ -5,30 +5,22 @@ permalink: /posts/
 description: "Writing by Eric Voss — project write-ups, notes, tangents, and half-formed thoughts on whatever currently has his attention."
 ---
 {%- comment -%}
-Two sections, and that is the whole page. The log is the complete chronological
-record — every post, newest first, nothing promoted above it. The
+Two sections, and that is the whole page. The list is the complete
+chronological record — every post, newest first, nothing promoted above it. The
 drawer under it holds the WIP notes, which are live but not announced.
 
+There is no visible page header, so the h1 is screen-reader-only — same
+arrangement the About page uses.
 {%- endcomment -%}
 {%- assign wip = site.wip | reverse -%}
 <div class="posts">
 
-  <header class="page-header surface reveal">
-    <div class="kicker">Posts</div>
-    <h1 class="page-title">Whatever currently has my attention</h1>
-    <p class="page-sub">
-      Work I set out to do and work I only got curious about on a Sunday, filed
-      together because the difference was never worth two URLs. Some of it ends
-      in a deliverable somebody could use; some of it is an argument I am still
-      having with myself. No promise that any two entries are about the same
-      subject.
-    </p>
-  </header>
+  <h1 class="sr-only">Posts by {{ site.data.profile.name }}</h1>
 
   {%- if site.posts.size > 0 -%}
   <section class="log surface reveal" aria-label="Entries">
     <div class="log-head">
-      <h2 class="section-h2">The log</h2>
+      <h2 class="section-h2">Posts</h2>
       <a class="pill log-feed" href="{{ '/feed.xml' | relative_url }}">
         {%- include icon.html name="external" -%}
         <span>RSS</span>
@@ -61,7 +53,7 @@ drawer under it holds the WIP notes, which are live but not announced.
   </section>
   {%- else -%}
   <section class="log log-empty surface reveal" aria-label="Entries">
-    <h2 class="section-h2">The log</h2>
+    <h2 class="section-h2">Posts</h2>
     <p class="wip-copy">
       Nothing written up yet. When there is, it lands here — and in the
       <a class="marker-link" href="{{ '/feed.xml' | relative_url }}">feed</a>.
