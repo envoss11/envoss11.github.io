@@ -21,7 +21,7 @@ step-back/step-forward pair.
   {%- endif -%}
 
   <header class="article-head surface reveal">
-    {%- comment -%} The `wip` defaults scope supplies "Work in progress". {%- endcomment -%}
+    {%- comment -%} The `wip` defaults scope supplies "AI draft". {%- endcomment -%}
     <div class="kicker">{{ page.kicker | default: "Post" }}</div>
     <h1 class="page-title">{{ page.title }}</h1>
 
@@ -77,12 +77,13 @@ step-back/step-forward pair.
   <aside class="wip-notice" aria-label="Page status">
     <span class="wip-badge">
       <span class="wip-blip" aria-hidden="true"></span>
-      <span>Work in progress</span>
+      <span>AI draft</span>
     </span>
     <p class="wip-copy">
-      This one is being written in public and is not finished. Expect gaps, loose
-      ends, and conclusions I may walk back. It is out of the feed and out of the
-      sitemap until it earns a date on the log.
+      An idea I handed to an LLM to take a first stab at, published as it came
+      back. It is a scaffold, not something I have written or checked end to end,
+      so expect gaps, loose ends, and conclusions I may walk back. It is out of
+      the feed and out of the sitemap until it earns a date on the log.
     </p>
   </aside>
   {%- endif -%}
