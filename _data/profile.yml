@@ -1,13 +1,13 @@
 name: "Eric Voss"
 credential: "M.S."
-role: "Lead Data Scientist"
+role: "Data Scientist/AI Engineer"
 company: "Securian Financial"
 location: "Minnesota"
 email: "envoss11@gmail.com"
 portrait: "/assets/images/portrait.jpg"
 
-kicker: "AI Systems & Evaluation"
-tagline: "I build document processing and agentic AI systems for regulated industries, and the evaluation practices that show whether they work."
+kicker: "Building & Evaluating AI Systems"
+tagline: "I build, evaluate and optimize responsible AI solutions for regulated industries."
 
 links:
   - label: "LinkedIn"
