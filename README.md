@@ -134,8 +134,6 @@ row closes up. An `image` gets the post a hero — put the file in
 `assets/images/` and add `image_fit: contain` if it's a chart or screenshot
 that shouldn't be cropped.
 
-`_posts/2026-07-19-placeholder-first-entry.md` documents every field.
-
 **Jekyll's `future: false` default means a post dated ahead of the build date
 silently will not publish.** `make publish` stamps today, so this only bites if
 you hand-name a file with tomorrow's date.
@@ -143,8 +141,7 @@ you hand-name a file with tomorrow's date.
 ### Write-ups
 
 A project write-up is a post with more front matter, not a separate section.
-`_posts/2026-06-14-placeholder-full-write-up.md` documents the extras — the
-`facts` table under the header and the `links` pill buttons
+The extras are the `facts` table under the header and the `links` pill buttons
 (`icon: external | github | file`).
 
 One section rather than two, and now one treatment rather than two: the

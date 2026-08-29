@@ -69,11 +69,10 @@ whatever is missing.
 Do **not** set `layout`, `permalink`, `sitemap`, `noindex`, or `kicker` on a WIP
 note. The `wip` defaults scope in `_config.yml` supplies all five.
 
-Two placeholder files document every field by example:
-`_posts/2026-06-14-placeholder-full-write-up.md` (everything) and
-`_posts/2026-08-04-placeholder-second-entry.md` (the minimum). A WIP note takes
-the same front matter with `date` moved in from the filename —
-`_wip/automated-prompt-engineering.md` is the live example.
+There are no example entries on disk — `_posts/` and `_wip/` are both empty, so
+the table above is the whole contract rather than a summary of one. A WIP note
+takes the same front matter as a post with `date` moved in from the filename,
+and `make wip` scaffolds it with the required fields already in place.
 
 For a note backed by a notebook, the front matter is the *only* hand-written
 part of the file. Everything under it is generated and carries a comment saying
