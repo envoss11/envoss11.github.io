@@ -6,10 +6,10 @@
    50-posts — the index furniture and the lore page.
 
    Two rooms:
-   1. /posts/ — the page header, and the records drawer you pull open at the
-      end of the menu. There used to be a shelf of framed cards above the log
-      for entries carrying `featured: true`; it and its styles came out when
-      the page went down to two sections, and git has them.
+   1. /posts/ — the records drawer you pull open at the end of the menu. The
+      page above it has shed furniture twice: first a shelf of framed cards for
+      entries carrying `featured: true`, then the page header that stood over
+      the list. Both are in git if they are ever wanted back.
    2. /posts/<x>/ and /posts/wip/<x>/ — the entry itself. Furniture gets the
       16-bit treatment (section plates, sunken wells, stat lines) but the
       running text stays at a size you can read for ten minutes. Charts are
@@ -17,24 +17,6 @@
 
    The ledger that is now the whole top of /posts/ is 55-log.
    ========================================================================== */
-
-/* --------------------------------------------------------- index: header */
-
-/* The kicker reads as the window's tab rather than a floating label. Left
-   unscoped: .page-header is the index-page header, and there is one index. */
-.page-header .kicker {
-  display: inline-block;
-  padding: 5px 10px;
-  border: 2px solid rgb(var(--rgb-gold) / .45);
-  background: rgb(var(--rgb-gold) / .1);
-  box-shadow: 0 2px 0 rgb(var(--rgb-shade) / .35);
-}
-
-.page-header .page-sub {
-  margin-top: 18px;
-  padding-top: 16px;
-  border-top: 2px solid var(--faint);
-}
 
 /* ------------------------------------------------------- article: notice */
 

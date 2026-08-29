@@ -1,0 +1,22 @@
+# The Python half of the toolchain, which is one dependency wide.
+#
+# This exists to provide the `marimo` CLI that `make sync` drives — nothing
+# here is imported and nothing is built. A notebook's own analysis
+# dependencies (pandas, matplotlib, whatever a particular pull needs) go in
+# its PEP 723 header instead, so that `make edit` can run it isolated with
+# --sandbox and one notebook's requirements can never constrain another's.
+#
+#   uv sync        set the environment up
+#   make sync      regenerate note pages from their notebooks
+
+[project]
+name = "ericvoss-site"
+version = "0"
+description = "Notebook tooling for ericvoss.com"
+requires-python = ">=3.12"
+dependencies = ["marimo>=0.17.6"]
+
+# Not a package: there is no library here to build or install, only an
+# environment to run a CLI out of.
+[tool.uv]
+package = false

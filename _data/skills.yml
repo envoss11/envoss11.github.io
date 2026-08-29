@@ -4,24 +4,24 @@
 
 - category: "Intelligent document processing"
   icon: "file"
-  items: "End-to-end IDP pipelines — document classification, OCR and layout parsing, LLM extraction against a defined schema, validation rules, and the review routing that decides what a model is not allowed to decide on its own"
+  items: "End-to-end IDP pipelines — document classification, OCR and layout parsing, LLM extraction against a defined schema, validation rules, review routing"
 
 - category: "Agentic & generative AI"
   icon: "package"
-  items: "Amazon Bedrock and Bedrock AgentCore, agent and tool design, retrieval, memory and session state, multi-step orchestration, prompt and context engineering, and the guardrails and failure handling an agent needs before it sits in a real process"
+  items: "Amazon Bedrock and Bedrock AgentCore, agent and tool design, retrieval, memory and session state, multi-step orchestration, prompt and context engineering, guardrails and failure handling"
 
 - category: "Evaluation & experiment design"
   icon: "chart"
-  items: "Evaluation harnesses and labelled test sets, LLM-as-judge and human review, regression and drift checks against live systems, error analysis — plus the statistical modeling underneath it: supervised learning, generalized additive models, and inference"
+  items: "Evaluation harnesses and ground truth labeling, LLM-as-judge and human review, regression and drift checks, error analysis"
 
 - category: "Cloud & engineering"
   icon: "code"
-  items: "AWS — Bedrock, AgentCore, SageMaker, Textract, Comprehend, Step Functions, Lambda, S3 — with Python, SQL, and R, Git and code review, automated testing, CI/CD, monitoring, and incident response for AI systems that are already carrying traffic"
+  items: "AWS — Bedrock, AgentCore, SageMaker, Textract, Comprehend, Step Functions, Lambda, S3 — with Python, SQL, and R, Git and code review, automated testing, CI/CD, monitoring, and incident response for production AI systems"
 
 - category: "Regulated-industry practice"
   icon: "book"
-  items: "Building under HIPAA and financial services regulation: PII and PHI handling, data minimization and retention, model validation and documentation, explainability, fairness and robustness testing, and lifecycle governance that survives model risk review"
+  items: "Building under financial services regulation: PII and PHI handling, data minimization and retention, model validation and documentation, explainability, fairness and robustness testing, and lifecycle governance"
 
 - category: "Strategy & partnership"
   icon: "leaf"
-  items: "Shaping enterprise AI standards and platform roadmaps with business and technology leaders, and explaining technical trade-offs to audiences who have to make the decision"
+  items: "Shaping enterprise AI standards and platform roadmaps with business and technology leaders"

@@ -5,36 +5,22 @@ permalink: /posts/
 description: "Writing by Eric Voss — project write-ups, notes, tangents, and half-formed thoughts on whatever currently has his attention."
 ---
 {%- comment -%}
-Two sections, and that is the whole page. The log is the complete chronological
-record — every post, newest first, one treatment, nothing promoted above it. The
+Two sections, and that is the whole page. The list is the complete
+chronological record — every post, newest first, nothing promoted above it. The
 drawer under it holds the WIP notes, which are live but not announced.
 
-There used to be a card grid above the log for entries carrying `featured: true`
-and a second drawer below it for `_data/archive.yml`. Both are gone. A spotlight
-section only works when there is enough behind it to be worth picking from, and
-a list of odds and ends is a third way of saying "here is some writing" on a
-page that already says it twice. Git has the markup and the styles if either
-earns its way back.
+There is no visible page header, so the h1 is screen-reader-only — same
+arrangement the About page uses.
 {%- endcomment -%}
 {%- assign wip = site.wip | reverse -%}
 <div class="posts">
 
-  <header class="page-header surface reveal">
-    <div class="kicker">Posts</div>
-    <h1 class="page-title">Whatever currently has my attention</h1>
-    <p class="page-sub">
-      Work I set out to do and work I only got curious about on a Sunday, filed
-      together because the difference was never worth two URLs. Some of it ends
-      in a deliverable somebody could use; some of it is an argument I am still
-      having with myself. No promise that any two entries are about the same
-      subject.
-    </p>
-  </header>
+  <h1 class="sr-only">Posts by {{ site.data.profile.name }}</h1>
 
   {%- if site.posts.size > 0 -%}
   <section class="log surface reveal" aria-label="Entries">
     <div class="log-head">
-      <h2 class="section-h2">The log</h2>
+      <h2 class="section-h2">Posts</h2>
       <a class="pill log-feed" href="{{ '/feed.xml' | relative_url }}">
         {%- include icon.html name="external" -%}
         <span>RSS</span>
@@ -67,7 +53,7 @@ earns its way back.
   </section>
   {%- else -%}
   <section class="log log-empty surface reveal" aria-label="Entries">
-    <h2 class="section-h2">The log</h2>
+    <h2 class="section-h2">Posts</h2>
     <p class="wip-copy">
       Nothing written up yet. When there is, it lands here — and in the
       <a class="marker-link" href="{{ '/feed.xml' | relative_url }}">feed</a>.
@@ -89,7 +75,7 @@ earns its way back.
   <details class="archive surface reveal">
     <summary class="archive-summary">
       <span class="career-chevron"><svg class="pixel-chevron" viewBox="0 0 8 8" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true" focusable="false"><rect x="1" y="2" width="6" height="1"/><rect x="2" y="3" width="4" height="1"/><rect x="3" y="4" width="2" height="1"/></svg></span>
-      <span>Works in progress</span>
+      <span>AI drafts</span>
       <span class="archive-handle" aria-hidden="true"></span>
     </summary>
     <div class="archive-list">
@@ -104,7 +90,9 @@ earns its way back.
       {%- endfor -%}
     </div>
     <p class="archive-desc archive-foot">
-      Notes I am drafting in the open. They are not finished, they are not in the
+      Ideas I handed to an LLM to take a first stab at. Each one is a scaffold —
+      an outline, a rough draft, a first research pass — not something I have
+      written or checked end to end. They are out of the
       <a class="marker-link" href="{{ '/feed.xml' | relative_url }}">feed</a>, and
       some of them will never make it out of this drawer.
     </p>

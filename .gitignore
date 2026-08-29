@@ -6,3 +6,8 @@ _site/
 vendor/
 .DS_Store
 .Rhistory
+
+# The uv environment behind the notebooks. pyproject.toml and uv.lock are
+# committed; what they resolve to is not.
+.venv/
+__pycache__/

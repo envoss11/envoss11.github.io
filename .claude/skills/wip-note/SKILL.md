@@ -1,18 +1,54 @@
 ---
 name: wip-note
-description: Turn a raw idea dump into a researched work-in-progress note on ericvoss.com — either a data exploration with a committed analysis script, or a written essay — then open a PR. Use this whenever Eric hands over an idea, a question, a braindump, or a link with no other instruction — that alone is the trigger. Also use it for explicit asks like "start a note on X", "research X", or "/idea".
+description: Turn a raw idea dump into an AI draft on ericvoss.com — usually a minimal marimo notebook that Eric opens and pairs on afterwards, or a written essay when there is no data at the bottom of the idea — then open a PR. Use this whenever Eric hands over an idea, a question, a braindump, or a link with no other instruction — that alone is the trigger. Also use it for explicit asks like "start a note on X", "research X", or "/idea".
 ---
 
-# Turning an idea dump into a WIP note
+# Turning an idea dump into an AI draft
 
-The point of this is that Eric has ideas away from a laptop and very little time
-at one. He dictates or types a rough thought from a phone; you turn it into a
-researched note that is already live and already iterable, and he finishes it
-later. **Zero further typing should be required from him.** Do not ask
-clarifying questions before starting — make the call, write the note, and say
-what you assumed. Ambiguity is what the note is for.
+Eric has ideas away from a laptop and very little time at one. He dictates or
+types a rough thought from a phone; you turn it into something already live and
+already iterable, and he finishes it later. **Zero further typing should be
+required from him.** Do not ask clarifying questions before starting — make the
+call, build the thing, and say what you assumed. Ambiguity is what the note is
+for.
 
-Read `CLAUDE.md` first if you have not. The traps section is not optional.
+Read `CLAUDE.md` first if you have not. The traps section is not optional, and
+the "Notebooks" section is the format contract this skill depends on.
+
+## What you are actually producing
+
+**A scaffold he opens in marimo and pairs on — not a finished piece.**
+
+That framing decides everything below. The thing you hand back is the starting
+point of his session, not a substitute for it. He will open the notebook with
+`make edit SLUG=<slug>`, and from there he and a local Claude Code session work
+in the live kernel through the `marimo-pair` skill. Anything you write that he
+has to delete first is worse than not writing it.
+
+So the standard is **minimal**, and it is a hard rule rather than a preference:
+
+- **Three prose cells at most**, and only where a reader is lost without them.
+  The dump, the question, and — if you actually found something — one short
+  paragraph saying what.
+- **No prose cell that narrates the next cell.** The code says what the code
+  does. "First we load the data" is noise in a notebook and noise on the page.
+- **No preamble, no throat-clearing, no summary of what is about to happen.**
+  No "In this notebook we will", no "Let's explore", no closing section that
+  restates the opening one.
+- **Around eight cells total**, template plumbing included. The pull and one
+  figure is a complete first pass. A second figure needs a reason.
+- **Write no conclusion you have not earned.** If the data settled it, one
+  sentence. If it did not, say the question is open and stop. Padding around an
+  absent finding is the single worst thing you can hand back.
+- **The `## Where this goes` cell is one line or it is deleted.** It is a
+  prompt for him, not an essay from you.
+
+Everything you are tempted to add belongs in the next interaction, after he has
+looked at it. Under-writing costs him one message; over-writing costs him a
+cleanup.
+
+None of this applies to the *research*. Go as deep as the sources allow — the
+minimality is about what you write down, not about how hard you looked.
 
 ## The procedure
 
@@ -23,73 +59,78 @@ given. Do not clean it up, reorder it, or fix the grammar — it is the record o
 what he actually thought, and it is more useful in three weeks than a tidied
 paraphrase would be.
 
-It goes in a `## The dump` section at the top of the note body.
+It goes in a `## The dump` section at the top, blockquoted. In a notebook that
+is the first `mo.md` cell; in an essay it is the first section.
 
-### 2. Decide which kind of note this is
+### 2. Decide which shape this is
 
-Two shapes. They share the capture, the sourcing, the checks and the PR, and
-they diverge on everything in between — so decide before you scaffold, not
-halfway through writing.
+**An exploration is a notebook.** A question with a number at the end of it, a
+dataset that could answer it, and a chart that settles the argument faster than
+a paragraph would. This is the default and the one the site is built around.
 
-**An exploration** is the traditional data-science post: a question with a number
-at the end of it, a dataset that could answer it, and a chart that settles the
-argument faster than a paragraph would. It ships with a committed analysis script
-and the figures that script drew.
-
-**An essay** is a piece of writing: a position, a distinction, a reflection on
-how something actually goes wrong. It can be entirely technical — "what
-enterprise AI risk registers keep leaving out" is an essay — it just has no
-dataset at the bottom of it. It ships with an argument and its sources.
+**An essay is Markdown.** A position, a distinction, a reflection on how
+something actually goes wrong. It can be entirely technical — "what enterprise
+AI risk registers keep leaving out" is an essay — it just has no dataset at the
+bottom of it, and no reason to be wrapped in a Python file.
 
 The test is one question: **is there something here you could settle by running
 code against data you can actually get?** Then the edges:
 
-- One number to look up is not an exploration. Cite it and keep writing prose.
-  A script and a chart to carry a single statistic is machinery around a sentence.
-- An idea that wants data nobody publishes is an essay about a question. Name the
-  dataset that would settle it and say it does not exist — that is a finding.
-- If it is honestly both, take the half the dump spends more words on and put the
-  other in "Where this goes." A note that attempts both does neither.
+- One number to look up is not an exploration. Cite it and write prose. A
+  notebook to carry a single statistic is machinery around a sentence.
+- An idea that wants data nobody publishes is an essay about a question. Name
+  the dataset that would settle it and say it does not exist — that is a
+  finding.
+- If it is honestly both, take the half the dump spends more words on and put
+  the other in "Where this goes." Something attempting both does neither.
 
-Do not invent a front-matter field for this. The table in `CLAUDE.md` is the whole
-schema, and the shape of a note is obvious from reading it. Say which one you
-picked, and why, in the PR body.
+Say which one you picked, and why, in the PR body.
 
-### 3. Pick a slug and scaffold
+### 3. Scaffold
 
 Derive a slug from the idea: lowercase, hyphens, no articles, short enough to
-read in a URL. Then:
+read in a URL.
 
-- `_wip/<slug>.md` — the note.
-- `_research/<slug>/` — the working directory. Create it either way; a directory
-  with only a `notes.md` in it is fine, and Jekyll never looks at it.
+**An exploration:**
 
-An exploration also gets `analysis.py` and `requirements.txt` in there — step 5.
+```sh
+make notebook TITLE="The question, as a question"
+```
 
-Front matter is `title`, `date` (**required here** — there is no date in the
-filename), `excerpt`, and `tags_list`. Nothing else, with one exception: an
-exploration with a lead chart may set `image` and `image_fit: contain`, which
-letterboxes it instead of cropping it. `layout`, `permalink`, `sitemap`,
-`noindex`, and the kicker all come from the `wip` defaults scope in
-`_config.yml`; setting them by hand is an error.
+That writes `_notebooks/<slug>.py` from the template with `SLUG` filled in,
+`_wip/<slug>.md` with front matter and a generated body, and
+`_research/<slug>/`. If `make` is unavailable, do the same three things by hand
+— copy `.claude/skills/wip-note/notebook-template.py`, set `SLUG`, and run
+`python3 _bin/sync-notebook.py <slug>`.
+
+**An essay:**
+
+```sh
+make wip TITLE="The claim, as a claim"
+```
+
+Front matter either way is `title`, `date` (**required here** — there is no
+date in the filename), `excerpt`, and `tags_list`. Nothing else, with one
+exception: an exploration with a lead chart may set `image` and
+`image_fit: contain`, which letterboxes it instead of cropping it. `layout`,
+`permalink`, `sitemap`, `noindex`, and the kicker all come from the `wip`
+defaults scope in `_config.yml`; setting them by hand is an error.
 
 The date is today's, in `YYYY-MM-DD`. Never a future date — `future: false` is
 Jekyll's default and a forward-dated entry silently does not publish.
 
 ### 4. Research
 
-This is the half that makes the note worth reading, and it applies to both
-shapes. Work out what would actually have to be true for the idea to hold, then
-go and check.
+This is the half that makes it worth opening, and it applies to both shapes.
+Work out what would have to be true for the idea to hold, then go and check.
 
 - Find real sources. Prefer primary data — a statistical agency, a published
   dataset, a paper, the actual documentation — over somebody's summary of it.
-- Pull data down into `_research/<slug>/` when there is data to pull. Commit the
-  script that pulled it, not just the output, so the number can be re-derived.
+- Pull data down in the notebook itself, or into `_research/<slug>/` for an
+  essay. Commit the code that pulled it, so the number can be re-derived.
 - Cite everything inline as Markdown links. Any sentence asserting a fact needs
   one behind it.
-- Note what you *could not* find. A gap in the evidence is a finding and belongs
-  in the note.
+- Note what you *could not* find. A gap in the evidence is a finding.
 
 For an essay, two more, because an essay has no data to keep it honest:
 
@@ -103,141 +144,136 @@ For an essay, two more, because an essay has no data to keep it honest:
 
 Network access has to be set to Full or Custom for this to work; on Trusted the
 research half silently gets nowhere. If sources are unreachable, say so plainly
-at the top of the note rather than writing around it.
+at the top rather than writing around it.
 
-### 5. The analysis, if it is an exploration
+### 5. Write the notebook
 
-Skip this whole section for an essay.
+Skip this section for an essay and write Markdown instead — same headings as
+before (`## The dump`, `## The argument`, `## The strongest objection`,
+`## Where this goes`), and the same minimality rule does *not* apply, because
+an essay under about 500 words is a paragraph with headings on it and has not
+made its argument yet. An essay is the one thing here you should write in full.
 
-**Copy the two templates out of this skill's directory** — `analysis-template.py`
-to `_research/<slug>/analysis.py` and `requirements-template.txt` to
-`_research/<slug>/requirements.txt` — and edit them. Do not start from a blank
-file: the template carries the site's chart palette, the repo-root lookup, and a
-`savefig` that puts figures where Jekyll can serve them.
+For a notebook, the format contract in CLAUDE.md is what decides whether your
+work reaches the page at all. The four rules that matter most:
 
-`analysis.py` is a plain `.py` in jupytext `# %%` cell format, not an `.ipynb`,
-and that is deliberate. VS Code and PyCharm open it as a notebook with no
-conversion and Jupyter opens it with jupytext, so it is still a notebook at a
-laptop — but its diff is readable in the GitHub mobile app, and its outputs
-cannot quietly drift out of sync with the code the way a committed `.ipynb`'s do.
-Picking it up later is two commands, which is the whole point:
+- **Prose is `mo.md("""...""")` with a plain string literal.** An f-string is
+  not a literal — marimo cannot resolve it statically, so `mo.md(f"...")` lands
+  on the page as a code block showing the f-string. Compute the number in a
+  code cell, print it, read the printed value, and type it into the prose.
+- **`hide_code=True` means the cell does not reach the page.** That is the
+  control for keeping plumbing off the site: imports, the style block, path
+  setup. The code that carries the argument stays visible. `make sync` prints
+  both counts every run.
+- **Cell outputs never reach the page.** A chart gets there by `savefig`
+  writing a PNG into `assets/images/` and a prose cell linking it by hand.
+- **No `# Heading` at the top.** The layout renders the title already.
+
+Then marimo's own contract, which is not optional because the notebook has to
+stay a DAG: no cycles, one owning cell per public name, no `import *`. Use
+`_name` for intermediates nothing else reads.
+
+Every number the prose asserts has to come from a cell in that notebook.
+
+**Check whether you can run it before you plan on it:**
 
 ```sh
-pip install -r requirements.txt && python analysis.py
+make run SLUG=<slug>     # uv run --script; reads the PEP 723 header
 ```
 
-Every number the note asserts has to come out of that script, and every figure in
-the prose has to have the cell that drew it sitting in the script. Commit the raw
-data next to it if it is small; if it is not, commit only the fetch and say in a
-comment where it came from and how big it is.
-
-**Check whether you can run any of this before you plan on it:**
-
-```sh
-python3 -c "import pandas, matplotlib"
-```
-
-A cloud VM does not have these unless a setup script installed them.
-
-- **If it runs:** save the figures through the template's `savefig`, commit the
-  PNGs under `assets/images/`, and embed them.
-- **If it does not run: commit the script and embed no figures at all.** A note
-  pointing at an image that is not in the repo turns html-proofer red and blocks
-  the merge — see trap 4. Describe what the script will produce, say at the top
-  of the note that the analysis has not been run yet, repeat that in the PR body,
-  and do not quote a number you have not computed.
-
-Leave the template's style block alone. It is dark because the site is not: the
-theme flips between night glass and day parchment on a `data-theme` toggle and a
-PNG cannot follow it, so a figure is a screen set into the page instead — which
-is how `.prose p:has(> img)` already frames every image. Put each figure in a
-paragraph of its own so it gets that slot, and give every one real alt text.
-
-### 6. Write the note
-
-An exploration:
-
-```
-## The dump              <- verbatim, untouched
-## The question          <- what would have to be true, put as something checkable
-## What the data says    <- the figures and numbers, each traceable to a cell
-## What it doesn't show  <- the confounds, the sample you wish you had
-## Where this goes
-```
-
-An essay:
-
-```
-## The dump                 <- verbatim, untouched
-## The argument             <- one sentence you could be wrong about, then the case
-## The strongest objection  <- named and sourced, not a strawman
-## Where this goes
-```
+- **If it runs:** it writes the figures and prints the exact Markdown line to
+  paste. Commit the PNGs under `assets/images/` and reference them from a prose
+  cell.
+- **If it does not run: commit the notebook and reference no figures at all.**
+  A page pointing at an image that is not in the repo turns html-proofer red
+  and blocks the merge — trap 4. Say at the top that the analysis has not been
+  run, repeat it in the PR body, and do not quote a number you have not
+  computed.
 
 Voice: plain and specific, per CLAUDE.md. State what the evidence supports and
-stop. "This doesn't show what I hoped" is a legitimate and useful conclusion —
-write it down rather than padding around it.
+stop. "This doesn't show what I hoped" is a legitimate and useful conclusion.
 
-Length: enough to be worth opening, not a finished essay. This is a note, and the
-drawer it lands in says so. An exploration can be short because the figures carry
-it. An essay cannot: under about 500 words it is a paragraph with headings on it,
-and the argument has not been made yet.
+### 6. Sync, and check your own work
 
-### 7. Check your own work before pushing
+**`make sync SLUG=<slug>` is not optional for a notebook.** The page body is
+generated from the notebook, CI re-runs the export and compares, and a PR whose
+page has drifted from its notebook goes red — which is the one thing that stops
+him merging from a phone.
 
-You cannot build (see the Ruby section in CLAUDE.md), so check by reading:
+You cannot build the site (see the Ruby section in CLAUDE.md), but the notebook
+half of the gate is Python and you can run all of it:
 
-- **Any `{{` or `{%` anywhere in the body — including inside fenced code blocks
-  — must be wrapped in `{% raw %}` … `{% endraw %}`.** Jekyll parses Liquid
-  before Markdown and does not care that it is inside a fence. This is the
-  single most likely way the note breaks the build, and quoting a shell snippet
-  with `${}` in it counts.
-- Every image the note references exists as a file you are committing, and every
-  one has real alt text. The image check fails on a missing file, on a missing
-  `alt`, on an `alt` that is empty or all spaces, and on a filename that still
-  looks like `Screen Shot 2026-08-17 at 9.41.02.png`. All four are failures, not
-  warnings, and CI passes no ignore flags.
-- Every internal link resolves to a page that exists. A link to a page you meant
-  to write next turns the check red too.
-- Every number in the prose matches what the script actually printed.
+```sh
+make notebooks     # marimo check --strict, then the drift check
+```
+
+If marimo cannot be installed at all, do not scaffold a notebook — you would be
+committing a page you cannot generate. Write the idea as an essay instead and
+say why in the PR body.
+
+Then check the rest by reading:
+
+- **Any `{{` or `{%` in an *essay* body — including inside fenced code blocks —
+  must be wrapped in `{% raw %}` … `{% endraw %}`.** Trap 1. A notebook page is
+  already wrapped by `make sync`, so this applies to hand-written Markdown only.
+- Every image referenced exists as a file you are committing, and every one has
+  real alt text. The check fails on a missing file, on missing `alt`, on an
+  `alt` that is empty or all spaces, and on a filename that still looks like
+  `Screen Shot 2026-08-17 at 9.41.02.png`. All four are failures, not warnings.
+- Every internal link resolves. A link to a page you meant to write next turns
+  the check red too.
+- Every number in the prose matches what the notebook actually printed.
 - No forward date.
 - Front matter is valid YAML: a `title` containing a colon needs quoting.
 
-### 8. Branch, commit, PR
+### 7. Branch, commit, PR
 
 - Branch: `wip/<slug>`.
-- Commit `_wip/<slug>.md`, everything under `_research/<slug>/`, and any figures
-  under `assets/images/<slug>-*.png`.
-- **Those three paths are the whole diff.** A wip-note PR does not touch
-  `_config.yml`, `_layouts/`, `_includes/`, `_sass/`, `CNAME`, or anything under
-  `.github/`. If the note genuinely seems to need one of those, do not make the
-  change — say what it needs and why in the PR body and leave it to him. The
-  point is that the diff can be approved from a phone at a glance, so anything
-  outside those three paths is worth stopping over however good the reason in
-  the PR body sounds.
+- Commit `_notebooks/<slug>.py`, `_wip/<slug>.md`, everything under
+  `_research/<slug>/`, and any figures under `assets/images/<slug>-*.png`.
+- **Those four paths are the whole diff.** This PR does not touch
+  `_config.yml`, `_layouts/`, `_includes/`, `_sass/`, `_bin/`, `Makefile`,
+  `CNAME`, or anything under `.github/`. If it genuinely seems to need one of
+  those, do not make the change — say what it needs and why in the PR body and
+  leave it to him. The point is that the diff can be approved from a phone at a
+  glance, so anything outside those four paths is worth stopping over however
+  good the reason sounds.
 - Open a PR against `master`. **Never push to `master` directly.**
-- PR body: which of the two kinds of note this is and why, what the idea was,
-  what the research or the analysis found, whether the script ran, and what is
-  still open. It is what he reads on a phone before merging.
+- PR body: which shape this is and why, what the idea was, what the research
+  found, whether the notebook ran, and what is still open. It is what he reads
+  on a phone before merging.
 
-Then tell him the PR link, the URL the note will live at once merged
+Then tell him the PR link, the URL it will live at once merged
 (`/posts/wip/<slug>/`), and anything you assumed or could not check.
 
 ## Iterating
 
-A follow-up message about a note that already exists means: push another commit
-to the same branch. Do not open a second PR, and do not start a second note
-unless the follow-up is plainly a new idea.
+A follow-up about something that already exists means: push another commit to
+the same branch. Do not open a second PR, and do not start a second note unless
+the follow-up is plainly a new idea.
 
-A follow-up that turns an essay into an exploration — "actually, can we get data
-on this" — stays on the same branch and the same note. Add step 5 to it and swap
-the headings for the exploration set.
+Two things to keep in mind when you come back to a notebook:
+
+- **If he is in a live marimo session, you are not editing the file.** The
+  running kernel is the source of truth and file edits do not reach it. That is
+  the `marimo-pair` skill's territory, and it uses `marimo._code_mode` against
+  the live kernel instead. Editing `_notebooks/<slug>.py` underneath a running
+  session loses work.
+- **Otherwise edit the file and re-run `make sync`.** Every time. The page does
+  not regenerate itself.
+
+A follow-up that turns an essay into an exploration — "actually, can we get
+data on this" — stays on the same branch. Run `make notebook` for the slug,
+move the prose into `mo.md` cells, and delete the hand-written `_wip/<slug>.md`
+body so `make sync` owns it.
 
 ## When it is finished
 
 Promotion out of the drawer is a laptop job and he will usually do it himself.
-If he does ask: `make publish SLUG=<slug>` moves the file to
-`_posts/YYYY-MM-DD-<slug>.md`, and the `date` line comes out of the front matter
-because the filename carries it from then on. That is the point at which it
-enters the RSS feed, so it is never something to do unprompted. `_research/` and
-the figures stay where they are; nothing about them moves.
+If he does ask: `make publish SLUG=<slug>` moves the page to
+`_posts/YYYY-MM-DD-<slug>.md`, and the `date:` line comes out of the front
+matter because the filename carries it from then on. That is the point at which
+it enters the RSS feed, so it is never something to do unprompted.
+
+The notebook does not move — it stays in `_notebooks/` and `make sync` follows
+the page into `_posts/`. `_research/` and the figures stay where they are too.

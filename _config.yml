@@ -84,7 +84,7 @@ defaults:
       layout: post
       sitemap: false
       noindex: true
-      kicker: "Work in progress"
+      kicker: "AI draft"
   - scope:
       path: "_pages"
       type: pages
