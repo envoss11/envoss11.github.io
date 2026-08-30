@@ -54,7 +54,8 @@ minimality is about what you write down, not about how hard you looked.
 
 ## The structure
 
-A notebook page has exactly these sections, in this order, every time:
+Every note — notebook or essay — has exactly these sections, in this order,
+every time:
 
 0. **`## The dump`** — the raw idea, verbatim, blockquoted. Step 1 of the
    procedure below; nothing goes above it.
@@ -77,9 +78,14 @@ A notebook page has exactly these sections, in this order, every time:
 4. **`## Next steps`** — deeper analysis approaches that might prove fruitful
    in answering the question(s). A short list, concrete enough to start from.
 
-An essay keeps its own headings (`## The dump`, `## The argument`,
-`## The strongest objection`, `## Where this goes`) — this structure is for
-the data-analysis shape only.
+An essay follows the same structure. Without a notebook underneath them the
+sections read differently, but they keep their names: `## The question(s)` is
+what the argument would have to settle to hold; `## The data` surveys the
+sources that could bear on it — including the dataset that would settle it
+and does not exist, which is a finding; `## EDA` is the close look at the
+evidence you did find — the concrete instance, the named disagreement, what
+each supports and what it doesn't. `## Next steps` is the same list either
+way: what a deeper pass would do.
 
 ## The procedure
 
@@ -113,8 +119,7 @@ code against data you can actually get?** Then the edges:
   the dataset that would settle it and say it does not exist — that is a
   finding.
 - If it is honestly both, take the half the dump spends more words on and put
-  the other in the closing section — `## Next steps` in a notebook,
-  `## Where this goes` in an essay. Something attempting both does neither.
+  the other in `## Next steps`. Something attempting both does neither.
 
 Say which one you picked, and why, in the PR body.
 
@@ -183,9 +188,9 @@ at the top rather than writing around it.
 
 ### 5. Write the notebook
 
-Skip this section for an essay and write Markdown instead — same headings as
-before (`## The dump`, `## The argument`, `## The strongest objection`,
-`## Where this goes`), and the same minimality rule does *not* apply, because
+Skip this section for an essay and write Markdown instead — the same five
+sections in the same order (see "The structure" above for how they read
+without a notebook), and the same minimality rule does *not* apply, because
 an essay under about 500 words is a paragraph with headings on it and has not
 made its argument yet. An essay is the one thing here you should write in full.
 

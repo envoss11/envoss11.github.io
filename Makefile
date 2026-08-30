@@ -96,9 +96,13 @@ wip: ## Scaffold _wip/<slug>.md + _research/<slug>/ — for an essay, no noteboo
 	  '' \
 	  '## The dump' \
 	  '' \
-	  '## What I found' \
+	  '## The question(s)' \
 	  '' \
-	  '## Where this goes' \
+	  '## The data' \
+	  '' \
+	  '## EDA' \
+	  '' \
+	  '## Next steps' \
 	  '' \
 	  > '_wip/$(SLUG).md'
 	@printf '%s\n' \
