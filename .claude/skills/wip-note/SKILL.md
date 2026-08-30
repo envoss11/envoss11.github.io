@@ -27,21 +27,23 @@ has to delete first is worse than not writing it.
 
 So the standard is **minimal**, and it is a hard rule rather than a preference:
 
-- **Three prose cells at most**, and only where a reader is lost without them.
-  The dump, the question, and — if you actually found something — one short
-  paragraph saying what.
+- **A prose cell exists to carry a section of the structure below, or a
+  finding inside one.** That is about six prose cells for a notebook; treat
+  more with suspicion, and keep each one short.
 - **No prose cell that narrates the next cell.** The code says what the code
   does. "First we load the data" is noise in a notebook and noise on the page.
 - **No preamble, no throat-clearing, no summary of what is about to happen.**
   No "In this notebook we will", no "Let's explore", no closing section that
   restates the opening one.
-- **Around eight cells total**, template plumbing included. The pull and one
-  figure is a complete first pass. A second figure needs a reason.
+- **Around a dozen cells total**, template plumbing included. The pull, the
+  general checks, one distribution figure, and one question-specific look is a
+  complete first pass. A second question-specific figure needs a reason.
 - **Write no conclusion you have not earned.** If the data settled it, one
   sentence. If it did not, say the question is open and stop. Padding around an
   absent finding is the single worst thing you can hand back.
-- **The `## Where this goes` cell is one line or it is deleted.** It is a
-  prompt for him, not an essay from you.
+- **`## Next steps` is a short list, not an essay.** Approaches he could take
+  further, concrete enough to start from — a prompt for him, not a plan you
+  are committing him to.
 
 Everything you are tempted to add belongs in the next interaction, after he has
 looked at it. Under-writing costs him one message; over-writing costs him a
@@ -49,6 +51,35 @@ cleanup.
 
 None of this applies to the *research*. Go as deep as the sources allow — the
 minimality is about what you write down, not about how hard you looked.
+
+## The structure
+
+A notebook page has exactly these sections, in this order, every time:
+
+0. **`## The dump`** — the raw idea, verbatim, blockquoted. Step 1 of the
+   procedure below; nothing goes above it.
+1. **`## The question(s)`** — the specific, answerable questions the analysis
+   is trying to settle. If the dump already asks them clearly, use its wording
+   with minimal edits. If it does not, do the converting yourself — turn the
+   dump into questions the data could actually answer — and say in the PR body
+   that you did.
+2. **`## The data`** — the data sources that could bear on the question(s):
+   list them, a line each on what they cover, then which one(s) you actually
+   pulled for this analysis and why. A rejected source keeps its reason —
+   "too coarse", "paywalled", "stops in 2019" — because the rejection is
+   research he would otherwise redo.
+3. **`## EDA`** — exploratory analysis of the chosen data. General first:
+   data quality, coverage, missingness, the distributions of the key
+   variables. Then whatever bears on the question(s) specifically, if the data
+   supports a first look. The pull, the checks, and the figures all live here,
+   and so does what the data *doesn't* show — the confounds, the gaps, the
+   sample you wish you had.
+4. **`## Next steps`** — deeper analysis approaches that might prove fruitful
+   in answering the question(s). A short list, concrete enough to start from.
+
+An essay keeps its own headings (`## The dump`, `## The argument`,
+`## The strongest objection`, `## Where this goes`) — this structure is for
+the data-analysis shape only.
 
 ## The procedure
 
@@ -82,7 +113,8 @@ code against data you can actually get?** Then the edges:
   the dataset that would settle it and say it does not exist — that is a
   finding.
 - If it is honestly both, take the half the dump spends more words on and put
-  the other in "Where this goes." Something attempting both does neither.
+  the other in the closing section — `## Next steps` in a notebook,
+  `## Where this goes` in an essay. Something attempting both does neither.
 
 Say which one you picked, and why, in the PR body.
 
@@ -126,6 +158,9 @@ Work out what would have to be true for the idea to hold, then go and check.
 
 - Find real sources. Prefer primary data — a statistical agency, a published
   dataset, a paper, the actual documentation — over somebody's summary of it.
+- Keep the survey, not just the winner. Every source you seriously considered
+  goes in `## The data` with a line on what it covers, and the one(s) you
+  pulled get the why.
 - Pull data down in the notebook itself, or into `_research/<slug>/` for an
   essay. Commit the code that pulled it, so the number can be re-derived.
 - Cite everything inline as Markdown links. Any sentence asserting a fact needs
@@ -154,8 +189,9 @@ before (`## The dump`, `## The argument`, `## The strongest objection`,
 an essay under about 500 words is a paragraph with headings on it and has not
 made its argument yet. An essay is the one thing here you should write in full.
 
-For a notebook, the format contract in CLAUDE.md is what decides whether your
-work reaches the page at all. The four rules that matter most:
+For a notebook, the sections and their order are fixed — see "The structure"
+above. Within them, the format contract in CLAUDE.md is what decides whether
+your work reaches the page at all. The four rules that matter most:
 
 - **Prose is `mo.md("""...""")` with a plain string literal.** An f-string is
   not a literal — marimo cannot resolve it statically, so `mo.md(f"...")` lands
