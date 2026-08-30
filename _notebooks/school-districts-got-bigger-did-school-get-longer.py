@@ -145,23 +145,56 @@ def _(mo):
     > person's or a family's time and life. I'd also like to validate that idea and
     > see if there is a coherent narrative that the data support here.
 
-    ## The question
+    ## The question(s)
 
     Two separate claims are bundled together here, and they have to be tested
     apart. **Bigger and further away**: did the unit that runs a school actually
     grow, and did the money for it stop being local? **More of a family's life**:
     did school grow to take more of a child's year?
+    """)
+    return
 
-    Both are answerable from long-run federal series that reach back to 1869-70.
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## The data
+
+    What could bear on a long-arc claim about American public schooling:
+
+    - **[NCES Digest of Education Statistics](https://nces.ed.gov/programs/digest/)**
+      — the annual compendium whose historical tables carry single consistent
+      series back to 1869-70: district counts, revenue by source, term length,
+      kindergarten attendance status.
+    - **[NCES Common Core of Data](https://nces.ed.gov/ccd/)** — district-level
+      microdata, but it starts in 1986-87. Right unit, wrong arc.
+    - **[Census of Governments](https://www.census.gov/programs-surveys/cog.html)**
+      — an independent count of school-district governments every five years; a
+      cross-check on the Digest, not a longer reach.
+    - **[American Time Use Survey](https://www.bls.gov/tus/)** — the only direct
+      measure of hours in a family's day, but it begins in 2003.
+    - **[NAEP long-term trend](https://nces.ed.gov/nationsreportcard/ltt/)** —
+      carries the homework question, read by the Brown Center report cited
+      below.
+
+    The Digest is the pull: both claims are long-arc claims, and it is the only
+    source whose series span the whole arc. Three tables —
+    [214.10](https://nces.ed.gov/programs/digest/d23/tables/dt23_214.10.asp)
+    (districts and one-teacher schools),
+    [201.10](https://nces.ed.gov/programs/digest/d22/tables/dt22_201.10.asp)
+    (enrollment, school term, revenue by source), and
+    [202.10](https://nces.ed.gov/programs/digest/d19/tables/dt19_202.10.asp)
+    (kindergarten by attendance status) — cached into `_research/` so every
+    number can be re-derived from the same bytes a year from now.
+
+    ## EDA
     """)
     return
 
 
 @app.cell
 def _(Path, RESEARCH, pd, re, urllib):
-    # Three tables from the NCES Digest of Education Statistics, one per claim.
-    # The published workbooks are cached into _research/ so every number below
-    # can be re-derived from the same bytes a year from now.
+    # The three Digest tables named above, cached into _research/.
     SOURCES = {
         # districts, public schools, one-teacher schools: 1869-70 to 2022-23
         "214.10": "https://nces.ed.gov/programs/digest/d23/tables/xls/tabn214.10.xlsx",
@@ -228,6 +261,26 @@ def _(Path, RESEARCH, pd, re, urllib):
     tidy.to_csv(RESEARCH / "nces-long-arc.csv", index=False)
     tidy
     return (series,)
+
+
+@app.cell
+def _(pd, series):
+    # Coverage before claims: the Digest samples decades before it samples
+    # years, and a series is only as good as the points beneath it. The
+    # helpers above already dropped the cells NCES marks "---".
+    print(
+        pd.DataFrame(
+            {
+                _name: {
+                    "first": int(_s.index.min()),
+                    "last": int(_s.index.max()),
+                    "points": len(_s),
+                }
+                for _name, _s in series.items()
+            }
+        ).T
+    )
+    return
 
 
 @app.cell
@@ -304,7 +357,10 @@ def _(plt, savefig, series):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    ## What the data says
+    Coverage sets the limits before any claim does: the district count starts
+    in 1939-40, the table 201.10 series run at roughly decade intervals — 15
+    to 20 points across a century and a half — and the kindergarten split
+    exists only for 1970–2018.
 
     ![Four panels of long-run US public schooling data. Regular school districts
     fall from 117,108 in 1939-40 to 13,318 in 2022-23 and one-teacher schools from
@@ -342,7 +398,7 @@ def _(mo):
     half-day kindergarten in the dump is not a misremembering; it was the norm, and
     it is now the exception.
 
-    ## What it doesn't show
+    What it *doesn't* show:
 
     - **Fewer districts is not the same as less local control.** It is a proxy, and
       the revenue series argues against reading it as the whole story: the money
@@ -367,10 +423,16 @@ def _(mo):
       *districts* were, if anything, mildly beneficial — the opposite sign from the
       "big district, remote bureaucracy" reading of the same consolidation.
 
-    ## Where this goes
+    ## Next steps
 
-    Hours in the building, not days on the calendar: the American Time Use Survey
-    and the CCD's instructional-hours fields are the next pull.
+    - Hours in the building, not days on the calendar: the [American Time Use
+      Survey](https://www.bls.gov/tus/) is the only direct measure of school
+      time in a family's day, back to 2003.
+    - The [CCD](https://nces.ed.gov/ccd/)'s instructional-hours fields put
+      hours on the recent decades of the same question.
+    - Cross-check the district counts against the [Census of
+      Governments](https://www.census.gov/programs-surveys/cog.html), which
+      counts school-district governments on its own definition.
     """)
     return
 
