@@ -145,10 +145,26 @@ def _(mo):
     > REPLACE-ME — the raw idea, verbatim, exactly as it was handed over.
     > Do not tidy it up.
 
-    ## The question
+    ## The question(s)
 
-    REPLACE-ME — what would have to be true for the idea to hold, put as
-    something a number could settle.
+    REPLACE-ME — the specific, answerable questions this notebook is trying
+    to settle. If the dump already asks them clearly, keep its wording with
+    minimal edits; otherwise convert the dump into questions the data could
+    actually answer.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
+    ## The data
+
+    REPLACE-ME — the sources that could bear on the question(s), a line each
+    on what they cover, then which one(s) this notebook actually pulls and
+    why. A rejected source keeps its reason.
+
+    ## EDA
     """)
     return
 
@@ -167,6 +183,17 @@ def _(RESEARCH, pd):
 
 
 @app.cell
+def _(df):
+    # General EDA before anything question-specific: shape, missingness, and
+    # the spread of the key variables. The point is to find the data's
+    # problems before the question does.
+    print(df.shape)
+    print(df.isna().sum())
+    df.describe()
+    return
+
+
+@app.cell
 def _(df, plt, savefig):
     _fig, _ax = plt.subplots()
     _ax.plot(df["year"], df["thing"], marker="o", linewidth=2)
@@ -181,23 +208,22 @@ def _(df, plt, savefig):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
-    ## What the data says
-
-    REPLACE-ME. Every number here is one the cells above printed — paste the
-    printed value, never a remembered one.
+    REPLACE-ME — what the EDA actually showed, general first and then
+    question-specific. Every number here is one the cells above printed —
+    paste the printed value, never a remembered one.
 
     A figure goes here as the `![alt](/assets/images/...)` line that `savefig`
     printed, and not before the PNG exists: html-proofer fails the build on a
     reference to an image that is not committed.
 
-    ## What it doesn't show
+    What the data *doesn't* show belongs here too — the confounds, the gaps,
+    the sample you wish you had. "This doesn't show what I hoped" is a
+    finding.
 
-    REPLACE-ME — the confounds, the sample you wish you had, the thing you
-    could not find. "This doesn't show what I hoped" is a finding.
+    ## Next steps
 
-    ## Where this goes
-
-    REPLACE-ME.
+    REPLACE-ME — deeper analysis approaches that might prove fruitful in
+    answering the question(s). A short list, concrete enough to start from.
     """)
     return
 

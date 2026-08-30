@@ -96,9 +96,13 @@ wip: ## Scaffold _wip/<slug>.md + _research/<slug>/ — for an essay, no noteboo
 	  '' \
 	  '## The dump' \
 	  '' \
-	  '## What I found' \
+	  '## The question(s)' \
 	  '' \
-	  '## Where this goes' \
+	  '## The data' \
+	  '' \
+	  '## EDA' \
+	  '' \
+	  '## Next steps' \
 	  '' \
 	  > '_wip/$(SLUG).md'
 	@printf '%s\n' \
@@ -123,7 +127,7 @@ notebook: ## Scaffold _notebooks/<slug>.py + its page + _research/<slug>/
 	@test ! -f '_wip/$(SLUG).md' || { echo '_wip/$(SLUG).md already exists'; exit 1; }
 	@mkdir -p _notebooks _wip '_research/$(SLUG)'
 	@sed 's/^    SLUG = "REPLACE-ME"/    SLUG = "$(SLUG)"/' \
-	  .claude/skills/wip-note/notebook-template.py > '_notebooks/$(SLUG).py'
+	  .claude/skills/data-analysis/notebook-template.py > '_notebooks/$(SLUG).py'
 	@printf '%s\n' \
 	  '---' \
 	  'title: "$(TITLE)"' \
