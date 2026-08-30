@@ -145,12 +145,34 @@ def _(mo):
     > person's or a family's time and life. I'd also like to validate that idea and
     > see if there is a coherent narrative that the data support here.
 
+    And, in a follow-up:
+
+    > I want to dive deeper into how there's been this massive consolidation of
+    > school districts and an increase in the size of school districts. It's not
+    > just the fiscal control. To what extent do parents meaningfully have input
+    > in a sort of democratic fashion?
+    >
+    > It seems impossible to me that you can have anywhere near the same amount
+    > of personal leverage or stuff like that. A multi-thousand-kid school
+    > district represented by a single school board becomes too distant, but I do
+    > want to validate that the larger district size does translate, because it's
+    > still just a single school board in most cases. Just a handful of people
+    > representing now thousands of kids versus a district of a couple hundred
+    > kids. That's the angle I want to validate for causing a shift or supporting
+    > a shift in the care of school districts and the fundamental nature of the
+    > relationship between parents and the district.
+
     ## The question(s)
 
     Two separate claims are bundled together here, and they have to be tested
     apart. **Bigger and further away**: did the unit that runs a school actually
     grow, and did the money for it stop being local? **More of a family's life**:
     did school grow to take more of a child's year?
+
+    The follow-up sharpens the first claim into a third: **fewer seats at the
+    table** — a district is governed by one small board however large it grows,
+    so did consolidation shrink the number of elected seats relative to the
+    pupils they answer for, or did boards grow with their districts?
     """)
     return
 
@@ -176,9 +198,18 @@ def _(mo):
     - **[NAEP long-term trend](https://nces.ed.gov/nationsreportcard/ltt/)** —
       carries the homework question, read by the Brown Center report cited
       below.
+    - **[Census of Governments, Popularly Elected
+      Officials](https://www.census.gov/data/tables/1995/econ/gus/gc9-1-2.html)**
+      — the only official count of elected school-district officials there has
+      ever been. Taken in 1967, 1977, 1987, and 1992, then dropped; published
+      as scanned reports, not data files.
+    - **Digest table
+      [214.20](https://nces.ed.gov/programs/digest/d22/tables/dt22_214.20.asp)**
+      — districts and students by enrollment size of district, 1979-80 through
+      2021-22, for where the students actually sit today.
 
-    The Digest is the pull: both claims are long-arc claims, and it is the only
-    source whose series span the whole arc. Three tables —
+    The Digest is the pull: both original claims are long-arc claims, and it is
+    the only source whose series span the whole arc. Three tables —
     [214.10](https://nces.ed.gov/programs/digest/d23/tables/dt23_214.10.asp)
     (districts and one-teacher schools),
     [201.10](https://nces.ed.gov/programs/digest/d22/tables/dt22_201.10.asp)
@@ -186,6 +217,11 @@ def _(mo):
     [202.10](https://nces.ed.gov/programs/digest/d19/tables/dt19_202.10.asp)
     (kindergarten by attendance status) — cached into `_research/` so every
     number can be re-derived from the same bytes a year from now.
+
+    The representation question adds two more: table 214.20 is pulled the same
+    way, and the Census of Governments counts are typed in from the published
+    reports — the scans defeat a parser, so the code cites the page and table
+    each number came from.
 
     ## EDA
     """)
@@ -354,6 +390,109 @@ def _(plt, savefig, series):
     return
 
 
+@app.cell
+def _(RESEARCH, pd, series):
+    # The whole official record of elected school-district officials: four
+    # Census of Governments counts, 1967-1992, and nothing since. Typed in
+    # rather than parsed — both reports are scans:
+    #   1977 (GC77(1)-2), table 2 for the 1967 and 1977 columns, p.5 text for
+    #   the board-member split: https://www2.census.gov/programs-surveys/cog/tables/1977/elected-officials/1977-vol1-no2-electedoff.pdf
+    #   1992 (GC92(1)-2), "School District Governments" section, p.IX, which
+    #   also carries 1987: https://www2.census.gov/programs-surveys/gus/tables/1995/gc92-1-2.pdf
+    cog = pd.DataFrame(
+        {
+            "districts": {1967: 21_782, 1977: 15_174, 1987: 14_721, 1992: 14_422},
+            "officials": {1967: 107_663, 1977: 87_062, 1987: 86_772, 1992: 88_434},
+        }
+    )
+    cog["officials_per_district"] = cog["officials"] / cog["districts"]
+
+    # Pupils per elected official, at the nearest Digest enrollment reading —
+    # 201.10 samples decades here, so 1967 pairs with 1969-70 and so on, and
+    # 1992 has no nearby reading to pair with.
+    _pupils = series["enrollment_k"] * 1000
+    for _cog_year, _enr_year in [(1967, 1969), (1977, 1979), (1987, 1989)]:
+        cog.loc[_cog_year, "pupils_per_official"] = (
+            _pupils[_enr_year] / cog.loc[_cog_year, "officials"]
+        )
+    cog.to_csv(RESEARCH / "cog-elected-officials.csv")
+    print(cog.round(1))
+
+    # The count opens in 1967, after the consolidation wave. A bound for the
+    # start of it, from this notebook's own 1939-40 readings and one stated
+    # assumption — a board needs about five members to function:
+    _seats_1939 = series["districts"][1939] * 5
+    print(f"1939-40 implied seats at five per board: {_seats_1939:,.0f}")
+    print(f"1939-40 pupils per implied seat: {_pupils[1939] / _seats_1939:,.0f}")
+    print(f"2019-20 pupils per seat at NSBA's 80,000 members: {_pupils[2019] / 80_000:,.0f}")
+    return (cog,)
+
+
+@app.cell
+def _(Path, RESEARCH, pd, urllib):
+    # Where the students sit today: Digest 214.20, districts and students by
+    # enrollment size of district. Digest 2022 is the newest edition to carry
+    # it, cached like the other workbooks.
+    _url = "https://nces.ed.gov/programs/digest/d22/tables/xls/tabn214.20.xlsx"
+    _path = RESEARCH / Path(_url).name
+    if not _path.exists():
+        urllib.request.urlretrieve(_url, _path)
+    _sheet = pd.read_excel(_path, header=None)
+
+    _buckets = [str(_sheet.iat[2, _c]) for _c in range(2, _sheet.shape[1])]
+    assert _buckets[0].startswith("25,000"), _buckets
+
+    def _row(block, year="2021-22"):
+        """The `year` row of the '{block}' panel, as a series over buckets."""
+        _start = _sheet.index[_sheet.iloc[:, 1].astype(str).str.startswith(block)][0]
+        for _r in range(_start + 1, _sheet.shape[0]):
+            if str(_sheet.iat[_r, 0]).strip() == year:
+                return pd.Series(
+                    pd.to_numeric(_sheet.iloc[_r, 2:].to_numpy(), errors="coerce"),
+                    index=_buckets,
+                )
+        raise ValueError(f"no {year} row under {block}")
+
+    size_dist = pd.DataFrame(
+        {"districts": _row("Number of districts"), "students": _row("Number of students")}
+    ).dropna()
+
+    _share = size_dist / size_dist.sum()
+    _big = _share.iloc[:2].sum()  # 25,000+ and 10,000-24,999
+    print(f"districts of 10,000+: {size_dist['districts'].iloc[:2].sum():,.0f}")
+    print(f"  = {_big['districts']:.1%} of districts, {_big['students']:.1%} of students")
+    _from_large = _share.cumsum()  # buckets run largest first
+    _from_small = _share.iloc[::-1].cumsum()
+    print("bucket where the median student sits:", (_from_large["students"] >= 0.5).idxmax())
+    print("bucket where the median district sits:", (_from_small["districts"] >= 0.5).idxmax())
+    return (size_dist,)
+
+
+@app.cell
+def _(cog, plt, savefig, size_dist):
+    _fig, (_seats, _where) = plt.subplots(1, 2, figsize=(11, 4.2))
+
+    _ppo = cog["pupils_per_official"].dropna()
+    _seats.bar([str(_y) for _y in _ppo.index], _ppo.to_numpy(), width=0.55)
+    _seats.set_title("The count opens after the dilution happened")
+    _seats.set_ylabel("Pupils per elected school-district official")
+
+    _sh = size_dist / size_dist.sum()
+    _pos = range(len(_sh))
+    _where.barh([_p - 0.2 for _p in _pos], _sh["districts"] * 100, height=0.38, label="Districts")
+    _where.barh([_p + 0.2 for _p in _pos], _sh["students"] * 100, height=0.38, label="Students")
+    _where.set_yticks(list(_pos), _sh.index, fontsize=8)
+    _where.invert_yaxis()
+    _where.set_title("One board per district, wherever the students are")
+    _where.set_xlabel("% of 2021-22 total")
+    _where.legend(fontsize=9)
+
+    _fig.tight_layout(pad=2.0)
+    savefig(_fig, "board-representation")
+    _fig
+    return
+
+
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
@@ -398,6 +537,44 @@ def _(mo):
     half-day kindergarten in the dump is not a misremembering; it was the norm, and
     it is now the exception.
 
+    Then the third question, from the follow-up:
+
+    ![Two panels. Left: pupils per elected school-district official in the three
+    Census of Governments counts pairable with an enrollment reading — about 423
+    in 1967, 478 in 1977, and 467 in 1987. Right: paired bars for 2021-22 showing
+    each district-size bucket's share of districts versus share of students;
+    districts of 25,000 or more are about 2 percent of districts but 34 percent of
+    students, while districts under 2,500 students are the majority of districts
+    and a small minority of
+    students.](/assets/images/school-districts-got-bigger-did-school-get-longer-board-representation.png)
+
+    **The board did not grow with the district.** The only official count there
+    has ever been — the Census of Governments'
+    [Popularly Elected Officials](https://www.census.gov/data/tables/1995/econ/gus/gc9-1-2.html),
+    taken in 1967, 1977, 1987, and 1992, and then dropped — shows the average
+    district carrying 4.9 elected officials in 1967 and 6.1 in 1992. The seats
+    left with the districts: 107,663 elected school-district officials in 1967,
+    88,434 in 1992, and [NSBA](https://www.nsba.org/About/NSBA-History) puts
+    today's membership at "more than 80,000."
+
+    **The record opens too late to watch the dilution happen.** By the first
+    count in 1967, one elected official already answered for 423 pupils, and the
+    two later pairable counts sit at 478 and 467. In 1939-40 — 117,108 districts,
+    25.4M pupils — even five seats a board implies about 43 pupils per seat. The
+    order of magnitude arrived between those dates, inside the consolidation
+    wave, before anyone counted; at NSBA's 80,000 the 2019-20 ratio is about 635.
+    [Howell](https://www.brookings.edu/wp-content/uploads/2016/07/besieged_chapter.pdf)
+    puts it directly: between 1930 and 1970 states eliminated more than 100,000
+    districts *and their governing boards*.
+
+    **The students live where the boards are scarce.** In 2021-22 the 876
+    districts enrolling 10,000 or more — 6.6% of districts — held 54.3% of
+    students ([table
+    214.20](https://nces.ed.gov/programs/digest/d22/tables/dt22_214.20.asp)).
+    The median district has 1,000 to 2,499 students; the median student sits in
+    a district of 10,000 or more. The boards mostly govern small districts, and
+    the students mostly live in large ones.
+
     What it *doesn't* show:
 
     - **Fewer districts is not the same as less local control.** It is a proxy, and
@@ -422,6 +599,20 @@ def _(mo):
       (2010), find that larger *schools* lowered later earnings while larger
       *districts* were, if anything, mildly beneficial — the opposite sign from the
       "big district, remote bureaucracy" reading of the same consolidation.
+    - **The official seat count covers elected officials of independent districts
+      only.** Dependent systems — 1,412 in 1992, run by cities, counties, or
+      states — and appointed boards (3,321 appointed members in 1992) sit outside
+      it, and 1992's rise over 1987 is mostly Chicago's 4,150 newly elected local
+      school council members, not board seats.
+    - **Nobody has counted the seats since 1992.** The Census Bureau's
+      elected-officials compendium ended with that edition, so the modern end of
+      the series leans on NSBA's "more than 80,000" — an association's figure,
+      not a census. The 1939-40 end leans on an assumed five-member board; the
+      true average is uncounted, though the two-orders-of-magnitude gap to 1967
+      survives any plausible board size.
+    - **Seats per pupil is not influence per parent.** Nothing here measures
+      turnout, meeting access, or responsiveness. The ratio validates the
+      arithmetic of distance, not the experience of it.
 
     ## Next steps
 
@@ -430,9 +621,11 @@ def _(mo):
       time in a family's day, back to 2003.
     - The [CCD](https://nces.ed.gov/ccd/)'s instructional-hours fields put
       hours on the recent decades of the same question.
-    - Cross-check the district counts against the [Census of
-      Governments](https://www.census.gov/programs-surveys/cog.html), which
-      counts school-district governments on its own definition.
+    - State statutes on board size, to turn "one small board however large the
+      district" from an average into the rule it appears to be.
+    - Turnout in school-board elections — the other half of "meaningful
+      democratic input," and the place where off-cycle election timing would
+      show up.
     """)
     return
 
