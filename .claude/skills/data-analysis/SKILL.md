@@ -43,7 +43,7 @@ has to delete first is worse than not writing it.
 So the standard is **minimal**, and it is a hard rule rather than a preference:
 
 - **A prose cell exists to carry a section of the structure below, or a
-  finding inside one.** That is about six prose cells for a notebook; treat
+  finding inside one.** That is about seven prose cells for a notebook; treat
   more with suspicion, and keep each one short.
 - **No prose cell that narrates the next cell.** The code says what the code
   does. "First we load the data" is noise in a notebook and noise on the page.
@@ -78,18 +78,24 @@ Every note has exactly these sections, in this order, every time:
    with minimal edits. If it does not, do the converting yourself — turn the
    dump into questions the data could actually answer — and say in the PR body
    that you did.
-2. **`## The data`** — the data sources that could bear on the question(s):
+2. **`## Lit review`** — what already exists on the question(s): papers,
+   published analyses, posts, anyone who has seriously tried to answer this
+   before. A line each on what they found and where they stop short, cited
+   inline. It comes before any data hunting so the analysis starts where
+   prior work ends — and if somebody has already settled the question
+   outright, that is the finding; say so instead of re-deriving it.
+3. **`## The data`** — the data sources that could bear on the question(s):
    list them, a line each on what they cover, then which one(s) you actually
    pulled for this analysis and why. A rejected source keeps its reason —
    "too coarse", "paywalled", "stops in 2019" — because the rejection is
    research he would otherwise redo.
-3. **`## EDA`** — exploratory analysis of the chosen data. General first:
+4. **`## EDA`** — exploratory analysis of the chosen data. General first:
    data quality, coverage, missingness, the distributions of the key
    variables. Then whatever bears on the question(s) specifically, if the data
    supports a first look. The pull, the checks, and the figures all live here,
    and so does what the data *doesn't* show — the confounds, the gaps, the
    sample you wish you had.
-4. **`## Next steps`** — deeper analysis approaches that might prove fruitful
+5. **`## Next steps`** — deeper analysis approaches that might prove fruitful
    in answering the question(s). A short list, concrete enough to start from.
 
 ## The procedure
@@ -134,6 +140,10 @@ Jekyll's default and a forward-dated entry silently does not publish.
 This is the half that makes it worth opening. Work out what would have to be
 true for the idea to hold, then go and check.
 
+- Start with what has already been written. Papers, published analyses, posts
+  that tackle the same question — each gets a line in `## Lit review` on what
+  it found and where it stops short, before you go hunting for data. Prior
+  work that already settles the question is a finding, not a failure.
 - Find real sources. Prefer primary data — a statistical agency, a published
   dataset, a paper, the actual documentation — over somebody's summary of it.
 - Keep the survey, not just the winner. Every source you seriously considered

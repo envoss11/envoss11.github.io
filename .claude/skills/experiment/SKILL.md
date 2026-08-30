@@ -48,27 +48,34 @@ dataset.
 
 ## The structure
 
-The same five-beat shape as a data analysis, with the middle two sections
-renamed for what an experiment actually has:
+The same six-beat shape as a data analysis, with the two sections after the
+lit review renamed for what an experiment actually has:
 
 0. **`## The dump`** — the raw idea, verbatim, blockquoted.
 1. **`## The question(s)`** — minimal edits if the dump asks them clearly;
    otherwise convert the dump into specific, answerable questions and say in
    the PR body that you did.
-2. **`## The setup`** — the candidates considered (models, tools, methods), a
+2. **`## Lit review`** — what already exists on the question(s): benchmarks
+   somebody already ran, papers, writeups of the same comparison. A line
+   each on what they found and where they stop short, cited inline. It comes
+   before any experiment design so the run covers what prior work does not —
+   and if somebody has already published the table you were about to
+   produce, that is the finding; say so instead of re-running it.
+3. **`## The setup`** — the candidates considered (models, tools, methods), a
    line each; which you actually ran and why; versions, inputs, environment,
    and what was measured. A rejected candidate keeps its reason.
-3. **`## Results`** — EDA of the experiment's outputs. Sanity checks first —
+4. **`## Results`** — EDA of the experiment's outputs. Sanity checks first —
    did every run complete, are the outputs the shape you expected — then the
    comparisons that bear on the question(s). What the results *don't* show
    belongs here too: the inputs you didn't cover, the settings you didn't
    sweep.
-4. **`## Next steps`** — deeper or better-controlled experiments worth
+5. **`## Next steps`** — deeper or better-controlled experiments worth
    running. A short list, concrete enough to start from.
 
 Scaffold with `make notebook` like any other note — the template is shared
 with the data-analysis skill — then rename the `## The data` and `## EDA`
-headings in the prose cells to `## The setup` and `## Results`.
+headings in the prose cells to `## The setup` and `## Results`. The
+`## Lit review` cell keeps its heading.
 
 ## Running it, honestly
 

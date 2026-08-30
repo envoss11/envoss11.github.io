@@ -158,6 +158,20 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md("""
+    ## Lit review
+
+    REPLACE-ME — what already exists on the question(s): papers, published
+    analyses, posts, anyone who has seriously tried to answer this before.
+    A line each on what they found and where they stop short, cited inline.
+    If prior work already settles the question, that is the finding — say so
+    instead of re-deriving it.
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md("""
     ## The data
 
     REPLACE-ME — the sources that could bear on the question(s), a line each
