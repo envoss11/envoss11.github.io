@@ -72,7 +72,7 @@ which is most of what actually breaks here.
 | `_layouts/`, `_includes/` | The theme. `head.html` does canonical, OG, and Twitter card by hand. |
 | `_sass/` | Nine partials, loaded in order by `assets/css/site.scss` and compiled to one minified `/assets/css/site.css`. Section numbering is load order. |
 | `assets/` | `js/site.js`, the four self-hosted woff2 faces, images, favicons. |
-| `CLAUDE.md`, `.claude/` | The briefing a Claude Code session gets, and the `wip-note` skill it runs. See below. |
+| `CLAUDE.md`, `.claude/` | The briefing a Claude Code session gets, and the `data-analysis` and `experiment` skills it runs. See below. |
 
 ### Notebooks
 
@@ -202,9 +202,10 @@ than it saved.
 
 `CLAUDE.md` is what makes that work: a cloud session gets the repo's `CLAUDE.md`
 and `.claude/`, and nothing from `~/.claude/`, so everything a session needs to
-know is committed. `.claude/skills/wip-note/SKILL.md` owns the procedure and
-`.claude/skills/wip-note/notebook-template.py` is the notebook it starts from —
-the same file `make notebook` copies, so there is only one.
+know is committed. `.claude/skills/data-analysis/SKILL.md` owns the procedure
+(`.claude/skills/experiment/SKILL.md` covers the run-something-first variant)
+and `.claude/skills/data-analysis/notebook-template.py` is the notebook both
+start from — the same file `make notebook` copies, so there is only one.
 
 Two settings have to be right on the cloud environment, and neither lives in the
 repo:

@@ -131,14 +131,17 @@ never installed pandas.
 
 ## Rules for cloud sessions
 
-**A bare idea dump with no other instruction means: run the `wip-note` skill.**
-That is the default and it needs no confirmation. See
-`.claude/skills/wip-note/SKILL.md`.
+**A bare idea dump with no other instruction means: run one of the two idea
+skills.** The `data-analysis` skill when data somebody already publishes could
+answer it; the `experiment` skill when something has to be run before there is
+anything to analyze. That is the default and it needs no confirmation — pick
+one and say why in the PR body. See `.claude/skills/data-analysis/SKILL.md`
+and `.claude/skills/experiment/SKILL.md`.
 
 What I want back from one of these is **a minimal notebook I can open and pair
 on**, not a finished piece. The scaffold is the start of my session, not a
 replacement for it — so under-write it. Anything I have to delete first was
-worse than nothing. The skill has the specifics and they are binding.
+worse than nothing. The skills have the specifics and they are binding.
 
 Beyond that:
 
@@ -174,7 +177,8 @@ need only uv and the `marimo` CLI, both of which install here fine, so the
 notebook half of the gate is yours to run and there is no excuse for pushing a
 notebook whose page has not been synced. If marimo genuinely cannot be
 installed, do not scaffold a notebook at all — you would be committing a page
-you cannot generate. Write the idea as an essay and say why in the PR body.
+you cannot generate. Commit the research under `_research/<slug>/` instead and
+say why in the PR body.
 
 **So: push a branch and let CI validate the Ruby half.** The one class of error
 a local build would catch that CI now catches instead is the Liquid trap below,
