@@ -8,16 +8,14 @@ description: "Eric Voss is an AI engineer and data scientist at Securian Financi
 
 <img class="portrait" src="/assets/images/portrait.jpg" alt="Portrait of Eric Voss" width="160" height="160">
 
-I'm an AI Engineer / Data Scientist at [Securian Financial](https://www.securian.com/),
-where I build agentic systems and help set enterprise standards for AI
-observability and evaluation, all in an industry where PII and PHI handling,
-HIPAA, and model governance are critical. My career spans more than a decade
+I'm a Data Scientist at [Securian Financial](https://www.securian.com/),
+where I design and build AI solutions and help set associated enterprise standards. My career spans more than a decade
 across application development, analytics, and AI/ML in the financial services
 industry.
 
-I have extensive experience in developing AI solutions with the AWS ecosystem,
-leveraging platforms like Bedrock and AgentCore. My previous experience also
-includes "traditional" data analysis and predictive modeling.
+I have extensive experience in AI development with the AWS ecosystem,
+including SageMaker, Bedrock, AgentCore, and more. My previous experience also
+includes "traditional" data analysis and predictive modeling for actuarial applications.
 
 [LinkedIn](https://www.linkedin.com/in/eric-n-voss/) ·
 [GitHub](https://github.com/envoss11/) ·
