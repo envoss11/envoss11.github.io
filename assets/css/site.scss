@@ -1,23 +1,208 @@
 ---
-# Front matter is empty on purpose — its presence is what tells Jekyll to run
-# this file through jekyll-sass-converter. Output is one minified file at
-# /assets/css/site.css (see `sass: style: compressed` in _config.yml), so the
-# split below costs no extra request.
-#
-# Order is load order, and it matters: 00-base defines the tokens every other
-# partial reads, and later sections override earlier ones by cascade position
-# rather than by specificity.
 ---
+// The whole stylesheet. Colors are tokens on :root so dark mode is one block.
 
-// `as *` because a partial name starting with a digit is not a valid Sass
-// identifier, so it cannot serve as a default namespace. Nothing here reaches
-// across partials for a Sass member anyway — this is plain CSS in sections.
-@use "00-base" as *;
-@use "10-skyline" as *;
-@use "20-chrome" as *;
-@use "30-home" as *;
-@use "40-about" as *;
-@use "50-posts" as *;
-@use "55-log" as *;
-@use "60-icons-misc" as *;
-@use "70-familiar" as *;
+:root {
+  --bg: #ffffff;
+  --text: #2b2b2b;
+  --text-strong: #111111;
+  --text-light: #6b6b6b;
+  --line: #e2e2e2;
+  --panel: #f6f6f4;
+  --accent: #1f6f6b;
+  --accent-soft: #e3f0ef;
+
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161817;
+    --text: #d8d8d4;
+    --text-strong: #f2f2ee;
+    --text-light: #9a9a95;
+    --line: #2e3130;
+    --panel: #1e2120;
+    --accent: #6cc3bd;
+    --accent-soft: #1d3331;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 17px/1.6 var(--sans);
+}
+
+.shell {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 600;
+  color: var(--text-strong);
+  line-height: 1.25;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+[hidden] { display: none !important; }
+
+/* Header and footer ------------------------------------------------------- */
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 24px;
+  padding: 28px 0 16px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.wordmark {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+.wordmark:hover { text-decoration: none; }
+
+.site-nav { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: .95rem; }
+.site-nav a { color: var(--text); }
+.site-nav a:hover, .site-nav a[aria-current] { color: var(--accent); }
+
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+  margin-top: 56px;
+  padding: 16px 0 40px;
+  border-top: 1px solid var(--line);
+  color: var(--text-light);
+  font-size: .9rem;
+}
+
+/* The feed ----------------------------------------------------------------- */
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.filters-label { font-weight: 700; font-size: .9rem; margin-right: 2px; }
+.filters button {
+  font: inherit;
+  font-size: .88rem;
+  line-height: 1.2;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+}
+.filters button:hover { border-color: var(--accent); }
+.filters button[aria-pressed="true"] {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.feed-section h2 {
+  font-size: 1.3rem;
+  margin: 32px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--line);
+}
+
+.post-list { list-style: none; margin: 0; padding: 0; }
+.post-list li {
+  display: grid;
+  grid-template-columns: 7.5em 1fr;
+  gap: 12px;
+  padding: 4px 0;
+}
+.post-list time, .post-meta time {
+  font-family: var(--mono);
+  font-size: .85rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-light);
+  padding-top: .2em;
+}
+
+@media (max-width: 480px) {
+  .post-list li { grid-template-columns: 1fr; gap: 0; padding: 6px 0; }
+}
+
+.empty { color: var(--text-light); font-style: italic; margin: 0; }
+
+/* Posts and prose ---------------------------------------------------------- */
+
+.post-head h1 { font-size: 2rem; margin: 8px 0 6px; }
+.post-meta { color: var(--text-light); font-size: .9rem; margin: 0 0 28px; }
+
+.prose h2 { font-size: 1.45rem; margin: 2em 0 .5em; }
+.prose h3 { font-size: 1.15rem; margin: 1.6em 0 .4em; }
+.prose img { max-width: 100%; height: auto; }
+.prose a { text-decoration: underline; text-underline-offset: 2px; }
+
+.prose blockquote {
+  margin: 1.2em 0;
+  padding: 0 0 0 16px;
+  border-left: 3px solid var(--line);
+  color: var(--text-light);
+}
+
+.prose table { border-collapse: collapse; width: 100%; font-size: .92rem; display: block; overflow-x: auto; }
+.prose th, .prose td { border-bottom: 1px solid var(--line); padding: 6px 10px; text-align: left; }
+
+code { font-family: var(--mono); font-size: .88em; }
+:not(pre) > code { background: var(--panel); padding: .1em .35em; border-radius: 4px; }
+pre {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 12px 14px;
+  overflow-x: auto;
+  font-size: .9rem;
+  line-height: 1.5;
+}
+
+hr { border: 0; border-top: 1px solid var(--line); margin: 2em 0; }
+
+.portrait { border-radius: 50%; float: right; margin: 0 0 12px 20px; }
+@media (max-width: 480px) { .portrait { float: none; display: block; margin: 0 0 16px; } }
+
+/* Rouge, kept to a handful of token classes. */
+.highlight .c, .highlight .c1, .highlight .cm { color: var(--text-light); font-style: italic; }
+.highlight .k, .highlight .kd, .highlight .kn, .highlight .nb { color: var(--accent); }
+.highlight .s, .highlight .s1, .highlight .s2, .highlight .sh { color: #a3542c; }
+.highlight .m, .highlight .mi, .highlight .mf { color: #7a4fa3; }

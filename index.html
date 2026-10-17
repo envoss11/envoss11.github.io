@@ -1,15 +1,41 @@
 ---
-layout: home
+layout: default
 ---
-<p>
-  I'm a Minnesota-based data scientist at
-  <a class="marker-link" href="https://www.securian.com/" rel="noopener">Securian Financial</a>,
-  where I build agentic AI systems and help set enterprise standards for AI observability and evaluation,
-  all in an industry where PII and PHI handling, HIPAA, and model governance are
-  critical. My career spans more than
-  a decade across application development, analytics, and AI/ML in the financial services industry.
-</p>
-<p>
-  I have extensive experience in developing AI solutions with the AWS ecosystem, leveraging platforms like Bedrock and AgentCore.
-  My previous experience also includes "traditional" data analysis and predictive modeling.
-</p>
+{%- comment -%}
+The whole site, more or less. "All" shows the latest few plus every topic
+section; a filter shows one section. Without JavaScript the filter row stays
+hidden and every section shows, which is the same page as "All".
+
+A post with several topics appears in each of their sections. Other collects
+the posts that match no key in _data/topics.yml.
+{%- endcomment -%}
+{%- assign keys = site.data.topics | map: "key" -%}
+{%- assign other = "" | split: "" -%}
+{%- for post in site.posts -%}
+  {%- assign matched = false -%}
+  {%- for key in post.topics -%}
+    {%- if keys contains key %}{% assign matched = true %}{% endif -%}
+  {%- endfor -%}
+  {%- unless matched %}{% assign other = other | push: post %}{% endunless -%}
+{%- endfor -%}
+
+<h1 class="sr-only">{{ site.title }}</h1>
+
+<div class="filters" role="group" aria-label="Filter posts" hidden>
+  <span class="filters-label">Filter:</span>
+  <button type="button" data-filter="all" aria-pressed="true">All</button>
+  {%- for topic in site.data.topics %}
+  <button type="button" data-filter="{{ topic.key }}" aria-pressed="false">{{ topic.label }}</button>
+  {%- endfor %}
+  <button type="button" data-filter="other" aria-pressed="false">Other</button>
+</div>
+
+{%- assign latest = site.posts | slice: 0, 5 %}
+{% include post-list.html heading="Latest posts" key="latest" posts=latest %}
+
+{%- for topic in site.data.topics %}
+{%- assign posts = site.posts | where_exp: "post", "post.topics contains topic.key" %}
+{% include post-list.html heading=topic.heading key=topic.key posts=posts %}
+{%- endfor %}
+
+{% include post-list.html heading="Other" key="other" posts=other %}

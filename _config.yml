@@ -1,16 +1,13 @@
 # ---------------------------------------------------------------------------
-# Site settings
+# Site
 # ---------------------------------------------------------------------------
 title: "Eric Voss"
-name: "Eric Voss"
 # Read by jekyll-feed for the <author> on every entry in /feed.xml.
 author: "Eric Voss"
-description: "Lead data scientist in St. Paul, Minnesota, building intelligent document processing pipelines and agentic AI systems in financial services, and the evaluation standards they are held to."
+description: "Writing by Eric Voss on AI/ML, data science, and the books he reads."
 url: "https://www.ericvoss.com"
 baseurl: ""
 locale: "en-US"
-github_username: envoss11
-email: "envoss11@gmail.com"
 
 # ---------------------------------------------------------------------------
 # Build
@@ -21,39 +18,22 @@ plugins:
 
 markdown: kramdown
 highlighter: rouge
-encoding: "utf-8"
 
 kramdown:
   input: GFM
   hard_wrap: false
   auto_ids: true
   smart_quotes: lsquo,rsquo,ldquo,rdquo
-  entity_output: as_char
 
 sass:
   style: compressed
-
-# ---------------------------------------------------------------------------
-# Content
-# ---------------------------------------------------------------------------
-permalink: /:collection/:title/
-
-collections:
-  # Work in progress: live, but quiet. A separate collection rather than a flag
-  # on a post, because that is what keeps these out of /feed.xml — jekyll-feed
-  # has no per-entry exclusion and reads site.posts only, unless a collection is
-  # named under a `feed: collections:` key. This config does not have one and
-  # must not gain one.
-  wip:
-    output: true
-    permalink: /posts/wip/:path/
 
 include:
   - _pages
 
 # This replaces Jekyll's default exclude list rather than adding to it, so the
-# toolchain files have to be named here too. Anything starting with a dot
-# (.github, .bundle, .jekyll-cache) Jekyll already skips on its own.
+# defaults have to be named here too. Dotfiles and _-prefixed directories are
+# skipped on their own.
 exclude:
   - Gemfile
   - Gemfile.lock
@@ -64,29 +44,13 @@ exclude:
   - CLAUDE.md
 
 defaults:
-  # Everything finished is a post: one section, one layout, dates and ordering
-  # and the jekyll-feed RSS at /feed.xml for free. The permalink here is what
-  # the global /:collection/:title/ would resolve to anyway — spelled out so it
-  # sits next to /posts/wip/ below, where the relationship is visible.
   - scope:
       path: ""
       type: posts
     values:
       layout: post
       permalink: /posts/:title/
-  # A WIP note is a real page at a real URL — it just does not go looking for
-  # readers. sitemap: false is the same mechanism the redirect stubs use;
-  # noindex renders the robots meta in head.html.
-  - scope:
-      path: ""
-      type: wip
-    values:
-      layout: post
-      sitemap: false
-      noindex: true
-      kicker: "AI draft"
   - scope:
       path: "_pages"
-      type: pages
     values:
       layout: default

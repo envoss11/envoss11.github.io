@@ -1,20 +1,28 @@
 <!doctype html>
-<html lang="{{ site.locale | default: 'en-US' }}">
+<html lang="{{ site.locale }}">
   <head>
-    {%- include head.html -%}
+    {%- include head.html %}
   </head>
   <body>
-    {%- include skyline.html -%}
-    <div class="app">
-      {%- include nav.html -%}
-      <main class="page" id="main">
-        <div class="shell">
-          {{ content }}
-        </div>
+    <div class="shell">
+      <header class="site-header">
+        <a class="wordmark" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+        <nav class="site-nav" aria-label="Main">
+          {%- for item in site.data.navigation %}
+          <a href="{{ item.url | relative_url }}"{% if item.url contains '://' %} rel="noopener"{% elsif page.url == item.url %} aria-current="page"{% endif %}>{{ item.title }}</a>
+          {%- endfor %}
+        </nav>
+      </header>
+      <main id="main">
+        {{ content }}
       </main>
-      {%- include footer.html -%}
+      <footer class="site-footer">
+        {%- unless page.url == "/" %}
+        <a href="{{ '/' | relative_url }}">← Back home</a>
+        {%- endunless %}
+        <span>© {{ site.time | date: "%Y" }} {{ site.author }} · <a href="{{ '/feed.xml' | relative_url }}">RSS</a></span>
+      </footer>
     </div>
-    {%- include familiar.html -%}
     <script src="{{ '/assets/js/site.js' | relative_url }}" defer></script>
   </body>
 </html>
