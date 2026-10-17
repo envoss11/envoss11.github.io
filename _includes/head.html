@@ -1,69 +1,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-{%- assign profile = site.data.profile -%}
-{%- if page.title and page.url != "/" -%}
-  {%- assign page_title = page.title | append: " — " | append: profile.name -%}
+{%- if page.title -%}
+  {%- assign page_title = page.title | append: " — " | append: site.title -%}
 {%- else -%}
-  {%- assign page_title = profile.name | append: " — " | append: profile.role -%}
+  {%- assign page_title = site.title -%}
 {%- endif -%}
-{%- assign page_desc = page.description | default: page.excerpt | default: profile.tagline | strip_html | strip_newlines | truncate: 180 -%}
-
+{%- assign page_desc = page.description | default: page.excerpt | default: site.description | strip_html | strip_newlines | truncate: 180 -%}
 <title>{{ page_title }}</title>
 <meta name="description" content="{{ page_desc }}">
-<meta name="author" content="{{ profile.name }}">
-{%- comment -%}
-Set by the `wip` defaults scope in _config.yml. Keeping a half-formed note out
-of the sitemap only stops it being volunteered; this is what asks a crawler
-that found it anyway not to index it. The page stays reachable by anyone with
-the link, which is the whole point of the tier.
-{%- endcomment -%}
-{%- if page.noindex %}<meta name="robots" content="noindex, follow">{% endif %}
 <link rel="canonical" href="{{ page.url | absolute_url }}">
-
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="{{ profile.name }}">
+<meta property="og:type" content="{% if page.date %}article{% else %}website{% endif %}">
+<meta property="og:site_name" content="{{ site.title }}">
 <meta property="og:title" content="{{ page_title }}">
 <meta property="og:description" content="{{ page_desc }}">
 <meta property="og:url" content="{{ page.url | absolute_url }}">
-<meta property="og:image" content="{{ page.image | default: profile.portrait | absolute_url }}">
-<meta name="twitter:card" content="summary_large_image">
-
-<meta name="theme-color" content="#070a1c">
 <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
-
 <link rel="icon" href="{{ '/assets/images/favicon.svg' | relative_url }}" type="image/svg+xml">
-{%- feed_meta -%}
-
-{%- comment -%}
-Pre-paint bootstrap. Inline and blocking on purpose: both of these have to land
-before the first paint. A visitor who chose day would otherwise get a frame of
-night sky, and one who has a familiar out would get a frame of the About card
-with the cat still in its photo before it greys out. It is the only thing on the
-site allowed to block rendering, so it stays this small — everything else lives
-in site.js, which is deferred.
-
-Kept in sync with site.js by hand. The contract between them is four strings:
-the two storage keys, and the value sets each one accepts.
-{%- endcomment -%}
-<script>
-  (function () {
-    var root = document.documentElement;
-    root.classList.add('js');
-    var theme, familiar;
-    try {
-      theme = localStorage.getItem('theme');
-      familiar = localStorage.getItem('familiar');
-    } catch (e) {}
-    if (theme !== 'day' && theme !== 'night') {
-      theme =
-        window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
-          ? 'day'
-          : 'night';
-    }
-    root.setAttribute('data-theme', theme);
-    if (familiar === 'artemis' || familiar === 'apollo') {
-      root.setAttribute('data-familiar', familiar);
-    }
-  })();
-</script>
+{% feed_meta %}
