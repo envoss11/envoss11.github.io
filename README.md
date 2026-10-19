@@ -11,7 +11,7 @@ make serve                       # preview at localhost:4000, drafts included
 make publish SLUG=notes-on-the-alignment-problem
 ```
 
-Topics are the keys in `_data/topics.yml`: `ai-ml`, `data-science`, `books`.
+Topics are the keys in `_data/topics.yml`: `ai-ml`, `books`.
 Leave `TOPIC` off for Other.
 
 From a phone, or anywhere without the toolchain, add a file in GitHub's web
