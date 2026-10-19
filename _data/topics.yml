@@ -8,9 +8,6 @@
 - key: ai-ml
   label: AI/ML
   heading: AI and machine learning
-- key: data-science
-  label: Data Science
-  heading: Data science
 - key: books
   label: Book notes
   heading: Book notes
