@@ -4,7 +4,7 @@
 title: "Eric Voss"
 # Read by jekyll-feed for the <author> on every entry in /feed.xml.
 author: "Eric Voss"
-description: "Writing by Eric Voss on AI/ML, data science, and the books he reads."
+description: "Eric Voss is an AI engineer in financial services. Posts and working notes on document intelligence, evaluation and measurement, and AI on AWS."
 url: "https://www.ericvoss.com"
 baseurl: ""
 locale: "en-US"
@@ -31,6 +31,15 @@ sass:
 include:
   - _pages
 
+# Notes: public working notes at /notes/<slug>/. Private by default: the
+# `published: false` default below means Jekyll skips a note entirely (no page,
+# no sitemap entry) until its front matter says `published: true`. jekyll-feed
+# only reads posts, so notes never reach /feed.xml either way.
+collections:
+  notes:
+    output: true
+    permalink: /notes/:name/
+
 # This replaces Jekyll's default exclude list rather than adding to it, so the
 # defaults have to be named here too. Dotfiles and _-prefixed directories are
 # skipped on their own.
@@ -50,6 +59,12 @@ defaults:
     values:
       layout: post
       permalink: /posts/:title/
+  - scope:
+      path: ""
+      type: notes
+    values:
+      layout: note
+      published: false
   - scope:
       path: "_pages"
     values:

@@ -1,10 +1,10 @@
-# The header links, left to right. A Projects page, or a page for a central
-# topic, is one more entry here.
+# The header links, left to right. Off-site links (GitHub, LinkedIn, X) live in
+# _data/social.yml and show in the footer.
+- title: Writing
+  url: /writing/
+- title: Notes
+  url: /notes/
+- title: Projects
+  url: /projects/
 - title: About
   url: /about/
-- title: GitHub
-  url: https://github.com/envoss11/
-- title: LinkedIn
-  url: https://www.linkedin.com/in/eric-n-voss/
-- title: X
-  url: https://x.com/VossEricN

@@ -1,13 +1,16 @@
-# The filters on the homepage, in the order they appear. A post opts in with
-# `topics: [<key>]` in its front matter; the key is also the URL hash, so
-# /#books opens the feed filtered to book notes.
+# The Writing categories, in the order they appear on /writing/. A post opts in
+# with `topics: [<key>]` in its front matter; a matured note opts in with
+# `writing: <key>`. The key is also the URL hash, so /writing/#evaluation opens
+# the list filtered to that category.
 #
 # "All" and "Other" are not listed here. Other is whatever is left over: a post
 # with no topics, or none that match a key below. `make post` checks TOPIC
 # against this file so a typo fails instead of landing in Other.
-- key: ai-ml
-  label: AI/ML
-  heading: AI and machine learning
-- key: books
-  label: Book notes
-  heading: Book notes
+#
+# Categories mirror the pitch. Add one only when there is writing to put in it.
+- key: document-intelligence
+  label: Document intelligence
+  heading: Document intelligence
+- key: evaluation
+  label: Evaluation & measurement
+  heading: Evaluation & measurement

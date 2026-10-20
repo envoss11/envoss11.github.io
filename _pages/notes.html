@@ -1,0 +1,48 @@
+---
+title: Notes
+permalink: /notes/
+description: "Working notes by Eric Voss: unfinished, revised as he goes."
+---
+{%- comment -%}
+Published notes, one section per topic in _data/note_topics.yml, newest
+update first. Empty topics are hidden. A note whose topic matches no key
+shows under Other.
+{%- endcomment -%}
+{%- assign keys = site.data.note_topics | map: "key" -%}
+{%- assign other = "" | split: "" -%}
+{%- for note in site.notes -%}
+  {%- unless keys contains note.topic %}{% assign other = other | push: note %}{% endunless -%}
+{%- endfor -%}
+
+<h1>Notes</h1>
+
+<p class="lede">Working notes, published as I go. They are unfinished and get
+revised. Each one says how far along it is and when it last changed.</p>
+
+<p class="legend">
+  {% include status.html status="idea" %} a starting point ·
+  {% include status.html status="wip" %} in progress ·
+  {% include status.html status="complete" %} says what it set out to say
+</p>
+
+{%- if site.notes.size == 0 %}
+<p class="empty">Nothing yet.</p>
+{%- endif %}
+
+{%- for topic in site.data.note_topics %}
+{%- assign notes = site.notes | where: "topic", topic.key | sort: "updated" | reverse %}
+{%- if notes.size > 0 %}
+<section class="feed-section" id="{{ topic.key }}" aria-labelledby="h-{{ topic.key }}">
+  <h2 id="h-{{ topic.key }}">{{ topic.heading }}</h2>
+  {% include note-list.html notes=notes %}
+</section>
+{%- endif %}
+{%- endfor %}
+
+{%- if other.size > 0 %}
+{%- assign other = other | sort: "updated" | reverse %}
+<section class="feed-section" id="other" aria-labelledby="h-other">
+  <h2 id="h-other">Other</h2>
+  {% include note-list.html notes=other %}
+</section>
+{%- endif %}

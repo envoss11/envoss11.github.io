@@ -1,0 +1,35 @@
+{%- comment -%}
+One dated list section. Pass heading, key, and items (posts, notes, or both).
+Optional: more (a URL) and more_label, for a link under the list.
+
+Items are sorted newest first by a post's date or a note's `updated`. Liquid
+cannot sort on a computed field, so each item becomes a "date|url" string,
+those sort, and each url is looked up again. A note is marked as one.
+{%- endcomment -%}
+{%- assign rows = "" | split: "" -%}
+{%- for item in include.items -%}
+  {%- if item.collection == "notes" %}{% assign d = item.updated %}{% else %}{% assign d = item.date %}{% endif -%}
+  {%- capture row %}{{ d | date: "%Y-%m-%d" }}|{{ item.url }}{% endcapture -%}
+  {%- assign rows = rows | push: row -%}
+{%- endfor -%}
+{%- assign rows = rows | sort | reverse -%}
+<section class="feed-section" id="{{ include.key }}" data-topic="{{ include.key }}" aria-labelledby="h-{{ include.key }}">
+  <h2 id="h-{{ include.key }}">{{ include.heading }}</h2>
+  {%- if rows.size > 0 %}
+  <ul class="post-list">
+    {%- for row in rows %}
+    {%- assign parts = row | split: "|" %}
+    {%- assign item = include.items | where: "url", parts[1] | first %}
+    <li>
+      <time datetime="{{ parts[0] }}">{{ parts[0] }}</time>
+      <span><a href="{{ item.url | relative_url }}">{{ item.title }}</a>{% if item.collection == "notes" %} <span class="tag">note</span>{% endif %}</span>
+    </li>
+    {%- endfor %}
+  </ul>
+  {%- else %}
+  <p class="empty">Nothing yet.</p>
+  {%- endif %}
+  {%- if include.more %}
+  <p class="more"><a href="{{ include.more | relative_url }}">{{ include.more_label }} →</a></p>
+  {%- endif %}
+</section>

@@ -1,0 +1,30 @@
+---
+layout: default
+---
+{%- comment -%}
+A note. Status and last-updated sit at the top so a reader knows how finished
+it is. If a post names this note in `from_note`, it is linked here; the link
+is stored only on the post, so the two cannot disagree.
+{%- endcomment -%}
+{%- assign keys = site.data.note_topics | map: "key" -%}
+{%- assign topic = site.data.note_topics | where: "key", page.topic | first -%}
+{%- assign became = site.posts | where: "from_note", page.slug -%}
+<article class="post note">
+  <header class="post-head">
+    <p class="kicker">
+      <a href="{{ '/notes/' | relative_url }}">Notes</a> ·
+      {% if topic %}<a href="{{ '/notes/' | relative_url }}#{{ topic.key }}">{{ topic.heading }}</a>{% else %}<a href="{{ '/notes/' | relative_url }}#other">Other</a>{% endif %}
+    </p>
+    <h1>{{ page.title }}</h1>
+    <p class="post-meta">
+      {% include status.html status=page.status %}
+      {%- if page.updated %} · updated <time datetime="{{ page.updated | date: '%Y-%m-%d' }}">{{ page.updated | date: "%Y-%m-%d" }}</time>{% endif %}
+    </p>
+  </header>
+  {%- for post in became %}
+  <p class="callout">This note became a post: <a href="{{ post.url | relative_url }}">{{ post.title }}</a>.</p>
+  {%- endfor %}
+  <div class="prose">
+    {{ content }}
+  </div>
+</article>

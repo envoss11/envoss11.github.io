@@ -2,40 +2,33 @@
 layout: default
 ---
 {%- comment -%}
-The whole site, more or less. "All" shows the latest few plus every topic
-section; a filter shows one section. Without JavaScript the filter row stays
-hidden and every section shows, which is the same page as "All".
-
-A post with several topics appears in each of their sections. Other collects
-the posts that match no key in _data/topics.yml.
+The pitch, what I'm working on, then the newest posts and the most recently
+updated notes. The full lists live on /writing/ and /notes/.
 {%- endcomment -%}
-{%- assign keys = site.data.topics | map: "key" -%}
-{%- assign other = "" | split: "" -%}
-{%- for post in site.posts -%}
-  {%- assign matched = false -%}
-  {%- for key in post.topics -%}
-    {%- if keys contains key %}{% assign matched = true %}{% endif -%}
-  {%- endfor -%}
-  {%- unless matched %}{% assign other = other | push: post %}{% endunless -%}
-{%- endfor -%}
-
 <h1 class="sr-only">{{ site.title }}</h1>
 
-<div class="filters" role="group" aria-label="Filter posts" hidden>
-  <span class="filters-label">Filter:</span>
-  <button type="button" data-filter="all" aria-pressed="true">All</button>
-  {%- for topic in site.data.topics %}
-  <button type="button" data-filter="{{ topic.key }}" aria-pressed="false">{{ topic.label }}</button>
-  {%- endfor %}
-  <button type="button" data-filter="other" aria-pressed="false">Other</button>
-</div>
+<section class="intro">
+  <p class="pitch">I'm an AI engineer in financial services. I build document
+  intelligence platforms and decision support systems, mostly on AWS, and I care
+  a lot about measuring whether they actually work.</p>
+  <p>These are my <a href="{{ '/writing/' | relative_url }}">posts</a>, my
+  <a href="{{ '/notes/' | relative_url }}">working notes</a>, and a few
+  <a href="{{ '/projects/' | relative_url }}">side projects</a>.</p>
+  <p class="currently"><span class="label">Currently</span> building out a
+  document processing platform at work, and studying for the AWS GenAI
+  Developer certification.</p>
+</section>
 
 {%- assign latest = site.posts | slice: 0, 5 %}
-{% include post-list.html heading="Latest posts" key="latest" posts=latest %}
+{% include entry-list.html heading="Latest posts" key="latest" items=latest more="/writing/" more_label="All writing" %}
 
-{%- for topic in site.data.topics %}
-{%- assign posts = site.posts | where_exp: "post", "post.topics contains topic.key" %}
-{% include post-list.html heading=topic.heading key=topic.key posts=posts %}
-{%- endfor %}
-
-{% include post-list.html heading="Other" key="other" posts=other %}
+<section class="feed-section" id="recent-notes" aria-labelledby="h-recent-notes">
+  <h2 id="h-recent-notes">Recently updated notes</h2>
+  {%- assign recent = site.notes | sort: "updated" | reverse | slice: 0, 5 %}
+  {%- if recent.size > 0 %}
+  {% include note-list.html notes=recent %}
+  {%- else %}
+  <p class="empty">Nothing yet.</p>
+  {%- endif %}
+  <p class="more"><a href="{{ '/notes/' | relative_url }}">All notes →</a></p>
+</section>

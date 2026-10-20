@@ -1,5 +1,5 @@
-// The homepage filter. Each button shows one section of the feed; "All" shows
-// every section. The choice goes in the URL hash so /#books is a link.
+// The filter on /writing/. Each button shows one section of the list; "All" shows
+// every section. The choice goes in the URL hash so /writing/#evaluation is a link.
 (function () {
   var bar = document.querySelector('.filters');
   if (!bar) return;

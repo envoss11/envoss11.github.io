@@ -1,0 +1,29 @@
+---
+title: Projects
+permalink: /projects/
+description: "Small projects with code by Eric Voss: benchmarks, experiments, and tools."
+---
+{%- comment -%} The list is _data/projects.yml. {%- endcomment -%}
+<h1>Projects</h1>
+
+<p class="lede">Small things with code: benchmarks, experiments, and tools.</p>
+
+{%- if site.data.projects.size > 0 %}
+<ul class="project-list">
+  {%- for project in site.data.projects %}
+  <li>
+    <h2>{% if project.repo %}<a href="{{ project.repo }}" rel="noopener">{{ project.title }}</a>{% else %}{{ project.title }}{% endif %}</h2>
+    <p>{{ project.summary }}</p>
+    {%- if project.date or project.writeup or project.repo %}
+    <p class="post-meta">
+      {%- if project.date %}<time datetime="{{ project.date | date: '%Y-%m-%d' }}">{{ project.date | date: "%Y-%m-%d" }}</time>{% endif -%}
+      {%- if project.repo %}{% if project.date %} · {% endif %}<a href="{{ project.repo }}" rel="noopener">Code</a>{% endif -%}
+      {%- if project.writeup %}{% if project.date or project.repo %} · {% endif %}<a href="{{ project.writeup | relative_url }}">Write-up</a>{% endif -%}
+    </p>
+    {%- endif %}
+  </li>
+  {%- endfor %}
+</ul>
+{%- else %}
+<p class="empty">Nothing yet.</p>
+{%- endif %}

@@ -1,0 +1,9 @@
+{%- comment -%} A list of notes: last updated, title, status. Pass notes, already sorted. {%- endcomment -%}
+<ul class="post-list">
+  {%- for note in include.notes %}
+  <li>
+    <time datetime="{{ note.updated | date: '%Y-%m-%d' }}">{{ note.updated | date: "%Y-%m-%d" }}</time>
+    <span><a href="{{ note.url | relative_url }}">{{ note.title }}</a> {% include status.html status=note.status %}</span>
+  </li>
+  {%- endfor %}
+</ul>

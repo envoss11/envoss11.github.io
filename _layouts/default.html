@@ -9,7 +9,7 @@
         <a class="wordmark" href="{{ '/' | relative_url }}">{{ site.title }}</a>
         <nav class="site-nav" aria-label="Main">
           {%- for item in site.data.navigation %}
-          <a href="{{ item.url | relative_url }}"{% if item.url contains '://' %} rel="noopener"{% elsif page.url == item.url %} aria-current="page"{% endif %}>{{ item.title }}</a>
+          <a href="{{ item.url | relative_url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.title }}</a>
           {%- endfor %}
         </nav>
       </header>
@@ -20,7 +20,11 @@
         {%- unless page.url == "/" %}
         <a href="{{ '/' | relative_url }}">← Back home</a>
         {%- endunless %}
-        <span>© {{ site.time | date: "%Y" }} {{ site.author }} · <a href="{{ '/feed.xml' | relative_url }}">RSS</a></span>
+        <span>
+          {%- for item in site.data.social %}<a href="{{ item.url }}" rel="noopener">{{ item.title }}</a> · {% endfor -%}
+          <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+        </span>
+        <span>© {{ site.time | date: "%Y" }} {{ site.author }}</span>
       </footer>
     </div>
     <script src="{{ '/assets/js/site.js' | relative_url }}" defer></script>

@@ -1,0 +1,17 @@
+# The groups on /notes/, in the order they appear. A note names exactly one
+# with `topic: <key>`; `make note` checks it. A note with an unknown or missing
+# topic shows under Other. Groups with no published notes are hidden.
+#
+# Flat on purpose: one level, one topic per note.
+- key: aws-genai-cert
+  heading: AWS GenAI Developer cert
+- key: document-processing
+  heading: Document processing
+- key: evals-statistics
+  heading: Evals & statistics
+- key: stylometry
+  heading: Stylometry
+- key: interpretability
+  heading: Interpretability
+- key: reading
+  heading: Reading

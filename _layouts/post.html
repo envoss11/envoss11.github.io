@@ -1,17 +1,28 @@
 ---
 layout: default
 ---
+{%- comment -%}
+A post. `from_note` names the note it grew out of; the link only shows once
+that note is published, so a private note never leaks a broken link.
+{%- endcomment -%}
+{%- if page.from_note -%}
+  {%- assign source = site.notes | where: "slug", page.from_note | first -%}
+{%- endif -%}
 <article class="post">
   <header class="post-head">
     <h1>{{ page.title }}</h1>
     <p class="post-meta">
       <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y-%m-%d" }}</time>
+      {%- if page.updated %} · updated <time datetime="{{ page.updated | date: '%Y-%m-%d' }}">{{ page.updated | date: "%Y-%m-%d" }}</time>{% endif -%}
       {%- for key in page.topics -%}
         {%- assign topic = site.data.topics | where: "key", key | first -%}
-        {%- if topic %} · <a href="{{ '/' | relative_url }}#{{ topic.key }}">{{ topic.label }}</a>{% endif -%}
+        {%- if topic %} · <a href="{{ '/writing/' | relative_url }}#{{ topic.key }}">{{ topic.label }}</a>{% endif -%}
       {%- endfor -%}
     </p>
   </header>
+  {%- if source %}
+  <p class="callout">This grew out of a working note: <a href="{{ source.url | relative_url }}">{{ source.title }}</a>.</p>
+  {%- endif %}
   <div class="prose">
     {{ content }}
   </div>

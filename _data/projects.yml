@@ -1,0 +1,8 @@
+# The list on /projects/, newest first: small artifacts with code, such as
+# benchmarks, experiments, and tools. Only `title` and `summary` are required.
+#
+# - title: "Gen-AI OCR comparison"
+#   summary: "One line on what it is and what it found."
+#   repo: https://github.com/envoss11/some-repo
+#   writeup: /posts/some-post-slug/     # optional: a post or note about it
+#   date: 2026-11-01                    # optional
