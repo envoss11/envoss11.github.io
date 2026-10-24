@@ -6,3 +6,16 @@
 #   author: "Søren Kierkegaard"     # omit for a subject rather than a book
 #   topic: philosophy
 #   why: "One line on why — what it connects to."
+
+# SAMPLE CONTENT: remove these entries before merging.
+- title: "Fear and Trembling"
+  author: "Søren Kierkegaard"
+  topic: philosophy
+  why: "The religious stage, after Either/Or."
+- title: "Designing Machine Learning Systems"
+  author: "Chip Huyen"
+  topic: evals-statistics
+  why: "Production ML end to end; check the evaluation chapters against Kohavi."
+- title: "Bayesian authorship attribution"
+  topic: stylometry
+  why: "A subject, not a book: Mosteller and Wallace on the Federalist Papers."
