@@ -1,16 +1,20 @@
 # Working on this repo
 
-`ericvoss.com`: a dated list of posts, filterable by topic, on a hand-written
-Jekyll site. One layout file, one stylesheet (`assets/css/site.scss`), one small
-script (`assets/js/site.js`, the homepage filter). No framework, no theme gem.
+`ericvoss.com` is a personal notebook. The notebook comes first: Markdown files
+in three sections, written through (eventually) a local editor app. The Jekyll
+site is the public view of those files. Hand-written Jekyll, no theme gem, no
+JavaScript framework. Design plan: `~/.claude/plans/` (notebook refactor, in
+phases; see the PR history for which have landed).
+
+Sections: **Reading** (one page per book, seeded from Goodreads), **Writing**,
+**Projects**, plus a standalone **About** page that is not a notebook section.
 
 ## Commands
 
 | Target | What it does |
 |---|---|
-| `make post TITLE="..." TOPIC=ai-ml` | Start `_drafts/<slug>.md`. `TOPIC` is optional and checked |
-| `make serve` | Preview at `localhost:4000`, drafts included |
-| `make publish SLUG=<slug>` | Move the draft into `_posts/`, dated today |
+| `make entry SECTION=writing TITLE="..."` | Start an unpublished entry. `SECTION` is `reading`, `writing` or `projects` |
+| `make serve` | Preview at `localhost:4000`, unpublished entries included |
 | `make build` | Production build into `_site/` |
 | `make check` | Build, then html-proofer — the same gate CI runs on every PR |
 
@@ -18,48 +22,49 @@ script (`assets/js/site.js`, the homepage filter). No framework, no theme gem.
 
 | | |
 |---|---|
-| `_posts/` | Published. `YYYY-MM-DD-slug.md`, live at `/posts/<slug>/`, in RSS and the sitemap. |
-| `_drafts/` | Private. Shows under `make serve` only. |
+| `_books/` | Reading. `<slug>.md`, live at `/reading/<slug>/`. Body is my notes and may be empty. |
+| `_writing/` | Writing. `YYYY-MM-DD-slug.md`, live at `/writing/<slug>/`, in RSS. |
+| `_projects/` | Projects. `<slug>.md`, live at `/projects/<slug>/`. |
 | `_pages/` | About, and redirect stubs for old URLs. |
-| `_data/topics.yml` | The filter list. Adding a topic is three lines here. |
-| `_data/navigation.yml` | Header links. A Projects page goes here when it exists. |
+| `_data/notebook.yml` | Tab order and footer links. |
 
 ## Front matter
 
 ```yaml
 ---
 title: "Required"
-topics: [ai-ml]     # optional; any keys from _data/topics.yml, or none
+published: false    # omit or true to publish
 excerpt: ""         # optional; meta description and RSS summary
 ---
 ```
 
-That is the whole contract. A post with no topics, or only unknown ones, lands
-in **Other**. A book note is a post with `topics: [books]`; the title names the
-book.
+Books add `author`, `rating`, `date_read`, and later `goodreads_id`, `shelf`,
+`cover`. Projects add `summary` and `links: [{title, url}]`. There are no topics.
 
 ## Rules
 
 - Branch and open a PR. Never push to `master`; the PR check builds the site
   and runs html-proofer.
-- Do not edit a published `_posts/` entry unless asked. It already went out on
-  the feed.
+- Do not edit a published entry unless asked. Writing already went out on the
+  feed.
 - Run `make check` before pushing. It works locally.
 
 ## Traps
 
 1. **Liquid runs before Markdown, even inside code fences.** Anything quoting
    `{{` or `{%` breaks the build. Wrap it in `{% raw %}` … `{% endraw %}`.
-2. **`future: false`.** A post dated after the build date silently does not
-   publish.
+2. **`future: false`.** A writing entry dated after the build date silently
+   does not publish.
 3. **html-proofer gates the deploy.** Every internal link and image must
-   resolve, including `/#topic` anchors (each feed section carries its key as
-   its `id`).
-4. **An unknown topic key is silent.** The post just shows under Other.
-   `make post` checks `TOPIC`; a hand-typed front matter is not checked.
-5. **`exclude:` in `_config.yml` replaces Jekyll's defaults.** Adding an entry
+   resolve.
+4. **`exclude:` in `_config.yml` replaces Jekyll's defaults.** Adding an entry
    means keeping the existing ones.
-6. **Do not slug a post `posts`,** or anything that matches a redirect stub.
+5. **`published: false` hides an entry from the production build only.** It is
+   still in git and visible under `make serve`.
+6. **jekyll-feed always builds a posts feed.** It is parked at
+   `/feed/posts.xml`; Writing owns `/feed.xml`. Do not use `{% feed_meta %}`.
+7. **Do not name a section index's slug after a redirect stub** (`/posts/`,
+   `/blog/`, ...) in `_pages/`.
 
 ## Voice
 

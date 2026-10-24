@@ -1,43 +1,40 @@
 # ericvoss.com
 
-Writing by Eric Voss on AI/ML, data science, and the books he reads. Jekyll 4,
-built and deployed by GitHub Actions (`.github/workflows/deploy.yml`).
+Eric Voss's notebook: notes on books, writing, and projects. Jekyll 4, built
+and deployed by GitHub Actions (`.github/workflows/deploy.yml`). The site is
+the public view of a set of Markdown files; the files are the notebook.
 
-## Writing a post
+## Sections
+
+| Tab | Directory | URL |
+|---|---|---|
+| Reading | `_books/` | `/reading/<slug>/` |
+| Writing | `_writing/` | `/writing/<slug>/` |
+| Projects | `_projects/` | `/projects/<slug>/` |
+| About | `_pages/about.md` | `/about/` |
+
+## Adding an entry
 
 ```sh
-make post TITLE="Notes on The Alignment Problem" TOPIC=books
-make serve                       # preview at localhost:4000, drafts included
-make publish SLUG=notes-on-the-alignment-problem
+make entry SECTION=writing TITLE="Some title"   # reading | writing | projects
+make serve                                      # localhost:4000, unpublished entries included
 ```
 
-Topics are the keys in `_data/topics.yml`: `ai-ml`, `books`.
-Leave `TOPIC` off for Other.
-
-From a phone, or anywhere without the toolchain, add a file in GitHub's web
-editor at `_posts/2026-10-17-some-slug.md`:
-
-```yaml
----
-title: "Some title"
-topics: [ai-ml]
----
-
-The post.
-```
+A new entry starts with `published: false`. Delete that line, or set it to
+`true`, when it is ready; the production build skips unpublished entries.
 
 ## Layout
 
-- `index.html` — the feed: a filter row, latest posts, then one section per topic.
-- `_layouts/default.html` — header, footer, everything around the content.
-- `_layouts/post.html` — a single post.
-- `_includes/post-list.html` — one dated list section of the feed.
-- `_pages/about.md` — the About page.
+- `index.html` — the cover, with the latest entries of each section.
+- `reading/`, `writing/`, `projects/` — the section index pages.
+- `_layouts/notebook.html` — header, tabs, footer. `book.html` and `entry.html`
+  extend it.
+- `_includes/` — `tabs.html`, `book-card.html`, `entry-list.html`, `head.html`.
+- `_data/notebook.yml` — tab order and footer links.
 - `assets/css/site.scss` — the only stylesheet. Colors are tokens on `:root`;
   dark mode follows the OS.
-- `assets/js/site.js` — the filter. Without it every section shows.
 
 ## Setup
 
-Ruby 3.4 (`.ruby-version`), then `bundle install`. `make check` runs the same
-build and link check as CI.
+Ruby 3.4 (`.ruby-version`), then `bundle install`. `make check` builds the site
+and runs html-proofer, the same gate CI runs on every PR.

@@ -1,0 +1,13 @@
+{%- comment -%} A dated list. Pass `entries`; an optional `empty` replaces the default message. {%- endcomment -%}
+{%- if include.entries.size > 0 %}
+<ul class="post-list">
+  {%- for entry in include.entries %}
+  <li>
+    <time datetime="{{ entry.date | date_to_xmlschema }}">{{ entry.date | date: "%Y-%m-%d" }}</time>
+    <a href="{{ entry.url | relative_url }}">{{ entry.title }}</a>
+  </li>
+  {%- endfor %}
+</ul>
+{%- else %}
+<p class="empty">{{ include.empty | default: "Nothing yet." }}</p>
+{%- endif %}
