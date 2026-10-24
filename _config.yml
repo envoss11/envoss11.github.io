@@ -4,7 +4,7 @@
 title: "Eric Voss"
 # Read by jekyll-feed for the <author> on every entry in /feed.xml.
 author: "Eric Voss"
-description: "Writing by Eric Voss on AI/ML, data science, and the books he reads."
+description: "Eric Voss's notebook: notes on books, writing, and projects."
 url: "https://www.ericvoss.com"
 baseurl: ""
 locale: "en-US"
@@ -15,6 +15,15 @@ locale: "en-US"
 plugins:
   - jekyll-feed
   - jekyll-sitemap
+
+# The feed carries Writing. jekyll-feed always builds a posts feed too, so it is
+# parked at a path nothing links to; Writing takes /feed.xml.
+feed:
+  path: /feed/posts.xml
+  posts_limit: 20
+  collections:
+    writing:
+      path: /feed.xml
 
 markdown: kramdown
 highlighter: rouge
@@ -31,6 +40,20 @@ sass:
 include:
   - _pages
 
+# Content lives in collections, one Markdown file per entry. `published: false`
+# in front matter keeps an entry out of a production build; `make serve`
+# passes --unpublished to show it.
+collections:
+  books:
+    output: true
+    permalink: /reading/:title/
+  writing:
+    output: true
+    permalink: /writing/:title/
+  projects:
+    output: true
+    permalink: /projects/:title/
+
 # This replaces Jekyll's default exclude list rather than adding to it, so the
 # defaults have to be named here too. Dotfiles and _-prefixed directories are
 # skipped on their own.
@@ -42,15 +65,26 @@ exclude:
   - Makefile
   - README.md
   - CLAUDE.md
+  - tools
+  - .venv
 
 defaults:
   - scope:
       path: ""
-      type: posts
+      type: books
     values:
-      layout: post
-      permalink: /posts/:title/
+      layout: book
+  - scope:
+      path: ""
+      type: writing
+    values:
+      layout: entry
+  - scope:
+      path: ""
+      type: projects
+    values:
+      layout: entry
   - scope:
       path: "_pages"
     values:
-      layout: default
+      layout: notebook

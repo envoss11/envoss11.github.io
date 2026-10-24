@@ -11,7 +11,7 @@ DATE   := $(shell date +%Y-%m-%d)
 SLUG ?= $(shell printf '%s' '$(TITLE)' | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$$//')
 
 .DEFAULT_GOAL := help
-.PHONY: help serve build check post publish
+.PHONY: help serve build check entry sync-books
 
 help: ## Show this list
 	@echo "usage: make <target>"
@@ -20,13 +20,10 @@ help: ## Show this list
 	  | sed -E 's/^([a-z-]+):.*## /\1|/' \
 	  | awk -F'|' '{ printf "  %-9s %s\n", $$1, $$2 }'
 	@echo
-	@echo '  make post TITLE="Some post title" TOPIC=ai-ml'
-	@echo '  make publish SLUG=some-post-title'
-	@echo
-	@echo "  topics: $$(sed -n 's/^- key: //p' _data/topics.yml | tr '\n' ' ')(or none, for Other)"
+	@echo '  make entry SECTION=writing TITLE="Some title"   (reading|writing|projects)'
 
-serve: ## Preview at localhost:4000, drafts included, reloading on save
-	$(BUNDLE) jekyll serve --drafts --livereload
+serve: ## Preview at localhost:4000, unpublished entries included, reloading on save
+	$(BUNDLE) jekyll serve --unpublished --livereload
 
 build: ## Production build into _site/
 	JEKYLL_ENV=production $(BUNDLE) jekyll build
@@ -34,30 +31,22 @@ build: ## Production build into _site/
 check: build ## What CI gates on: the build, then the link and image check
 	$(BUNDLE) htmlproofer ./_site --disable-external
 
-# TOPIC is checked against _data/topics.yml because a misspelled key is not an
-# error anywhere else: the post would just land in Other.
-post: ## Start a draft in _drafts/<slug>.md (TOPIC optional)
-	@test -n '$(TITLE)' || { echo 'usage: make post TITLE="Some post title" [TOPIC=ai-ml]'; exit 1; }
-	@test -n '$(SLUG)'  || { echo 'that title slugifies to nothing — try another'; exit 1; }
-	@test ! -f '_drafts/$(SLUG).md' || { echo '_drafts/$(SLUG).md already exists'; exit 1; }
-	@test -z '$(TOPIC)' || grep -qx -- '- key: $(TOPIC)' _data/topics.yml \
-	  || { echo "unknown topic '$(TOPIC)' — one of: $$(sed -n 's/^- key: //p' _data/topics.yml | tr '\n' ' ')"; exit 1; }
-	@mkdir -p _drafts
-	@printf '%s\n' \
-	  '---' \
-	  'title: "$(TITLE)"' \
-	  'topics: [$(TOPIC)]' \
-	  'excerpt: ""' \
-	  '---' \
-	  '' \
-	  > '_drafts/$(SLUG).md'
-	@echo 'wrote _drafts/$(SLUG).md — `make serve` shows it, the live site does not'
+# Sections are the collections in _config.yml. A new entry starts unpublished;
+# flip `published` to true (or delete the line) when it is ready.
+SECTIONS := reading writing projects
+DIR_reading  := _books
+DIR_writing  := _writing
+DIR_projects := _projects
 
-publish: ## Move _drafts/<slug>.md into _posts/, dated today
-	@test -n '$(SLUG)' || { echo 'usage: make publish SLUG=<slug>'; exit 1; }
-	@test -f '_drafts/$(SLUG).md' || { echo 'no such draft: _drafts/$(SLUG).md'; exit 1; }
-	@test ! -f '_posts/$(DATE)-$(SLUG).md' || { echo '_posts/$(DATE)-$(SLUG).md already exists'; exit 1; }
-	@mkdir -p _posts
-	@git mv '_drafts/$(SLUG).md' '_posts/$(DATE)-$(SLUG).md' 2>/dev/null \
-	  || mv '_drafts/$(SLUG).md' '_posts/$(DATE)-$(SLUG).md'
-	@echo 'published -> _posts/$(DATE)-$(SLUG).md -> /posts/$(SLUG)/'
+entry: ## Start an entry: make entry SECTION=writing TITLE="..."
+	@case ' $(SECTIONS) ' in *' $(SECTION) '*) ;; *) echo 'usage: make entry SECTION=<$(SECTIONS)> TITLE="..."'; exit 1;; esac
+	@test -n '$(TITLE)' || { echo 'a TITLE is required'; exit 1; }
+	@test -n '$(SLUG)'  || { echo 'that title slugifies to nothing — try another'; exit 1; }
+	@f='$(DIR_$(SECTION))/$(if $(filter writing,$(SECTION)),$(DATE)-)$(SLUG).md'; \
+	  test ! -f "$$f" || { echo "$$f already exists"; exit 1; }; \
+	  mkdir -p '$(DIR_$(SECTION))'; \
+	  printf '%s\n' '---' 'title: "$(TITLE)"' 'published: false' 'excerpt: ""' '---' '' > "$$f"; \
+	  echo "wrote $$f — unpublished; \`make serve\` shows it, the live site does not"
+
+sync-books: ## Pull the public Goodreads shelf into _books/ (DRY=1 to preview)
+	python3 tools/goodreads_sync.py $(if $(DRY),--dry-run)

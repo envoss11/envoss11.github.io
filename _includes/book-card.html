@@ -1,0 +1,10 @@
+{%- comment -%} One book in the Reading index. Pass `book`. {%- endcomment -%}
+<li class="book-card{% if include.book.content == '' or include.book.content == nil %} no-notes{% endif %}">
+  <a href="{{ include.book.url | relative_url }}">
+    <span class="book-title">{{ include.book.title }}</span>
+    <span class="book-author">{{ include.book.author }}</span>
+  </a>
+  {%- if include.book.rating and include.book.rating > 0 %}
+  <span class="book-rating" aria-label="{{ include.book.rating }} out of 5">{{ include.book.rating }}/5</span>
+  {%- endif %}
+</li>

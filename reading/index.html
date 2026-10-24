@@ -1,0 +1,18 @@
+---
+layout: notebook
+title: Reading
+section: reading
+permalink: /reading/
+description: "Books I have read, with notes on some of them."
+---
+<h1>Reading</h1>
+{%- assign books = site.books | sort: "date_read" | reverse %}
+{%- if books.size > 0 %}
+<ul class="book-list">
+  {%- for book in books %}
+  {% include book-card.html book=book %}
+  {%- endfor %}
+</ul>
+{%- else %}
+<p class="empty">No books yet.</p>
+{%- endif %}

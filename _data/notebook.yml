@@ -1,0 +1,29 @@
+# The notebook's sections, in tab order. `collection` is the key in
+# _config.yml; `url` is the section's index page.
+tabs:
+  - key: reading
+    label: Reading
+    url: /reading/
+    collection: books
+  - key: writing
+    label: Writing
+    url: /writing/
+    collection: writing
+  - key: projects
+    label: Projects
+    url: /projects/
+    collection: projects
+
+# About is a page, not a section, so it sits outside the tabs.
+about:
+  label: About
+  url: /about/
+
+# Links to elsewhere, shown in the footer.
+links:
+  - title: LinkedIn
+    url: https://www.linkedin.com/in/eric-n-voss/
+  - title: GitHub
+    url: https://github.com/envoss11/
+  - title: X
+    url: https://x.com/VossEricN
