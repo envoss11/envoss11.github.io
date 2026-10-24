@@ -1,9 +1,11 @@
 # The header links, left to right. Off-site links (GitHub, LinkedIn, X) live in
-# _data/social.yml and show in the footer.
+# _data/social.yml and show in the footer. /log/ is linked from /notes/ only.
 - title: Writing
   url: /writing/
 - title: Notes
   url: /notes/
+- title: Reading
+  url: /reading/
 - title: Projects
   url: /projects/
 - title: About

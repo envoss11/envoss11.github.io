@@ -1,9 +1,32 @@
 # Working on this repo
 
-`ericvoss.com`: Eric Voss's career site. A hand-written Jekyll 4 site with no
-framework or theme gem: two content types (Posts and Notes), a Projects list,
-and an About page. One stylesheet (`assets/css/site.scss`) and one small script
-(`assets/js/site.js`, the filter on `/writing/`).
+`ericvoss.com`: Eric Voss's career site, and the visible half of a study
+practice. A hand-written Jekyll 4 site with no framework or theme gem: Posts,
+Notes (book notes among them), Reading, a Log, Projects, and About. One
+stylesheet (`assets/css/site.scss`), one small script (`assets/js/site.js`, the
+filter on `/writing/`), one plugin (`_plugins/notes.rb`, wiki links and
+sessions), and one helper (`bin/study`, behind the study `make` targets).
+
+## What the site is for
+
+Eric is building tools and habits for a consistent practice of intellectual
+exploration: low friction, part of ordinary life, and leaving visible
+artifacts that show progress. This site is the visible-artifacts part. Beyond
+that it is only a light landing page (pitch, short bio, links).
+
+Everything is organized on two axes:
+
+- **Professional relevance**, set once per topic as its `shelf` (`work` or
+  `life`) in `_data/note_topics.yml`. Work comes first everywhere and is the
+  only shelf on the homepage; life is one click away. An AI project or an ML
+  book is work; Kierkegaard is life.
+- **Content type**: a Post (finished, argued) is presented differently from a
+  Note (a working page, wiki-style), a book note (a note with `author:`, also
+  on `/reading/`), or a Project.
+
+The practice side must fade into the background: open a file, write, close it.
+Anything that adds upkeep (tags to maintain, indexes to update by hand,
+required fields) works against it.
 
 ## Positioning
 
@@ -55,7 +78,13 @@ removes the pressure to polish. Do not hold a note back because it is rough.
 never render or reach the feed or sitemap. Do not weaken this default.
 
 **Organization stays flat.** One topic per note, no hierarchy deeper than one
-level. Simplicity beats taxonomy.
+level. Connections are `[[wiki links]]`, not folders or tags. Simplicity beats
+taxonomy.
+
+**A session is the unit of practice.** One sitting with a book or subject is a
+dated `## YYYY-MM-DD` heading in its note, added by `make session`. Sessions
+drive the note's `updated` date, its session count, and `/log/`, so the
+record of progress builds itself.
 
 **Side interests live in Notes and Projects, not Writing categories.**
 Stylometry, interpretability, and philosophy signal breadth without diluting
@@ -68,6 +97,11 @@ high, and Notes exist to lower it. Do not add features, checks, or steps that
 raise friction.
 
 ## Confidentiality
+
+**The repo is public.** `published: false` keeps a note off the site, not out
+of GitHub. Anything Eric would not want read goes in `_notes/local/`
+(gitignored: `make serve` shows it, nothing commits or deploys it). Suggest
+`LOCAL=1` when a note looks personal.
 
 Eric's strongest material is employer work. Public writing covers patterns,
 trade-offs, and measurement approaches. Anything empirical is reproduced on
@@ -82,9 +116,12 @@ rather than publishing it**, even when asked only to edit or publish.
 |---|---|
 | `make post TITLE="..." TOPIC=evaluation` | Start `_drafts/<slug>.md`. `TOPIC` optional and checked; `FROM_NOTE=<note-slug>` links the note it grew from |
 | `make publish SLUG=<slug>` | Move the draft into `_posts/`, dated today |
-| `make note TITLE="..." TOPIC=evals-statistics` | Start a private `_notes/<slug>.md`, status `idea`, dated today. `TOPIC` required and checked |
-| `make touch SLUG=<note-slug>` | Set a note's `updated:` to today |
-| `make serve` | Preview at `localhost:4000`, drafts and private notes included |
+| `make note TITLE="..." TOPIC=evals-statistics` | Start a private `_notes/<slug>.md`, status `idea`, dated today. `TOPIC` required and checked. `LOCAL=1` puts it in `_notes/local/` |
+| `make book TITLE="..." AUTHOR="..." TOPIC=philosophy` | Start a book note with today's session open. `LOCAL=1` as above |
+| `make session [NOTE=...] [LABEL="..."]` | Add today's `## YYYY-MM-DD` heading and open the note. No `NOTE`: the last one worked on. `NOTE` can be part of a slug or title |
+| `make next` | Sessions lately, days since the last post, what is in progress or stale, links made to notes not yet written, complete notes not yet a post, ideas, and `_data/queue.yml` |
+| `make touch SLUG=<note-slug>` | Set a note's `updated:` to today (sessions do this already) |
+| `make serve` | Preview at `localhost:4000`, drafts, private and local notes included. Doubles as a private dashboard: `/log/` and `/notes/` show everything |
 | `make build` | Production build into `_site/` |
 | `make check` | Build, then html-proofer — the same gate CI runs on every PR |
 
@@ -95,9 +132,13 @@ rather than publishing it**, even when asked only to edit or publish.
 | `_posts/` | Published posts. `YYYY-MM-DD-slug.md`, live at `/posts/<slug>/`, in RSS and the sitemap. |
 | `_drafts/` | Unpublished posts. Shown under `make serve` only. |
 | `_notes/` | Notes, at `/notes/<slug>/`. Private until `published: true`. Never in RSS. |
-| `_pages/` | Writing, Notes, Projects, About, and redirect stubs for old URLs. |
+| `_notes/local/` | Gitignored notes: seen by `make serve` and `make next` only. |
+| `_plugins/notes.rb` | Wiki links, backlinks, sessions, and the `/log/` data. |
+| `bin/study` | The study targets (`note`, `book`, `session`, `next`). Plain Ruby, no gems. |
+| `_pages/` | Writing, Notes, Reading, Log, Projects, About, and redirect stubs for old URLs. |
 | `_data/topics.yml` | Writing categories (the `/writing/` filter). |
-| `_data/note_topics.yml` | Note groups on `/notes/`. |
+| `_data/note_topics.yml` | Note groups on `/notes/`, each with its `shelf` (`work` or `life`). |
+| `_data/queue.yml` | Books and subjects up next: `/reading/` and `make next`. |
 | `_data/projects.yml` | The `/projects/` list. An entry is a few lines; the format is in the file. |
 | `_data/navigation.yml` | Header links. `_data/social.yml` holds the footer's off-site links. |
 | `_layouts/` | `default`, `post`, `note`, `redirect`. |
@@ -126,22 +167,32 @@ Note:
 title: "Required"
 topic: evals-statistics  # exactly one key from _data/note_topics.yml
 status: idea             # idea | wip | complete
-updated: 2026-10-20      # set by hand or `make touch`
+updated: 2026-10-20      # optional once it has sessions; the newest session wins
 published: false         # true puts it on the live site
 writing: evaluation      # optional; also list it on /writing/ under this category
 excerpt: ""
 ---
 ```
 
-Book notes are notes with `topic: reading`; the title names the book.
+A book note adds `author:` (which is what makes it a book), `started:`, and
+`finished:` when done; `make book` writes these. It takes its subject's topic,
+so its shelf follows: an ML book is on the work shelf, Kierkegaard is not.
+
+In a note body, `## 2026-10-24` or `## 2026-10-24 · Diapsalmata` is a session.
+In a note or post body, `[[slug]]`, `[[Some Title]]`, or `[[slug|text]]` links
+to a note or post. A missing or private target renders as dotted plain text
+and is listed by `make next` as wanted. Linked pages get a "Linked from" list
+automatically.
 
 ## How publishing works
 
 - **Post:** `make post` → write → `make serve` to preview → `make publish` →
   PR. Once merged it is on the site and in `/feed.xml`.
 - **Note:** `make note` → write → set `published: true` when it is worth
-  someone else seeing (any status is fine) → PR. Bump `updated:` with
-  `make touch` when the content changes meaningfully.
+  someone else seeing (any status is fine) → PR. Each later sitting is
+  `make session`, which dates it.
+- **Book:** `make book` at the start, `make session` each sitting, `finished:`
+  at the end. It moves from Now to Finished on `/reading/`.
 - **Promote a note:** `make post TITLE="..." TOPIC=... FROM_NOTE=<note-slug>`.
   The post shows "This grew out of a working note…", and the note shows "This
   note became a post…" automatically; the link lives only on the post. Keep
@@ -150,6 +201,31 @@ Book notes are notes with `topic: reading`; the title names the book.
   lists it on `/writing/` without writing a separate post.
 - **Project:** add an entry to `_data/projects.yml`. Link the repo, and a post
   or note about it in `writeup:` if there is one.
+
+## Study sessions with Claude
+
+When Eric is studying, Claude is a study partner, not a ghostwriter. The notes
+are how he learns, so the writing in them is his.
+
+- **Do:** ask questions that test his understanding, point out tensions with
+  his earlier notes (read them; follow `[[links]]` and "Linked from"), suggest
+  connections and what to read next, check facts and quotations, run `make
+  next` and help choose among what it lists, and do the mechanics (start a
+  book, add a session, move an entry from the queue, set `finished:`).
+- **Do not:** write note prose for him, summarize a book into his note, or tidy
+  his notes' wording. Offer text only when he asks, and say it is a suggestion.
+- When he asks what to work on next, start from `make next`: links he has
+  already made but not written are the strongest signal, then stale work in
+  progress, then the queue. Keep the post cadence in view.
+
+## Sample content
+
+Pages with `sample: true` are made up to preview the layout; they show a
+banner and a "sample" tag. They were added in one commit titled "SAMPLE
+CONTENT", together with entries marked `# SAMPLE` in `_data/queue.yml` and
+`_data/projects.yml`. Remove all of it before merging to `master`:
+`git revert <that commit>`, then check that `git grep -n "sample: true"` and
+`git grep -n SAMPLE _data` come back empty.
 
 ## Rules
 
@@ -181,6 +257,11 @@ Book notes are notes with `topic: reading`; the title names the book.
    means keeping the existing ones.
 7. **Do not slug a post `posts`, or a note `index`,** or anything that matches
    a redirect stub.
+8. **The plugin needs the Actions build.** `_plugins/` does not run under
+   GitHub's legacy Pages builder; the deploy workflow builds with Jekyll
+   directly, so it does. Keep it that way.
+9. **A session heading must be `## ` plus an ISO date at the start of the
+   line.** `### 2026-10-24`, or a date in prose, is not counted.
 
 ## Voice
 

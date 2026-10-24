@@ -22,7 +22,7 @@ those sort, and each url is looked up again. A note is marked as one.
     {%- assign item = include.items | where: "url", parts[1] | first %}
     <li>
       <time datetime="{{ parts[0] }}">{{ parts[0] }}</time>
-      <span><a href="{{ item.url | relative_url }}">{{ item.title }}</a>{% if item.collection == "notes" %} <span class="tag">note</span>{% endif %}</span>
+      <span><a href="{{ item.url | relative_url }}">{{ item.title }}</a>{% if item.collection == "notes" %} <span class="tag">note</span>{% endif %}{% if item.sample %} <span class="tag">sample</span>{% endif %}</span>
     </li>
     {%- endfor %}
   </ul>

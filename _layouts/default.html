@@ -14,6 +14,9 @@
         </nav>
       </header>
       <main id="main">
+        {%- if page.sample %}
+        <p class="sample-banner">Sample content, made up to preview the layout. Remove before merging.</p>
+        {%- endif %}
         {{ content }}
       </main>
       <footer class="site-footer">

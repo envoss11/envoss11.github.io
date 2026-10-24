@@ -4,9 +4,10 @@ permalink: /notes/
 description: "Working notes by Eric Voss: unfinished, revised as he goes."
 ---
 {%- comment -%}
-Published notes, one section per topic in _data/note_topics.yml, newest
+Published notes on two shelves (`shelf:` in _data/note_topics.yml): work
+first, then everything else. Within a shelf, one section per topic, newest
 update first. Empty topics are hidden. A note whose topic matches no key
-shows under Other.
+shows under Other, on the second shelf.
 {%- endcomment -%}
 {%- assign keys = site.data.note_topics | map: "key" -%}
 {%- assign other = "" | split: "" -%}
@@ -17,7 +18,9 @@ shows under Other.
 <h1>Notes</h1>
 
 <p class="lede">Working notes, published as I go. They are unfinished and get
-revised. Each one says how far along it is and when it last changed.</p>
+revised. Each one says how far along it is and when it last changed. Books are
+on <a href="{{ '/reading/' | relative_url }}">Reading</a>; the
+<a href="{{ '/log/' | relative_url }}">log</a> shows every study session.</p>
 
 <p class="legend">
   {% include status.html status="idea" %} a starting point ·
@@ -29,20 +32,31 @@ revised. Each one says how far along it is and when it last changed.</p>
 <p class="empty">Nothing yet.</p>
 {%- endif %}
 
-{%- for topic in site.data.note_topics %}
-{%- assign notes = site.notes | where: "topic", topic.key | sort: "updated" | reverse %}
-{%- if notes.size > 0 %}
-<section class="feed-section" id="{{ topic.key }}" aria-labelledby="h-{{ topic.key }}">
-  <h2 id="h-{{ topic.key }}">{{ topic.heading }}</h2>
-  {% include note-list.html notes=notes %}
-</section>
-{%- endif %}
+{%- assign shelves = "work|life" | split: "|" %}
+{%- for shelf in shelves %}
+  {%- assign topics = site.data.note_topics | where: "shelf", shelf %}
+  {%- capture sections %}
+  {%- for topic in topics %}
+  {%- assign notes = site.notes | where: "topic", topic.key | sort: "updated" | reverse %}
+  {%- if notes.size > 0 %}
+  <section class="feed-section" id="{{ topic.key }}" aria-labelledby="h-{{ topic.key }}">
+    <h3 id="h-{{ topic.key }}">{{ topic.heading }}</h3>
+    {% include note-list.html notes=notes %}
+  </section>
+  {%- endif %}
+  {%- endfor %}
+  {%- if shelf == "life" and other.size > 0 %}
+  {%- assign other = other | sort: "updated" | reverse %}
+  <section class="feed-section" id="other" aria-labelledby="h-other">
+    <h3 id="h-other">Other</h3>
+    {% include note-list.html notes=other %}
+  </section>
+  {%- endif %}
+  {%- endcapture %}
+  {%- if sections contains "<section" %}
+<div class="shelf shelf-{{ shelf }}">
+  <h2>{% if shelf == "work" %}AI, data &amp; engineering{% else %}Other interests{% endif %}</h2>
+  {{ sections }}
+</div>
+  {%- endif %}
 {%- endfor %}
-
-{%- if other.size > 0 %}
-{%- assign other = other | sort: "updated" | reverse %}
-<section class="feed-section" id="other" aria-labelledby="h-other">
-  <h2 id="h-other">Other</h2>
-  {% include note-list.html notes=other %}
-</section>
-{%- endif %}

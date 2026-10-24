@@ -2,11 +2,11 @@
 layout: default
 ---
 {%- comment -%}
-A note. Status and last-updated sit at the top so a reader knows how finished
-it is. If a post names this note in `from_note`, it is linked here; the link
-is stored only on the post, so the two cannot disagree.
+A note. Status, last-updated, and session count sit at the top so a reader
+knows how finished it is. A book note (one with `author:`) also shows when it
+was started and finished. `sessions`, `updated`, and `backlinks` come from
+_plugins/notes.rb. If a post names this note in `from_note`, it is linked here.
 {%- endcomment -%}
-{%- assign keys = site.data.note_topics | map: "key" -%}
 {%- assign topic = site.data.note_topics | where: "key", page.topic | first -%}
 {%- assign became = site.posts | where: "from_note", page.slug -%}
 <article class="post note">
@@ -16,9 +16,15 @@ is stored only on the post, so the two cannot disagree.
       {% if topic %}<a href="{{ '/notes/' | relative_url }}#{{ topic.key }}">{{ topic.heading }}</a>{% else %}<a href="{{ '/notes/' | relative_url }}#other">Other</a>{% endif %}
     </p>
     <h1>{{ page.title }}</h1>
+    {%- if page.author %}
+    <p class="byline">{{ page.author }}</p>
+    {%- endif %}
     <p class="post-meta">
       {% include status.html status=page.status %}
       {%- if page.updated %} · updated <time datetime="{{ page.updated | date: '%Y-%m-%d' }}">{{ page.updated | date: "%Y-%m-%d" }}</time>{% endif %}
+      {%- if page.sessions.size > 0 %} · {{ page.sessions.size }} session{% if page.sessions.size != 1 %}s{% endif %}{% endif %}
+      {%- if page.started %} · started {{ page.started | date: "%Y-%m-%d" }}{% endif %}
+      {%- if page.finished %} · finished {{ page.finished | date: "%Y-%m-%d" }}{% endif %}
     </p>
   </header>
   {%- for post in became %}
@@ -27,4 +33,14 @@ is stored only on the post, so the two cannot disagree.
   <div class="prose">
     {{ content }}
   </div>
+  {%- if page.backlinks.size > 0 %}
+  <aside class="backlinks" aria-labelledby="h-backlinks">
+    <h2 id="h-backlinks">Linked from</h2>
+    <ul>
+      {%- for doc in page.backlinks %}
+      <li><a href="{{ doc.url | relative_url }}">{{ doc.title }}</a>{% if doc.collection == "posts" %} <span class="tag">post</span>{% endif %}</li>
+      {%- endfor %}
+    </ul>
+  </aside>
+  {%- endif %}
 </article>

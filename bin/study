@@ -1,0 +1,294 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# The study side of the site: starting notes and books, logging a session, and
+# deciding what to do next. The Makefile calls this; arguments come in as the
+# same variables (`make session NOTE=either-or` sets ENV["NOTE"]).
+#
+#   note     TITLE TOPIC [LOCAL=1]          start a private note
+#   book     TITLE AUTHOR TOPIC [LOCAL=1]   start a book note, first session open
+#   session  [NOTE] [LABEL]                 add today's session heading and open it
+#   next                                    what is in progress, wanted, queued
+#
+# Plain Ruby, no gems. Reads _notes/ (including _notes/local/), _posts/, and
+# _data/. Nothing here touches the built site.
+
+require "date"
+require "fileutils"
+require "json"
+require "yaml"
+
+ROOT = File.expand_path("..", __dir__)
+TODAY = Date.today
+WIKILINK = /\[\[([^\]|\n]+)(?:\|[^\]\n]+)?\]\]/
+SESSION = /^##[ \t]+(\d{4}-\d{2}-\d{2})\b/
+CODE = /^(```|~~~).*?^\1[^\n]*$|`[^`\n]+`/m
+STALE_DAYS = 30
+POST_TARGET_DAYS = 56 # the 6–8 week post cadence, upper end is 8 weeks
+
+def die(msg)
+  warn msg
+  exit 1
+end
+
+def arg(name) = ENV.fetch(name, "").strip
+
+# Same rule as the Makefile: lowercase, non-alphanumerics collapse to one dash.
+def file_slug(text) = text.downcase.gsub(/[^a-z0-9]+/, "-").gsub(/\A-+|-+\z/, "")
+
+# Close to Jekyll's default slugify, which the wiki-link plugin uses.
+def link_key(text) = text.to_s.strip.downcase.gsub(/[^[:alnum:]]+/, "-").gsub(/\A-+|-+\z/, "")
+
+def rel(path) = path.delete_prefix("#{ROOT}/")
+
+def topics
+  @topics ||= YAML.safe_load_file(File.join(ROOT, "_data/note_topics.yml"))
+end
+
+def check_topic!(topic)
+  keys = topics.map { |t| t["key"] }
+  return if keys.include?(topic)
+
+  die "TOPIC must be one of: #{keys.join(' ')}"
+end
+
+def parse(path)
+  text = File.read(path)
+  fm = {}
+  if (m = text.match(/\A---\s*\n(.*?)\n---\s*$/m))
+    fm = YAML.safe_load(m[1], permitted_classes: [Date]) || {}
+  end
+  sessions = text.scan(SESSION).flatten.filter_map { |d| Date.parse(d) rescue nil }.sort
+  updated = [fm["updated"], sessions.last].select { |d| d.is_a?(Date) }.max
+  {
+    path: path, slug: File.basename(path, ".md"), fm: fm, text: text,
+    title: fm["title"].to_s, status: (fm["status"] || "idea").to_s,
+    sessions: sessions, updated: updated,
+    links: text.gsub(CODE, "").scan(WIKILINK).flatten.map(&:strip),
+    local: path.include?("/_notes/local/"),
+    public: fm["published"] == true,
+  }
+end
+
+def notes = Dir[File.join(ROOT, "_notes/**/*.md")].sort.map { |f| parse(f) }
+
+def posts
+  Dir[File.join(ROOT, "_posts/*.md")].sort.map do |f|
+    doc = parse(f)
+    date = File.basename(f)[0, 10]
+    doc.merge(slug: File.basename(f, ".md").sub(/\A\d{4}-\d{2}-\d{2}-/, ""), date: (Date.parse(date) rescue nil))
+  end
+end
+
+def days_ago(date) = date ? (TODAY - date).to_i : nil
+
+def ago(date)
+  return "never" unless date
+
+  n = days_ago(date)
+  n.zero? ? "today" : n == 1 ? "yesterday" : "#{n} days ago"
+end
+
+# Open a file at a line: $EDITOR if set, else VS Code if installed, else just
+# print the path. NO_OPEN=1 skips opening.
+def open_in_editor(path, line)
+  puts "  #{rel(path)}:#{line}"
+  return if ENV["NO_OPEN"] == "1"
+
+  editor = ENV["VISUAL"].to_s.empty? ? ENV["EDITOR"].to_s : ENV["VISUAL"].to_s
+  if !editor.empty?
+    system(editor, path)
+  elsif system("command -v code >/dev/null 2>&1")
+    system("code", "-g", "#{path}:#{line}")
+  end
+end
+
+def write_new(dir, slug, body)
+  die "that title slugifies to nothing — try another" if slug.empty?
+  die %(a note cannot be slugged "index" — it would replace /notes/) if slug == "index"
+  path = File.join(ROOT, dir, "#{slug}.md")
+  die "#{rel(path)} already exists" if File.exist?(path)
+  clash = Dir[File.join(ROOT, "_notes/**/#{slug}.md")].first
+  die "#{rel(clash)} already uses that slug" if clash
+  FileUtils.mkdir_p(File.dirname(path))
+  File.write(path, body)
+  path
+end
+
+def note_dir = arg("LOCAL").empty? ? "_notes" : "_notes/local"
+
+def published_line
+  if arg("LOCAL").empty?
+    "published: false      # true puts it on the live site"
+  else
+    "published: false      # local: gitignored, never committed or deployed"
+  end
+end
+
+def cmd_note
+  title = arg("TITLE")
+  topic = arg("TOPIC")
+  die 'usage: make note TITLE="Some note title" TOPIC=<topic> [LOCAL=1]' if title.empty?
+  check_topic!(topic)
+  path = write_new(note_dir, file_slug(title), <<~MD)
+    ---
+    title: #{title.to_json}
+    topic: #{topic}
+    status: idea          # idea | wip | complete
+    updated: #{TODAY}
+    #{published_line}
+    # writing: evaluation # optional: also list it on /writing/ under this category
+    excerpt: ""
+    ---
+
+  MD
+  puts "wrote #{rel(path)} — private until `published: true`"
+  open_in_editor(path, 10)
+end
+
+def cmd_book
+  title = arg("TITLE")
+  author = arg("AUTHOR")
+  topic = arg("TOPIC")
+  if title.empty? || author.empty?
+    die 'usage: make book TITLE="Either/Or" AUTHOR="Søren Kierkegaard" TOPIC=philosophy [LOCAL=1]'
+  end
+  check_topic!(topic)
+  path = write_new(note_dir, file_slug(title), <<~MD)
+    ---
+    title: #{title.to_json}
+    author: #{author.to_json}
+    topic: #{topic}
+    status: wip           # idea | wip | complete
+    started: #{TODAY}
+    # finished: YYYY-MM-DD  # set when done; moves it to Finished on /reading/
+    #{published_line}
+    excerpt: ""
+    ---
+
+    ## #{TODAY}
+
+  MD
+  puts "wrote #{rel(path)} — first session open. Next time: make session"
+  open_in_editor(path, File.read(path).lines.size)
+end
+
+# NOTE can be a slug, part of a slug, or part of a title. With no NOTE, carry
+# on with whatever was worked on most recently and is not complete.
+def find_note(all, query)
+  if query.empty?
+    pick = all.reject { |n| n[:status] == "complete" }
+              .max_by { |n| [n[:sessions].last || Date.new(0), n[:updated] || Date.new(0)] }
+    die "no notes in progress — start one with make note or make book" unless pick
+    return pick
+  end
+  exact = all.find { |n| n[:slug] == query }
+  return exact if exact
+
+  q = query.downcase
+  hits = all.select { |n| n[:slug].include?(q) || n[:title].downcase.include?(q) }
+  die "no note matches '#{query}'" if hits.empty?
+  die "'#{query}' matches several notes: #{hits.map { |n| n[:slug] }.join(', ')}" if hits.size > 1
+  hits.first
+end
+
+def cmd_session
+  note = find_note(notes, arg("NOTE"))
+  label = arg("LABEL")
+  text = note[:text]
+  bare_today = /^##[ \t]+#{TODAY}[ \t]*$/
+  if note[:sessions].last == TODAY && label.empty?
+    puts "continuing today's session in #{note[:title]}"
+  elsif note[:sessions].last == TODAY && text.match?(bare_today)
+    # Naming today's session after the fact relabels it instead of adding one.
+    text = text.sub(bare_today, "## #{TODAY} · #{label}")
+    File.write(note[:path], text)
+    puts "labeled today's session in #{note[:title]} — #{label}"
+  else
+    heading = label.empty? ? "## #{TODAY}" : "## #{TODAY} · #{label}"
+    text = text.sub(/\s*\z/, "\n") + "\n#{heading}\n\n"
+    File.write(note[:path], text)
+    count = note[:sessions].size + 1
+    puts "session #{count} of #{note[:title]}#{label.empty? ? '' : " — #{label}"}"
+  end
+  open_in_editor(note[:path], text.lines.size)
+end
+
+def section(title)
+  puts
+  puts title
+end
+
+def cmd_next
+  all = notes
+  ps = posts
+  keys = {}
+  (all + ps).each do |d|
+    keys[d[:slug]] = d
+    keys[link_key(d[:title])] = d unless d[:title].empty?
+  end
+
+  recent = all.flat_map { |n| n[:sessions] }
+  week = recent.count { |d| days_ago(d) < 7 }
+  month = recent.count { |d| days_ago(d) < 30 }
+  last_post = ps.filter_map { |p| p[:date] }.max
+  puts "Sessions: #{week} in the last 7 days, #{month} in the last 30."
+  post_line = "Last post: #{ago(last_post)}"
+  post_line += " — past the 6–8 week target" if last_post.nil? || days_ago(last_post) > POST_TARGET_DAYS
+  puts post_line + "."
+
+  active = all.select { |n| n[:status] == "wip" && !(n[:fm]["author"] && n[:fm]["finished"]) }
+              .sort_by { |n| -(n[:updated] || Date.new(0)).jd }
+  section "In progress"
+  puts "  (none)" if active.empty?
+  active.each do |n|
+    stale = n[:updated] && days_ago(n[:updated]) > STALE_DAYS ? "  ← stale" : ""
+    kind = n[:fm]["author"] ? "book" : "note"
+    puts "  #{n[:slug].ljust(36)} #{kind}, #{n[:sessions].size} sessions, last #{ago(n[:updated])}#{stale}"
+  end
+
+  # Links already made to notes that do not exist: the connections you have
+  # started but not written. Ranked by how many notes point there.
+  wanted = Hash.new { |h, k| h[k] = [] }
+  (all + ps).each do |d|
+    d[:links].each do |l|
+      wanted[l] << d[:slug] unless keys[l] || keys[link_key(l)]
+    end
+  end
+  section "Wanted (linked, not written)"
+  puts "  (none — [[links]] to notes that do not exist yet show up here)" if wanted.empty?
+  wanted.sort_by { |l, from| [-from.uniq.size, l] }.first(8).each do |l, from|
+    puts "  #{l.ljust(36)} from #{from.uniq.join(', ')}"
+  end
+
+  promoted = ps.filter_map { |p| p[:fm]["from_note"] }
+  ready = all.select { |n| n[:status] == "complete" && !promoted.include?(n[:slug]) && !n[:fm]["writing"] }
+  unless ready.empty?
+    section "Complete, not yet a post"
+    ready.each { |n| puts "  #{n[:slug]}" }
+  end
+
+  ideas = all.select { |n| n[:status] == "idea" }.sort_by { |n| (n[:updated] || Date.new(0)).jd }
+  unless ideas.empty?
+    section "Ideas (oldest first)"
+    ideas.first(5).each { |n| puts "  #{n[:slug].ljust(36)} since #{n[:updated] || '?'}" }
+    puts "  … and #{ideas.size - 5} more" if ideas.size > 5
+  end
+
+  queue = YAML.safe_load_file(File.join(ROOT, "_data/queue.yml")) || []
+  section "Queue (_data/queue.yml)"
+  puts "  (empty)" if queue.empty?
+  queue.each do |q|
+    by = q["author"] ? " — #{q['author']}" : ""
+    puts "  #{q['title']}#{by}#{q['why'] ? "\n      #{q['why']}" : ''}"
+  end
+  puts
+end
+
+case ARGV.first
+when "note" then cmd_note
+when "book" then cmd_book
+when "session" then cmd_session
+when "next" then cmd_next
+else die "usage: bin/study note|book|session|next (normally via make)"
+end

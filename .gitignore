@@ -7,3 +7,7 @@ vendor/
 .DS_Store
 .Rhistory
 
+
+# Local-only notes: built by `make serve`, never committed, never deployed.
+# The repo is public, so this is where anything truly private goes.
+_notes/local/

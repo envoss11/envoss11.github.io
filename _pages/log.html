@@ -1,0 +1,53 @@
+---
+title: Log
+permalink: /log/
+description: "Every study session and post by Eric Voss, by date."
+---
+{%- comment -%}
+The record of practice. Built by _plugins/notes.rb from `## YYYY-MM-DD`
+session headings in published notes, plus posts. Under `make serve` it
+includes private notes too, which makes it a private dashboard locally.
+{%- endcomment -%}
+{%- assign stats = site.data.study_stats -%}
+{%- assign weeks = site.data.study_weeks -%}
+{%- assign peak = weeks | map: "count" | sort | last | at_least: 1 -%}
+
+<h1>Log</h1>
+
+<p class="lede">Every study session and post, newest first.</p>
+
+<p class="stats">
+  <strong>{{ stats.year }}:</strong>
+  {{ stats.sessions }} session{% if stats.sessions != 1 %}s{% endif %} ·
+  {{ stats.books }} book{% if stats.books != 1 %}s{% endif %} finished ·
+  {{ stats.posts }} post{% if stats.posts != 1 %}s{% endif %} ·
+  {{ stats.notes }} note{% if stats.notes != 1 %}s{% endif %} in all
+</p>
+
+<figure class="weeks" aria-label="Study sessions per week, last 26 weeks">
+  <div class="weeks-row">
+    {%- for w in weeks %}
+    {%- assign level = w.count | times: 4 | divided_by: peak | at_most: 4 %}
+    {%- if w.count > 0 and level == 0 %}{% assign level = 1 %}{% endif %}
+    <span class="wk wk-{{ level }}" title="Week of {{ w.start | date: '%Y-%m-%d' }}: {{ w.count }} session{% if w.count != 1 %}s{% endif %}"></span>
+    {%- endfor %}
+  </div>
+  <figcaption>Sessions per week, last 26 weeks. Darker is more.</figcaption>
+</figure>
+
+{%- assign months = site.data.study_log | group_by_exp: "e", "e.date | date: '%B %Y'" %}
+{%- for month in months %}
+<section class="feed-section">
+  <h2>{{ month.name }}</h2>
+  <ul class="post-list log-list">
+    {%- for e in month.items %}
+    <li>
+      <time datetime="{{ e.date | date: '%Y-%m-%d' }}">{{ e.date | date: "%Y-%m-%d" }}</time>
+      <span>{% if e.kind == "post" %}<span class="tag">post</span> {% endif %}<a href="{{ e.doc.url | relative_url }}">{{ e.doc.title }}</a>{% if e.label != "" %} <span class="by">{{ e.label }}</span>{% endif %}</span>
+    </li>
+    {%- endfor %}
+  </ul>
+</section>
+{%- else %}
+<p class="empty">Nothing yet.</p>
+{%- endfor %}

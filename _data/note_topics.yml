@@ -1,17 +1,30 @@
 # The groups on /notes/, in the order they appear. A note names exactly one
-# with `topic: <key>`; `make note` checks it. A note with an unknown or missing
-# topic shows under Other. Groups with no published notes are hidden.
+# with `topic: <key>`; `make note` and `make book` check it. A note with an
+# unknown or missing topic shows under Other. Groups with no published notes
+# are hidden.
 #
-# Flat on purpose: one level, one topic per note.
-- key: aws-genai-cert
-  heading: AWS GenAI Developer cert
-- key: document-processing
-  heading: Document processing
+# `shelf` is professional relevance, decided once per topic so no note has to
+# think about it:
+#   work  — AI, data, and engineering. Shown first, and on the homepage.
+#   life  — everything else. Shown second, on /notes/ and /reading/ only.
+#
+# A book note takes its subject's topic (an ML book under evals-statistics,
+# Kierkegaard under philosophy). What makes it a book note is `author:`.
 - key: evals-statistics
   heading: Evals & statistics
-- key: stylometry
-  heading: Stylometry
+  shelf: work
+- key: document-processing
+  heading: Document processing
+  shelf: work
+- key: aws-genai-cert
+  heading: AWS GenAI Developer cert
+  shelf: work
 - key: interpretability
   heading: Interpretability
-- key: reading
-  heading: Reading
+  shelf: work
+- key: stylometry
+  heading: Stylometry
+  shelf: work
+- key: philosophy
+  heading: Philosophy & religion
+  shelf: life

@@ -1,0 +1,48 @@
+---
+title: Reading
+permalink: /reading/
+description: "What Eric Voss is reading, has read, and plans to read, with his notes on each."
+---
+{%- comment -%}
+Built from book notes (notes with `author:`) plus _data/queue.yml. A book is
+"now" until its note has `finished:`. Only published notes appear.
+{%- endcomment -%}
+{%- assign books = site.notes | where_exp: "n", "n.author" -%}
+{%- assign now = books | where_exp: "n", "n.finished == nil" | sort: "updated" | reverse -%}
+{%- assign done = books | where_exp: "n", "n.finished" | sort: "finished" | reverse -%}
+{%- assign queue = site.data.queue | where_exp: "q", "q.author" -%}
+
+<h1>Reading</h1>
+
+<p class="lede">Books I'm reading or have read, each with its working note.</p>
+
+<section class="feed-section" id="now" aria-labelledby="h-now">
+  <h2 id="h-now">Now</h2>
+  {%- if now.size > 0 %}
+  {% include book-list.html books=now %}
+  {%- else %}
+  <p class="empty">Nothing at the moment.</p>
+  {%- endif %}
+</section>
+
+{%- if done.size > 0 %}
+<section class="feed-section" id="finished" aria-labelledby="h-finished">
+  <h2 id="h-finished">Finished</h2>
+  {%- assign years = done | group_by_exp: "n", "n.finished | date: '%Y'" %}
+  {%- for year in years %}
+  <h3>{{ year.name }}</h3>
+  {% include book-list.html books=year.items date="finished" %}
+  {%- endfor %}
+</section>
+{%- endif %}
+
+{%- if queue.size > 0 %}
+<section class="feed-section" id="next" aria-labelledby="h-next">
+  <h2 id="h-next">Up next</h2>
+  <ul class="book-list">
+    {%- for book in queue %}
+    <li><span class="title">{{ book.title }}</span> <span class="by">{{ book.author }}</span>{% if book.why %}<br><span class="why">{{ book.why }}</span>{% endif %}</li>
+    {%- endfor %}
+  </ul>
+</section>
+{%- endif %}

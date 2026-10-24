@@ -1,0 +1,15 @@
+{%- comment -%} Book notes: title, author, status, and either the last session or the finish date (pass date="finished"). {%- endcomment -%}
+<ul class="book-list">
+  {%- for book in include.books %}
+  {%- assign topic = site.data.note_topics | where: "key", book.topic | first %}
+  <li>
+    <a class="title" href="{{ book.url | relative_url }}">{{ book.title }}</a> <span class="by">{{ book.author }}</span>
+    {% include status.html status=book.status %}{% if book.sample %} <span class="tag">sample</span>{% endif %}
+    <br><span class="why">
+      {%- if include.date == "finished" %}finished {{ book.finished | date: "%Y-%m-%d" }}{% else %}last read {{ book.updated | date: "%Y-%m-%d" }}{% endif -%}
+      {%- if book.sessions.size > 0 %} · {{ book.sessions.size }} session{% if book.sessions.size != 1 %}s{% endif %}{% endif -%}
+      {%- if topic %} · {{ topic.heading }}{% endif -%}
+    </span>
+  </li>
+  {%- endfor %}
+</ul>

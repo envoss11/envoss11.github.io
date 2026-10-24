@@ -14,7 +14,7 @@ TOPICS      = $(shell sed -n 's/^- key: //p' _data/topics.yml | tr '\n' ' ')
 NOTE_TOPICS = $(shell sed -n 's/^- key: //p' _data/note_topics.yml | tr '\n' ' ')
 
 .DEFAULT_GOAL := help
-.PHONY: help serve build check post publish note touch
+.PHONY: help serve build check post publish note book session next touch
 
 help: ## Show this list
 	@echo "usage: make <target>"
@@ -25,7 +25,10 @@ help: ## Show this list
 	@echo
 	@echo '  make post TITLE="Some post title" TOPIC=evaluation [FROM_NOTE=<note-slug>]'
 	@echo '  make publish SLUG=some-post-title'
-	@echo '  make note TITLE="Some note title" TOPIC=evals-statistics'
+	@echo '  make note TITLE="Some note title" TOPIC=evals-statistics [LOCAL=1]'
+	@echo '  make book TITLE="Either/Or" AUTHOR="Søren Kierkegaard" TOPIC=philosophy'
+	@echo '  make session [NOTE=either-or] [LABEL="Diapsalmata"]'
+	@echo '  make next'
 	@echo '  make touch SLUG=some-note-title'
 	@echo
 	@echo "  post topics: $(TOPICS)(or none, for Other)"
@@ -49,7 +52,7 @@ post: ## Start a draft in _drafts/<slug>.md (TOPIC, FROM_NOTE optional)
 	@test ! -f '_drafts/$(SLUG).md' || { echo '_drafts/$(SLUG).md already exists'; exit 1; }
 	@test -z '$(TOPIC)' || grep -qx -- '- key: $(TOPIC)' _data/topics.yml \
 	  || { echo "unknown topic '$(TOPIC)' — one of: $(TOPICS)"; exit 1; }
-	@test -z '$(FROM_NOTE)' || test -f '_notes/$(FROM_NOTE).md' \
+	@test -z '$(FROM_NOTE)' || test -f '_notes/$(FROM_NOTE).md' || test -f '_notes/local/$(FROM_NOTE).md' \
 	  || { echo 'no such note: _notes/$(FROM_NOTE).md'; exit 1; }
 	@mkdir -p _drafts
 	@printf '%s\n' \
@@ -72,33 +75,25 @@ publish: ## Move _drafts/<slug>.md into _posts/, dated today
 	  || mv '_drafts/$(SLUG).md' '_posts/$(DATE)-$(SLUG).md'
 	@echo 'published -> _posts/$(DATE)-$(SLUG).md -> /posts/$(SLUG)/'
 
-# A note starts private. It goes live when its front matter says
-# `published: true`; there is no separate publish step.
-note: ## Start a private note in _notes/<slug>.md (TOPIC required)
-	@test -n '$(TITLE)' || { echo 'usage: make note TITLE="Some note title" TOPIC=<topic>'; exit 1; }
-	@test -n '$(SLUG)'  || { echo 'that title slugifies to nothing — try another'; exit 1; }
-	@test '$(SLUG)' != index || { echo 'a note cannot be slugged "index" — it would replace /notes/'; exit 1; }
-	@test ! -f '_notes/$(SLUG).md' || { echo '_notes/$(SLUG).md already exists'; exit 1; }
-	@test -n '$(TOPIC)' && grep -qx -- '- key: $(TOPIC)' _data/note_topics.yml \
-	  || { echo "TOPIC must be one of: $(NOTE_TOPICS)"; exit 1; }
-	@mkdir -p _notes
-	@printf '%s\n' \
-	  '---' \
-	  'title: "$(TITLE)"' \
-	  'topic: $(TOPIC)' \
-	  'status: idea          # idea | wip | complete' \
-	  'updated: $(DATE)' \
-	  'published: false      # true puts it on the live site' \
-	  '# writing: evaluation # optional: also list it on /writing/ under this category' \
-	  'excerpt: ""' \
-	  '---' \
-	  '' \
-	  > '_notes/$(SLUG).md'
-	@echo 'wrote _notes/$(SLUG).md — private until `published: true`'
+# Notes, books, and sessions go through bin/study, which reads the same
+# variables. A note starts private; it goes live when its front matter says
+# `published: true`. LOCAL=1 puts it in _notes/local/ instead: gitignored, so
+# never committed or deployed, but still shown by `make serve`.
+note: ## Start a private note in _notes/<slug>.md (TOPIC required, LOCAL=1 optional)
+	@ruby bin/study note
 
-touch: ## Set a note's updated: date to today
+book: ## Start a book note with its first session open (TOPIC required)
+	@ruby bin/study book
+
+session: ## Add today's session to a note and open it (NOTE optional: defaults to the last one)
+	@ruby bin/study session
+
+next: ## What is in progress, linked-but-unwritten, and queued
+	@ruby bin/study next
+
+touch: ## Set a note's updated: date to today (a session does this for you)
 	@test -n '$(SLUG)' || { echo 'usage: make touch SLUG=<note-slug>'; exit 1; }
-	@test -f '_notes/$(SLUG).md' || { echo 'no such note: _notes/$(SLUG).md'; exit 1; }
-	@grep -q '^updated:' '_notes/$(SLUG).md' || { echo '_notes/$(SLUG).md has no updated: line'; exit 1; }
-	@perl -pi -e 's/^updated:.*/updated: $(DATE)/' '_notes/$(SLUG).md'
-	@echo '_notes/$(SLUG).md updated: $(DATE)'
+	@f=$$(ls _notes/$(SLUG).md _notes/local/$(SLUG).md 2>/dev/null | head -1); \
+	  test -n "$$f" || { echo 'no such note: _notes/$(SLUG).md'; exit 1; }; \
+	  grep -q '^updated:' "$$f" || { echo "$$f has no updated: line"; exit 1; }; \
+	  perl -pi -e 's/^updated:.*/updated: $(DATE)/' "$$f" && echo "$$f updated: $(DATE)"

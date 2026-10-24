@@ -1,9 +1,9 @@
-{%- comment -%} A list of notes: last updated, title, status. Pass notes, already sorted. {%- endcomment -%}
+{%- comment -%} A list of notes: last updated, title, author for a book, status. Pass notes, already sorted. {%- endcomment -%}
 <ul class="post-list">
   {%- for note in include.notes %}
   <li>
     <time datetime="{{ note.updated | date: '%Y-%m-%d' }}">{{ note.updated | date: "%Y-%m-%d" }}</time>
-    <span><a href="{{ note.url | relative_url }}">{{ note.title }}</a> {% include status.html status=note.status %}</span>
+    <span><a href="{{ note.url | relative_url }}">{{ note.title }}</a>{% if note.author %} <span class="by">{{ note.author }}</span>{% endif %} {% include status.html status=note.status %}{% if note.sample %} <span class="tag">sample</span>{% endif %}</span>
   </li>
   {%- endfor %}
 </ul>

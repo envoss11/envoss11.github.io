@@ -51,6 +51,7 @@ exclude:
   - Makefile
   - README.md
   - CLAUDE.md
+  - bin
 
 defaults:
   - scope:

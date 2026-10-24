@@ -3,7 +3,8 @@ layout: default
 ---
 {%- comment -%}
 The pitch, what I'm working on, then the newest posts and the most recently
-updated notes. The full lists live on /writing/ and /notes/.
+updated notes. Only the work shelf shows here (see _data/note_topics.yml);
+everything else is one click away on /notes/ and /reading/.
 {%- endcomment -%}
 <h1 class="sr-only">{{ site.title }}</h1>
 
@@ -16,7 +17,11 @@ updated notes. The full lists live on /writing/ and /notes/.
   <a href="{{ '/projects/' | relative_url }}">side projects</a>.</p>
   <p class="currently"><span class="label">Currently</span> building out a
   document processing platform at work, and studying for the AWS GenAI
-  Developer certification.</p>
+  Developer certification.
+  {%- assign reading = site.notes | where_exp: "n", "n.author" | where_exp: "n", "n.finished == nil" | sort: "updated" | reverse %}
+  {%- if reading.size > 0 %} Reading
+  {%- for book in reading limit: 2 %}{% if forloop.index > 1 %} and{% endif %} <a href="{{ book.url | relative_url }}"><cite>{{ book.title }}</cite></a>{% endfor %}.
+  {%- endif %}</p>
 </section>
 
 {%- assign latest = site.posts | slice: 0, 5 %}
@@ -24,7 +29,8 @@ updated notes. The full lists live on /writing/ and /notes/.
 
 <section class="feed-section" id="recent-notes" aria-labelledby="h-recent-notes">
   <h2 id="h-recent-notes">Recently updated notes</h2>
-  {%- assign recent = site.notes | sort: "updated" | reverse | slice: 0, 5 %}
+  {%- assign work = site.data.note_topics | where: "shelf", "work" | map: "key" %}
+  {%- assign recent = site.notes | where_exp: "n", "work contains n.topic" | sort: "updated" | reverse | slice: 0, 5 %}
   {%- if recent.size > 0 %}
   {% include note-list.html notes=recent %}
   {%- else %}

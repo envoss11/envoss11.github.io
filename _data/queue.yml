@@ -1,0 +1,8 @@
+# Up next: books and subjects to pick from. `make next` prints this beside
+# what is in progress and the links you have made but not yet written. It is
+# also the "Up next" list on /reading/. Delete an entry once you start it.
+#
+# - title: "Fear and Trembling"
+#   author: "Søren Kierkegaard"     # omit for a subject rather than a book
+#   topic: philosophy
+#   why: "One line on why — what it connects to."
