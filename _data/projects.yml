@@ -6,9 +6,3 @@
 #   repo: https://github.com/envoss11/some-repo
 #   writeup: /posts/some-post-slug/     # optional: a post or note about it
 #   date: 2026-11-01                    # optional
-
-# SAMPLE CONTENT: remove this entry before merging.
-- title: "Sample: eval set size calculator"
-  summary: "A sample project entry. A small tool to size an eval set from the smallest difference you care about."
-  writeup: /notes/power-analysis-for-eval-sets/
-  date: 2026-08-30

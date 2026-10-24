@@ -220,12 +220,9 @@ are how he learns, so the writing in them is his.
 
 ## Sample content
 
-Pages with `sample: true` are made up to preview the layout; they show a
-banner and a "sample" tag. They were added in one commit titled "SAMPLE
-CONTENT", together with entries marked `# SAMPLE` in `_data/queue.yml` and
-`_data/projects.yml`. Remove all of it before merging to `master`:
-`git revert <that commit>`, then check that `git grep -n "sample: true"` and
-`git grep -n SAMPLE _data` come back empty.
+`sample: true` in front matter shows a "made up" banner and a "sample" tag,
+for previewing a layout with dummy content. None should be on `master`:
+`git grep -n "sample: true"` should only find this paragraph.
 
 ## Rules
 
