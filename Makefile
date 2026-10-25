@@ -11,16 +11,19 @@ DATE   := $(shell date +%Y-%m-%d)
 SLUG ?= $(shell printf '%s' '$(TITLE)' | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$$//')
 
 .DEFAULT_GOAL := help
-.PHONY: help serve build check entry sync-books
+.PHONY: help notebook serve build check entry sync-books test-tools
 
 help: ## Show this list
 	@echo "usage: make <target>"
 	@echo
 	@grep -E '^[a-z-]+:.*?## ' $(MAKEFILE_LIST) \
 	  | sed -E 's/^([a-z-]+):.*## /\1|/' \
-	  | awk -F'|' '{ printf "  %-9s %s\n", $$1, $$2 }'
+	  | awk -F'|' '{ printf "  %-11s %s\n", $$1, $$2 }'
 	@echo
 	@echo '  make entry SECTION=writing TITLE="Some title"   (reading|writing|projects)'
+
+notebook: ## Open the local editor at localhost:4100 (PORT= to change)
+	python3 tools/notebook/server.py --port $(or $(PORT),4100)
 
 serve: ## Preview at localhost:4000, unpublished entries included, reloading on save
 	$(BUNDLE) jekyll serve --unpublished --livereload
@@ -50,3 +53,6 @@ entry: ## Start an entry: make entry SECTION=writing TITLE="..."
 
 sync-books: ## Pull the public Goodreads shelf into _books/ (DRY=1 to preview)
 	python3 tools/goodreads_sync.py $(if $(DRY),--dry-run)
+
+test-tools: ## Unit tests for the editor server
+	python3 -m unittest discover -s tools/notebook

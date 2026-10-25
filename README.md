@@ -13,11 +13,26 @@ the public view of a set of Markdown files; the files are the notebook.
 | Projects | `_projects/` | `/projects/<slug>/` |
 | About | `_pages/about.md` | `/about/` |
 
-## Adding an entry
+## Writing in the notebook
+
+```sh
+make notebook    # the editor, at localhost:4100
+make serve       # the site, at localhost:4000, unpublished entries included
+```
+
+`make notebook` opens a small local editor over the same Markdown files: pick a
+tab and an entry, write, and it saves to the file a moment after you stop
+typing (or on cmd-S). It can start an entry, flip `published`, edit the front
+matter, preview the Markdown roughly, and on Reading run the Goodreads sync.
+It refuses to save over a file that changed on disk since you opened it, so it
+is safe to edit in another editor or run the sync alongside it. It does not
+touch git: commit and open a PR as usual.
+
+From the command line instead:
 
 ```sh
 make entry SECTION=writing TITLE="Some title"   # reading | writing | projects
-make serve                                      # localhost:4000, unpublished entries included
+make sync-books                                 # pull the Goodreads shelf (DRY=1 to preview)
 ```
 
 A new entry starts with `published: false`. Delete that line, or set it to
@@ -31,6 +46,10 @@ A new entry starts with `published: false`. Delete that line, or set it to
   extend it.
 - `_includes/` — `tabs.html`, `book-card.html`, `entry-list.html`, `head.html`.
 - `_data/notebook.yml` — tab order and footer links.
+- `tools/goodreads_sync.py` — the Goodreads sync behind `make sync-books`.
+- `tools/notebook/` — the editor: `server.py` (standard library only, bound to
+  127.0.0.1), and one page (`index.html`, `app.js`, `app.css`) that reuses the
+  site stylesheet. `make test-tools` runs its tests.
 - `assets/css/site.scss` — the only stylesheet. Colors are tokens on `:root`;
   dark mode follows the OS.
 
