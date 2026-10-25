@@ -1,10 +1,19 @@
-// The homepage filter. Each button shows one section of the feed; "All" shows
-// every section. The choice goes in the URL hash so /#books is a link.
+// The Reading filter. "All" shows every book, "With notes" the ones with a
+// body, and a year the books read that year. The choice goes in the URL hash
+// so /reading/#2025 is a link. Without JavaScript the row stays hidden and
+// every book shows.
 (function () {
   var bar = document.querySelector('.filters');
   if (!bar) return;
   var buttons = bar.querySelectorAll('button[data-filter]');
-  var sections = document.querySelectorAll('.feed-section');
+  var books = document.querySelectorAll('.book-card');
+  bar.hidden = false;
+
+  function matches(book, key) {
+    if (key === 'all') return true;
+    if (key === 'notes') return book.dataset.notes === 'true';
+    return book.dataset.year === key;
+  }
 
   function apply(key) {
     var valid = Array.prototype.some.call(buttons, function (b) {
@@ -14,8 +23,8 @@
     buttons.forEach(function (b) {
       b.setAttribute('aria-pressed', String(b.dataset.filter === key));
     });
-    sections.forEach(function (s) {
-      s.hidden = key !== 'all' && s.dataset.topic !== key;
+    books.forEach(function (book) {
+      book.hidden = !matches(book, key);
     });
   }
 
@@ -29,7 +38,5 @@
   window.addEventListener('hashchange', function () {
     apply(location.hash.slice(1));
   });
-
-  bar.hidden = false;
   apply(location.hash.slice(1));
 })();
