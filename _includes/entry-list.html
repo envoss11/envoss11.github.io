@@ -1,9 +1,10 @@
-{%- comment -%} A dated list. Pass `entries`; an optional `empty` replaces the default message. {%- endcomment -%}
+{%- comment -%} A dated list. Pass `entries`; `date_key` names the date field (default `date`); an optional `empty` replaces the default message. {%- endcomment -%}
+{%- assign date_key = include.date_key | default: "date" %}
 {%- if include.entries.size > 0 %}
 <ul class="post-list">
   {%- for entry in include.entries %}
   <li>
-    <time datetime="{{ entry.date | date_to_xmlschema }}">{{ entry.date | date: "%Y-%m-%d" }}</time>
+    <time datetime="{{ entry[date_key] | date: "%Y-%m-%d" }}">{{ entry[date_key] | date: "%Y-%m-%d" }}</time>
     <a href="{{ entry.url | relative_url }}">{{ entry.title }}</a>
   </li>
   {%- endfor %}
