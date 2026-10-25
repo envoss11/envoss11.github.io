@@ -1,5 +1,6 @@
 ---
 title: About
+layout: card
 permalink: /about/
 description: "Eric Voss is an AI engineer and data scientist at Securian Financial in Minnesota."
 ---

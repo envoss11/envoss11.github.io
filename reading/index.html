@@ -6,8 +6,23 @@ permalink: /reading/
 description: "Books I have read, with notes on some of them."
 ---
 <h1>Reading</h1>
-{%- assign books = site.books | sort: "date_read" | reverse %}
+{%- assign dated = site.books | where_exp: "b", "b.date_read" | sort: "date_read" | reverse %}
+{%- assign undated = site.books | where_exp: "b", "b.date_read == nil" | sort: "title" %}
+{%- assign books = dated | concat: undated %}
+{%- assign years = "" %}
+{%- for b in dated %}
+  {%- assign y = b.date_read | date: "%Y" %}
+  {%- unless years contains y %}{% assign years = years | append: y | append: "," %}{% endunless %}
+{%- endfor %}
+{%- assign year_list = years | split: "," %}
 {%- if books.size > 0 %}
+<div class="filters" role="group" aria-label="Filter books" hidden>
+  <button type="button" data-filter="all" aria-pressed="true">All</button>
+  <button type="button" data-filter="notes" aria-pressed="false">With notes</button>
+  {%- for year in year_list %}
+  <button type="button" data-filter="{{ year }}" aria-pressed="false">{{ year }}</button>
+  {%- endfor %}
+</div>
 <ul class="book-list">
   {%- for book in books %}
   {% include book-card.html book=book %}

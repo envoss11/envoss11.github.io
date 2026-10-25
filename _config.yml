@@ -73,16 +73,19 @@ defaults:
       path: ""
       type: books
     values:
+      section: reading
       layout: book
   - scope:
       path: ""
       type: writing
     values:
+      section: writing
       layout: entry
   - scope:
       path: ""
       type: projects
     values:
+      section: projects
       layout: entry
   - scope:
       path: "_pages"

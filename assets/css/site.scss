@@ -1,34 +1,71 @@
 ---
 ---
 // The whole stylesheet. Colors are tokens on :root so dark mode is one block.
+//
+// The page is a notebook lying on a desk: paper with ruled lines and a punched
+// left edge, section tabs sticking out of the right edge, and About as a loose
+// index card on the desk instead of a section. All of it is CSS; there are no
+// image assets.
 
 :root {
-  --bg: #ffffff;
-  --text: #2b2b2b;
-  --text-strong: #111111;
-  --text-light: #6b6b6b;
-  --line: #e2e2e2;
-  --panel: #f6f6f4;
+  --desk: #c9bfae;
+  --desk-shade: #b9ad99;
+  --paper: #fbf8f0;
+  --paper-edge: #e6dfcf;
+  --rule: #dfe5ec;
+  --margin-line: #e6b9b3;
+  --hole: #8f8573;
+  --text: #2d2b27;
+  --text-strong: #14130f;
+  --text-light: #6a655b;
+  --line: #e2dccd;
+  --panel: #f3eee1;
   --accent: #1f6f6b;
-  --accent-soft: #e3f0ef;
+  --accent-soft: #dcecea;
+
+  --tab-reading: #1f6f6b;
+  --tab-writing: #8f5d0e;
+  --tab-projects: #a8472f;
+  --tab-about: #4f5a73;
+  --tab-ink: #ffffff;
+
+  --shadow: 0 1px 2px rgba(40, 30, 10, .25), 0 8px 24px rgba(40, 30, 10, .18);
 
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --lh: 1.75rem;           // the ruled-line pitch
+  --spine: 52px;           // width of the punched edge
+  --tab-w: 38px;
 
   color-scheme: light dark;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #161817;
-    --text: #d8d8d4;
-    --text-strong: #f2f2ee;
-    --text-light: #9a9a95;
-    --line: #2e3130;
-    --panel: #1e2120;
+    --desk: #1b1a18;
+    --desk-shade: #121210;
+    --paper: #25231f;
+    --paper-edge: #34312a;
+    --rule: #2f3238;
+    --margin-line: #5b3a38;
+    --hole: #121210;
+    --text: #dcd8cc;
+    --text-strong: #f4f1e8;
+    --text-light: #a39e91;
+    --line: #38342c;
+    --panel: #2c2a24;
     --accent: #6cc3bd;
-    --accent-soft: #1d3331;
+    --accent-soft: #24403d;
+
+    --tab-reading: #6cc3bd;
+    --tab-writing: #e0b050;
+    --tab-projects: #e08a70;
+    --tab-about: #9fb0d4;
+    --tab-ink: #12110e;
+
+    --shadow: 0 1px 2px rgba(0, 0, 0, .6), 0 8px 24px rgba(0, 0, 0, .5);
   }
 }
 
@@ -38,19 +75,18 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--bg);
+  background: var(--desk);
   color: var(--text);
   font: 17px/1.6 var(--sans);
 }
 
-.shell {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 0 16px;
-}
-
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
 
 h1, h2, h3, h4 {
   font-family: var(--serif);
@@ -71,30 +107,64 @@ h1, h2, h3, h4 {
 
 [hidden] { display: none !important; }
 
+/* The desk and the notebook ----------------------------------------------- */
+
+.desk {
+  min-height: 100vh;
+  padding: 28px calc(var(--tab-w) + 18px) 40px 20px;
+  background:
+    radial-gradient(ellipse at 30% 0%, rgba(255, 255, 255, .18), transparent 60%),
+    var(--desk);
+}
+
+.notebook {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.page {
+  position: relative;
+  min-height: 70vh;
+  padding: 24px 40px 28px calc(var(--spine) + 20px);
+  background-color: var(--paper);
+  // Ruled lines, scrolling with the text, and the red margin line.
+  background-image:
+    linear-gradient(90deg, transparent calc(var(--spine) + 8px), var(--margin-line) calc(var(--spine) + 8px),
+      var(--margin-line) calc(var(--spine) + 9px), transparent calc(var(--spine) + 9px)),
+    repeating-linear-gradient(transparent 0, transparent calc(var(--lh) - 1px),
+      var(--rule) calc(var(--lh) - 1px), var(--rule) var(--lh));
+  background-attachment: local;
+  border-radius: 3px 8px 8px 3px;
+  box-shadow: var(--shadow), inset -2px 0 0 var(--paper-edge), 4px 4px 0 -1px var(--paper-edge);
+}
+
+// The punched edge: a row of holes down the left side.
+.page::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: var(--spine);
+  border-right: 1px solid var(--line);
+  border-radius: 3px 0 0 3px;
+  background:
+    radial-gradient(circle at 26px 20px, var(--hole) 0 6px, transparent 7px) 0 0 / var(--spine) 40px repeat-y;
+  box-shadow: inset -6px 0 8px -6px rgba(40, 30, 10, .15);
+  pointer-events: none;
+}
+
 /* Header and footer ------------------------------------------------------- */
 
-.site-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px 24px;
-  padding: 28px 0 16px;
-  margin-bottom: 24px;
-  border-bottom: 1px solid var(--line);
-}
+.site-header { margin-bottom: 20px; }
 
 .wordmark {
   font-family: var(--serif);
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  color: var(--accent);
+  font-style: italic;
+  color: var(--text-strong);
 }
-.wordmark:hover { text-decoration: none; }
-
-.site-nav { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: .95rem; }
-.site-nav a { color: var(--text); }
-.site-nav a:hover, .site-nav a[aria-current] { color: var(--accent); }
+.wordmark:hover { text-decoration: none; color: var(--accent); }
 
 .site-footer {
   display: flex;
@@ -102,46 +172,84 @@ h1, h2, h3, h4 {
   justify-content: space-between;
   gap: 8px 24px;
   margin-top: 56px;
-  padding: 16px 0 40px;
+  padding-top: 14px;
   border-top: 1px solid var(--line);
   color: var(--text-light);
   font-size: .9rem;
 }
 
-/* The feed ----------------------------------------------------------------- */
+/* Tabs --------------------------------------------------------------------- */
+// Links, not an ARIA tab widget: each tab is a page. On wide screens they are
+// index-divider tabs standing out of the right edge.
 
-.filters {
+.dividers {
+  position: absolute;
+  top: 36px;
+  left: 100%;
+  z-index: 0;
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  flex-direction: column;
   gap: 8px;
-  margin-bottom: 8px;
+  margin-left: -4px;
 }
-.filters-label { font-weight: 700; font-size: .9rem; margin-right: 2px; }
-.filters button {
-  font: inherit;
-  font-size: .88rem;
-  line-height: 1.2;
-  padding: 6px 10px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  background: var(--panel);
-  color: var(--text);
-  cursor: pointer;
+
+.tab {
+  display: block;
+  width: var(--tab-w);
+  padding: 14px 0 14px 6px;
+  border-radius: 0 8px 8px 0;
+  background: var(--tab-color, var(--tab-about));
+  color: var(--tab-ink);
+  font: 600 .88rem/1 var(--sans);
+  letter-spacing: .04em;
+  text-align: center;
+  writing-mode: vertical-rl;
+  box-shadow: 2px 1px 3px rgba(40, 30, 10, .3);
+  transform: translateX(-4px);
 }
-.filters button:hover { border-color: var(--accent); }
-.filters button[aria-pressed="true"] {
-  background: var(--accent-soft);
-  border-color: var(--accent);
-  color: var(--accent);
+.tab:hover { text-decoration: none; filter: brightness(1.08); }
+.tab[aria-current] {
+  transform: translateX(0);
+  padding-left: 12px;
+  box-shadow: 3px 2px 5px rgba(40, 30, 10, .35);
 }
+.tab:focus-visible { outline-color: var(--text-strong); }
+
+.tab-reading  { --tab-color: var(--tab-reading); }
+.tab-writing  { --tab-color: var(--tab-writing); }
+.tab-projects { --tab-color: var(--tab-projects); }
+
+// About is a bookmark ribbon hanging off the top edge, not a divider.
+.tab-about {
+  position: absolute;
+  z-index: 2;
+  top: -22px;
+  right: 56px;
+  width: 34px;
+  padding: 26px 0 22px;
+  border-radius: 0;
+  transform: none;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 90%, 0 100%);
+  box-shadow: none;
+  writing-mode: vertical-rl;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tab { transition: transform .15s ease, padding .15s ease, filter .15s ease; }
+}
+
+/* Index cards and book pages ----------------------------------------------- */
+
+.lede { font-family: var(--serif); font-size: 1.15rem; margin: 0 0 8px; }
 
 .feed-section h2 {
   font-size: 1.3rem;
-  margin: 32px 0 10px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--line);
+  margin: 28px 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--line);
 }
+.feed-section h2 a { color: inherit; }
+.feed-section h2 a:hover { color: var(--accent); text-decoration: none; }
 
 .post-list { list-style: none; margin: 0; padding: 0; }
 .post-list li {
@@ -158,17 +266,96 @@ h1, h2, h3, h4 {
   padding-top: .2em;
 }
 
-@media (max-width: 480px) {
-  .post-list li { grid-template-columns: 1fr; gap: 0; padding: 6px 0; }
-}
-
 .empty { color: var(--text-light); font-style: italic; margin: 0; }
 
-/* Posts and prose ---------------------------------------------------------- */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 20px;
+}
+.filters button {
+  font: inherit;
+  font-size: .85rem;
+  line-height: 1.2;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+}
+.filters button:hover { border-color: var(--accent); }
+.filters button[aria-pressed="true"] {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
 
-.post-head h1 { font-size: 2rem; margin: 8px 0 6px; }
-.post-meta { color: var(--text-light); font-size: .9rem; margin: 0 0 28px; }
+// Reading: a grid of covers, like books laid on the page.
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  gap: 22px 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.book-card { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.book-card a { display: flex; flex-direction: column; gap: 2px; color: var(--text); }
+.book-card a:hover { text-decoration: none; }
+.book-card a:hover .book-title { color: var(--accent); }
+.book-card img, .cover-blank {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 2px 4px 4px 2px;
+  background: var(--panel);
+  box-shadow: 2px 2px 0 var(--paper-edge), 0 3px 8px rgba(40, 30, 10, .25);
+}
+.cover-blank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  font: 600 .9rem/1.3 var(--serif);
+  text-align: center;
+  border-left: 5px solid var(--accent);
+}
+.book-title {
+  margin-top: 6px;
+  font: 600 .88rem/1.3 var(--serif);
+  color: var(--text-strong);
+  overflow-wrap: anywhere;
+}
+.book-author { font-size: .8rem; line-height: 1.3; color: var(--text-light); }
+.book-rating { font-size: .8rem; letter-spacing: .08em; color: var(--tab-writing); }
+// A book with notes carries a small marker on its cover edge.
+.book-card:not(.no-notes) .book-title::after {
+  content: " ✎";
+  color: var(--accent);
+  font-weight: 400;
+}
 
+.book-cover {
+  float: right;
+  width: 140px;
+  height: auto;
+  margin: 4px 0 12px 22px;
+  border-radius: 2px 4px 4px 2px;
+  box-shadow: 2px 2px 0 var(--paper-edge), 0 3px 10px rgba(40, 30, 10, .3);
+}
+
+/* Entries and prose --------------------------------------------------------- */
+
+.page h1 { font-size: 2rem; margin: 4px 0 8px; }
+.post-head h1 { margin-top: 8px; }
+.post-meta { color: var(--text-light); font-size: .9rem; margin: 0 0 24px; }
+.back { margin-top: 32px; font-size: .92rem; }
+.links { padding-left: 1.2em; }
+
+.prose { line-height: var(--lh); }
 .prose h2 { font-size: 1.45rem; margin: 2em 0 .5em; }
 .prose h3 { font-size: 1.15rem; margin: 1.6em 0 .4em; }
 .prose img { max-width: 100%; height: auto; }
@@ -198,8 +385,86 @@ pre {
 
 hr { border: 0; border-top: 1px solid var(--line); margin: 2em 0; }
 
-.portrait { border-radius: 50%; float: right; margin: 0 0 12px 20px; }
-@media (max-width: 480px) { .portrait { float: none; display: block; margin: 0 0 16px; } }
+/* About: a loose index card on the desk ------------------------------------ */
+
+.card-back { max-width: 640px; margin: 0 auto 14px; font-size: .92rem; }
+.card-back a { color: var(--text-strong); }
+
+.card {
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 52px 36px 32px;
+  background-color: var(--paper);
+  // Red header rule and blue ruled lines, like a 4x6 index card.
+  background-image:
+    linear-gradient(transparent 38px, #d9776b 38px, #d9776b 40px, transparent 40px),
+    repeating-linear-gradient(transparent 0, transparent calc(var(--lh) - 1px),
+      var(--rule) calc(var(--lh) - 1px), var(--rule) var(--lh));
+  background-position: 0 0, 0 52px;
+  background-repeat: no-repeat, repeat;
+  border-radius: 3px;
+  box-shadow: var(--shadow);
+  transform: rotate(-.6deg);
+}
+.card h1 { margin-top: 0; }
+.card p { margin: 0 0 var(--lh); line-height: var(--lh); }
+.card-foot { max-width: 640px; margin: 18px auto 0; font-size: .9rem; color: var(--text-strong); }
+.card-foot a { color: var(--text-strong); text-decoration: underline; }
+
+.portrait {
+  float: right;
+  margin: 0 0 12px 20px;
+  border-radius: 2px;
+  border: 6px solid #fff;
+  box-shadow: 0 2px 6px rgba(40, 30, 10, .35);
+  transform: rotate(2deg);
+}
+
+/* Narrow screens: tabs become a strip above the page ------------------------ */
+
+@media (max-width: 640px) {
+  :root { --spine: 30px; }
+
+  .desk { padding: 14px 10px 28px; }
+
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 0 -1px 14px;
+  }
+  .dividers {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 0 4px 0 0;
+  }
+  .tab, .tab-about {
+    position: static;
+    width: auto;
+    padding: 9px 14px 8px;
+    border-radius: 8px 8px 0 0;
+    clip-path: none;
+    writing-mode: horizontal-tb;
+    transform: none;
+    box-shadow: none;
+  }
+  .tab[aria-current] { padding: 11px 14px 8px; box-shadow: none; }
+
+  .page { padding: 20px 16px 24px calc(var(--spine) + 14px); border-radius: 3px; }
+  .page::before {
+    background-image: radial-gradient(circle at 15px 20px, var(--hole) 0 4px, transparent 5px);
+    background-size: var(--spine) 40px;
+  }
+
+  .post-list li { grid-template-columns: 1fr; gap: 0; padding: 6px 0; }
+  .book-list { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 18px 12px; }
+  .book-cover { width: 96px; margin-left: 14px; }
+
+  .card { padding: 48px 20px 24px; }
+  .portrait { float: none; display: block; margin: 0 0 16px; }
+}
 
 /* Rouge, kept to a handful of token classes. */
 .highlight .c, .highlight .c1, .highlight .cm { color: var(--text-light); font-style: italic; }

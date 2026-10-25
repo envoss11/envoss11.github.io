@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="{{ site.locale }}">
+  <head>
+    {%- include head.html %}
+  </head>
+  <body>
+    <div class="desk">
+      <p class="card-back"><a href="{{ '/' | relative_url }}">← Back to the notebook</a></p>
+      <main id="main" class="card">
+        {{ content }}
+      </main>
+      <p class="card-foot">
+        {%- for link in site.data.notebook.links %}<a href="{{ link.url }}" rel="noopener">{{ link.title }}</a>{% unless forloop.last %} · {% endunless %}{% endfor -%}
+      </p>
+    </div>
+  </body>
+</html>

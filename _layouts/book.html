@@ -1,8 +1,10 @@
 ---
 layout: notebook
-section: reading
 ---
 <article class="post book">
+  {%- if page.cover %}
+  <img class="book-cover" src="{{ page.cover | relative_url }}" alt="" width="280" height="425">
+  {%- endif %}
   <header class="post-head">
     <h1>{{ page.title }}</h1>
     <p class="post-meta">

@@ -1,10 +1,18 @@
 {%- comment -%} One book in the Reading index. Pass `book`. {%- endcomment -%}
-<li class="book-card{% if include.book.content == '' or include.book.content == nil %} no-notes{% endif %}">
+{%- assign has_notes = false -%}
+{%- assign body = include.book.content | strip -%}
+{%- if body != "" %}{% assign has_notes = true %}{% endif -%}
+<li class="book-card{% unless has_notes %} no-notes{% endunless %}" data-year="{{ include.book.date_read | date: '%Y' }}" data-notes="{{ has_notes }}">
   <a href="{{ include.book.url | relative_url }}">
-    <span class="book-title">{{ include.book.title }}</span>
+    {%- if include.book.cover %}
+    <img src="{{ include.book.cover | relative_url }}" alt="" width="280" height="425" loading="lazy">
+    {%- else %}
+    <span class="cover-blank" aria-hidden="true">{{ include.book.title | split: ":" | first }}</span>
+    {%- endif %}
+    <span class="book-title">{{ include.book.title | split: ":" | first }}</span>
     <span class="book-author">{{ include.book.author }}</span>
   </a>
   {%- if include.book.rating and include.book.rating > 0 %}
-  <span class="book-rating" aria-label="{{ include.book.rating }} out of 5">{{ include.book.rating }}/5</span>
+  <span class="book-rating" role="img" aria-label="{{ include.book.rating }} out of 5">{% for i in (1..5) %}{% if i <= include.book.rating %}★{% else %}☆{% endif %}{% endfor %}</span>
   {%- endif %}
 </li>
