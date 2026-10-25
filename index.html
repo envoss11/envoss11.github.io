@@ -2,26 +2,43 @@
 layout: notebook
 ---
 {%- comment -%}
-The cover. For now it points at each section; whether the homepage should open
-straight to Reading is a design question for the visual pass.
-{%- endcomment -%}
-<h1 class="sr-only">{{ site.title }}</h1>
-<p class="lede">{{ site.description }}</p>
-{%- comment -%}
+The first page of the notebook: a line on what it is, then what's recent in
+each section. The line lives in _pages/about.md, which the editor's About tab
+edits. `markdownify` is safe whether or not that page has rendered yet: kramdown
+passes finished HTML through.
+
 Books have no `date`; Jekyll would give each one the build time. Reading is
-ordered and labelled by `date_read` instead, and undated books are left off.
+ordered by `date_read` instead, and undated books are left off. Sections with
+nothing published are left off too.
 {%- endcomment -%}
+{%- assign about = site.pages | where: "url", "/about/" | first %}
+<h1 class="sr-only">{{ site.title }}</h1>
+<div class="intro">
+  {{ about.content | markdownify }}
+</div>
 {%- for tab in site.data.notebook.tabs %}
 {%- if tab.collection == "books" %}
-  {%- assign date_key = "date_read" %}
   {%- assign entries = site.books | where_exp: "b", "b.date_read" | sort: "date_read" | reverse %}
 {%- else %}
-  {%- assign date_key = "date" %}
   {%- assign entries = site[tab.collection] | sort: "date" | reverse %}
 {%- endif %}
-<section class="feed-section" id="{{ tab.key }}" aria-labelledby="h-{{ tab.key }}">
-  <h2 id="h-{{ tab.key }}"><a href="{{ tab.url | relative_url }}">{{ tab.label }}</a></h2>
+{%- if entries.size > 0 %}
+<section class="feed-section feed-{{ tab.key }}" aria-labelledby="h-{{ tab.key }}">
+  <h2 id="h-{{ tab.key }}">
+    {% if tab.collection == "books" %}Recently read{% else %}{{ tab.label }}{% endif %}
+    <a class="see-all" href="{{ tab.url | relative_url }}">See all →</a>
+  </h2>
+  {%- if tab.collection == "books" %}
+  <ul class="book-list recent">
+    {%- assign recent = entries | slice: 0, 5 %}
+    {%- for book in recent %}
+    {% include book-card.html book=book %}
+    {%- endfor %}
+  </ul>
+  {%- else %}
   {%- assign recent = entries | slice: 0, 5 %}
-  {% include entry-list.html entries=recent date_key=date_key %}
+  {% include entry-list.html entries=recent %}
+  {%- endif %}
 </section>
+{%- endif %}
 {%- endfor %}

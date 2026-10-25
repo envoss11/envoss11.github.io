@@ -14,11 +14,6 @@ tabs:
     url: /projects/
     collection: projects
 
-# About is a page, not a section, so it sits outside the tabs.
-about:
-  label: About
-  url: /about/
-
 # Links to elsewhere, shown in the footer.
 links:
   - title: LinkedIn

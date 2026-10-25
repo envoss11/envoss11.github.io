@@ -1,10 +1,10 @@
 # ---------------------------------------------------------------------------
 # Site
 # ---------------------------------------------------------------------------
-title: "Eric Voss"
+title: "Commonplace"
 # Read by jekyll-feed for the <author> on every entry in /feed.xml.
 author: "Eric Voss"
-description: "Eric Voss's notebook: notes on books, writing, and projects."
+description: "Eric Voss's commonplace book: notes on books I've read, and other writing."
 url: "https://www.ericvoss.com"
 baseurl: ""
 locale: "en-US"

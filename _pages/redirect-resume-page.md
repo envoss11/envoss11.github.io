@@ -1,6 +1,6 @@
 ---
 layout: redirect
 permalink: /resume/
-redirect_to: /about/
+redirect_to: /
 sitemap: false
 ---

@@ -1,6 +1,6 @@
 # ericvoss.com
 
-Eric Voss's notebook: notes on books, writing, and projects. Jekyll 4, built
+Commonplace, Eric Voss's notebook: notes on books, writing, and projects. Jekyll 4, built
 and deployed by GitHub Actions (`.github/workflows/deploy.yml`). The site is
 the public view of a set of Markdown files; the files are the notebook.
 
@@ -11,7 +11,7 @@ the public view of a set of Markdown files; the files are the notebook.
 | Reading | `_books/` | `/reading/<slug>/` |
 | Writing | `_writing/` | `/writing/<slug>/` |
 | Projects | `_projects/` | `/projects/<slug>/` |
-| About | `_pages/about.md` | `/about/` |
+| Homepage intro | `_pages/about.md` | `/` (`/about/` redirects there) |
 
 ## Writing in the notebook
 
@@ -40,7 +40,7 @@ A new entry starts with `published: false`. Delete that line, or set it to
 
 ## Layout
 
-- `index.html` — the cover, with the latest entries of each section.
+- `index.html` — the first page: the intro from `_pages/about.md`, recent books, and recent entries of any section that has some.
 - `reading/`, `writing/`, `projects/` — the section index pages.
 - `_layouts/notebook.html` — header, tabs, footer. `book.html` and `entry.html`
   extend it.
