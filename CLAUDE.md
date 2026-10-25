@@ -1,10 +1,12 @@
 # Working on this repo
 
 `ericvoss.com` is a personal notebook. The notebook comes first: Markdown files
-in three sections, written through (eventually) a local editor app. The Jekyll
-site is the public view of those files. Hand-written Jekyll, no theme gem, no
-JavaScript framework. Design plan: `~/.claude/plans/` (notebook refactor, in
-phases; see the PR history for which have landed).
+in three sections, written through a local editor app (`make notebook`). The
+Jekyll site is the public view of those files. Hand-written Jekyll, no theme
+gem, no JavaScript framework. The editor (`tools/notebook/`) is stdlib Python
+plus one plain HTML/JS page; keep it dependency-free. Design plan:
+`~/.claude/plans/` (notebook refactor, in phases; see the PR history for which
+have landed).
 
 Sections: **Reading** (one page per book, seeded from Goodreads), **Writing**,
 **Projects**, plus a standalone **About** page that is not a notebook section.
@@ -13,10 +15,13 @@ Sections: **Reading** (one page per book, seeded from Goodreads), **Writing**,
 
 | Target | What it does |
 |---|---|
+| `make notebook` | The local editor at `localhost:4100` (`tools/notebook/`) |
 | `make entry SECTION=writing TITLE="..."` | Start an unpublished entry. `SECTION` is `reading`, `writing` or `projects` |
 | `make serve` | Preview at `localhost:4000`, unpublished entries included |
 | `make build` | Production build into `_site/` |
 | `make check` | Build, then html-proofer — the same gate CI runs on every PR |
+| `make sync-books` | Pull the public Goodreads shelf into `_books/` (`DRY=1` to preview) |
+| `make test-tools` | Unit tests for the editor server; run after changing `tools/notebook/` |
 
 ## Where things go
 
