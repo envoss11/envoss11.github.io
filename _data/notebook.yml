@@ -5,6 +5,10 @@ tabs:
     label: Reading
     url: /reading/
     collection: books
+  # Not a collection: the blockquotes in Reading's notes, gathered.
+  - key: excerpts
+    label: Excerpts
+    url: /excerpts/
   - key: writing
     label: Writing
     url: /writing/

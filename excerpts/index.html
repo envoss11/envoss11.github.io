@@ -1,0 +1,24 @@
+---
+layout: notebook
+title: Excerpts
+section: excerpts
+permalink: /excerpts/
+description: "Passages copied out of the books I've read."
+---
+<h1>Excerpts</h1>
+{%- assign dated = site.books | where_exp: "b", "b.date_read" | sort: "date_read" | reverse %}
+{%- assign undated = site.books | where_exp: "b", "b.date_read == nil" | sort: "title" %}
+{%- assign books = dated | concat: undated | where_exp: "b", "b.content contains '<blockquote'" %}
+{%- if books.size > 0 %}
+<p class="section-intro">Passages copied out of books, most recently read first.</p>
+{%- for book in books %}
+<section class="excerpt-group">
+  <h2><a href="{{ book.url | relative_url }}">{{ book.title | split: ":" | first }}</a> <span class="byline">{{ book.author }}</span></h2>
+  <div class="prose">
+    {%- include excerpts.html book=book %}
+  </div>
+</section>
+{%- endfor %}
+{%- else %}
+<p class="empty">No excerpts yet.</p>
+{%- endif %}

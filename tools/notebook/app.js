@@ -81,6 +81,8 @@
       if (on) tab.setAttribute('aria-current', 'page'); else tab.removeAttribute('aria-current');
     });
     document.body.dataset.section = name;
+    // The site styles a book's blockquotes as excerpts; so does the preview.
+    el.editor.classList.toggle('book', name === 'reading');
     el.sync.hidden = name !== 'reading';
     el.newForm.hidden = name === 'about';
     el.search.hidden = name === 'about';

@@ -271,6 +271,7 @@ h1, h2, h3, h4 {
 
 .empty { color: var(--text-light); font-style: italic; margin: 0; }
 
+// The editor's Write/Preview toggle.
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -293,6 +294,48 @@ h1, h2, h3, h4 {
   background: var(--accent-soft);
   border-color: var(--accent);
   color: var(--accent);
+}
+
+.section-intro { color: var(--text-light); margin: 0 0 24px; }
+
+.reading-group + .reading-group { margin-top: 40px; }
+.reading-group h2, .excerpt-group h2 {
+  font-size: 1.3rem;
+  margin: 0 0 16px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--line);
+}
+
+// The shelf: small covers by year, for the books without notes.
+.shelf-year {
+  margin: 20px 0 10px;
+  font: 600 .85rem var(--mono);
+  color: var(--text-light);
+  letter-spacing: .04em;
+}
+.shelf {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(58px, 1fr));
+  gap: 12px 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.shelf a { display: block; }
+.shelf img, .shelf .cover-blank {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 1px 3px 3px 1px;
+  background: var(--panel);
+  box-shadow: 1px 1px 0 var(--paper-edge), 0 2px 5px rgba(40, 30, 10, .25);
+}
+.shelf .cover-blank { padding: 4px; font-size: .55rem; border-left-width: 3px; overflow: hidden; }
+.shelf a:hover img, .shelf a:hover .cover-blank { transform: translateY(-2px); }
+@media (prefers-reduced-motion: no-preference) {
+  .shelf img, .shelf .cover-blank { transition: transform .12s ease; }
 }
 
 // Reading: a grid of covers, like books laid on the page.
@@ -358,7 +401,9 @@ h1, h2, h3, h4 {
 .back { margin-top: 32px; font-size: .92rem; }
 .links { padding-left: 1.2em; }
 
-.prose { line-height: var(--lh); }
+// Notes and essays are set in the serif, like the book they would be written in.
+.prose { font-family: var(--serif); font-size: 1.06rem; line-height: var(--lh); }
+.prose code, .prose pre { font-family: var(--mono); }
 .prose h2 { font-size: 1.45rem; margin: 2em 0 .5em; }
 .prose h3 { font-size: 1.15rem; margin: 1.6em 0 .4em; }
 .prose img { max-width: 100%; height: auto; }
@@ -370,6 +415,39 @@ h1, h2, h3, h4 {
   border-left: 3px solid var(--line);
   color: var(--text-light);
 }
+
+// In a book's notes a blockquote is an excerpt: a passage copied out, so it is
+// set as text to read, not an aside. If it has more than one paragraph, the
+// last is where it came from ("p. 112").
+.book .prose blockquote, .excerpt-group blockquote, .featured-quote blockquote {
+  margin: var(--lh) 0;
+  padding: 0 0 0 18px;
+  border-left: 3px solid var(--tab-excerpts);
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  color: var(--text-strong);
+}
+.book .prose blockquote p, .excerpt-group blockquote p, .featured-quote blockquote p { margin: 0 0 .5em; }
+.book .prose blockquote > p:last-child:not(:first-child),
+.excerpt-group blockquote > p:last-child:not(:first-child),
+.featured-quote blockquote > p:last-child:not(:first-child) {
+  font: .85rem var(--sans);
+  color: var(--text-light);
+}
+.book .prose blockquote > p:last-child:not(:first-child)::before,
+.excerpt-group blockquote > p:last-child:not(:first-child)::before,
+.featured-quote blockquote > p:last-child:not(:first-child)::before { content: "— "; }
+
+.excerpt-group + .excerpt-group { margin-top: 36px; }
+.excerpt-group h2 a { color: inherit; }
+.excerpt-group h2 a:hover { color: var(--accent); text-decoration: none; }
+.byline { font: 400 .9rem var(--sans); color: var(--text-light); margin-left: 6px; }
+
+// The homepage's one chosen passage.
+.featured-quote { margin: 8px 0 0; max-width: 36em; }
+.featured-quote blockquote { font-size: 1.15rem; margin: 0 0 6px; }
+.featured-quote figcaption { padding-left: 21px; font-size: .9rem; color: var(--text-light); }
+.featured-quote figcaption a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 
 .prose table { border-collapse: collapse; width: 100%; font-size: .92rem; display: block; overflow-x: auto; }
 .prose th, .prose td { border-bottom: 1px solid var(--line); padding: 6px 10px; text-align: left; }
@@ -384,6 +462,31 @@ pre {
   overflow-x: auto;
   font-size: .9rem;
   line-height: 1.5;
+}
+
+.mentioned-in { margin-top: 40px; padding-top: 12px; border-top: 1px solid var(--line); }
+.mentioned-in h2 { font: 600 .8rem var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--text-light); margin: 0 0 6px; }
+.mentioned-in ul { list-style: none; margin: 0; padding: 0; }
+.mentioned-in li { padding: 2px 0; }
+
+// Margin notes (assets/js/site.js). On narrow screens they stay footnotes.
+.sidenote { display: none; }
+@media (min-width: 1100px) {
+  .notebook:has(.has-sidenotes) { max-width: 980px; }
+  .has-sidenotes { position: relative; padding-right: 34%; }
+  .has-sidenotes .sidenote {
+    display: block;
+    float: right;
+    clear: right;
+    width: 45%;   // of the text column, which is 66% of the page
+    margin: .2em -51.5% .8em 0;
+    font: .82rem/1.45 var(--sans);
+    color: var(--text-light);
+  }
+  .has-sidenotes .sidenote-num { color: var(--accent); font-weight: 600; margin-right: 4px; }
+  .has-sidenotes .footnotes { display: none; }
+  // Wide blocks keep the full width.
+  .has-sidenotes pre, .has-sidenotes table { margin-right: -51.5%; }
 }
 
 hr { border: 0; border-top: 1px solid var(--line); margin: 2em 0; }
