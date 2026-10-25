@@ -1,0 +1,18 @@
+{%- comment -%}
+The excerpts in one book's notes. Pass `book`; `featured=true` shows only the
+excerpt marked `{: .featured}`.
+
+An excerpt is any blockquote in a book's body. Collections render before
+pages, so by the time a page includes this, `book.content` is HTML and the
+blockquotes can be cut out of it.
+{%- endcomment -%}
+{%- assign pieces = include.book.content | split: "<blockquote" %}
+{%- for piece in pieces offset: 1 %}
+  {%- assign is_featured = false %}
+  {%- assign head = piece | slice: 0, 18 %}
+  {%- if head == ' class="featured">' %}{% assign is_featured = true %}{% endif %}
+  {%- if include.featured and is_featured == false %}{% continue %}{% endif %}
+  {%- assign quote = piece | split: "</blockquote>" | first | remove_first: ' class="featured"' | remove_first: ">" %}
+<blockquote>{{ quote }}</blockquote>
+  {%- if include.featured %}{% break %}{% endif %}
+{%- endfor %}

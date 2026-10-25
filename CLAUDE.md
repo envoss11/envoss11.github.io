@@ -1,22 +1,25 @@
 # Working on this repo
 
-`ericvoss.com` is a personal notebook. The notebook comes first: Markdown files
-in three sections, written through a local editor app (`make notebook`). The
+`ericvoss.com` is **Commonplace**, a commonplace book: passages copied out of
+what I read, notes on them, and other writing. The notebook comes first: Markdown files
+in two sections, written through a local editor app (`make notebook`). The
 Jekyll site is the public view of those files. Hand-written Jekyll, no theme
 gem, no JavaScript framework. The editor (`tools/notebook/`) is stdlib Python
 plus one plain HTML/JS page; keep it dependency-free. Design plan:
 `~/.claude/plans/` (notebook refactor, in phases; see the PR history for which
 have landed).
 
-Sections: **Reading** (one page per book, seeded from Goodreads), **Writing**,
-**Projects**, plus a standalone **About** page that is not a notebook section.
+Sections: **Reading** (one page per book, seeded from Goodreads) and
+**Writing** (essays, notes, and project write-ups). **Excerpts** is a tab but
+not a collection: it gathers the blockquotes from Reading's notes. `_pages/about.md` is not a
+page: its body is the homepage intro, and `/about/` redirects home.
 
 ## Commands
 
 | Target | What it does |
 |---|---|
 | `make notebook` | The local editor at `localhost:4100` (`tools/notebook/`) |
-| `make entry SECTION=writing TITLE="..."` | Start an unpublished entry. `SECTION` is `reading`, `writing` or `projects` |
+| `make entry SECTION=writing TITLE="..."` | Start an unpublished entry. `SECTION` is `reading` or `writing` |
 | `make serve` | Preview at `localhost:4000`, unpublished entries included |
 | `make build` | Production build into `_site/` |
 | `make check` | Build, then html-proofer — the same gate CI runs on every PR |
@@ -29,8 +32,8 @@ Sections: **Reading** (one page per book, seeded from Goodreads), **Writing**,
 |---|---|
 | `_books/` | Reading. `<slug>.md`, live at `/reading/<slug>/`. Body is my notes and may be empty. |
 | `_writing/` | Writing. `YYYY-MM-DD-slug.md`, live at `/writing/<slug>/`, in RSS. |
-| `_projects/` | Projects. `<slug>.md`, live at `/projects/<slug>/`. |
-| `_pages/` | About, and redirect stubs for old URLs. |
+| `_pages/` | `about.md` (the homepage intro), and redirect stubs for old URLs. |
+| `excerpts/` | The Excerpts page. Built from book notes; nothing to edit here. |
 | `_data/notebook.yml` | Tab order and footer links. |
 
 ## Front matter
@@ -44,7 +47,32 @@ excerpt: ""         # optional; meta description and RSS summary
 ```
 
 Books add `author`, `rating`, `date_read`, and later `goodreads_id`, `shelf`,
-`cover`. Projects add `summary` and `links: [{title, url}]`. There are no topics.
+`cover`. A project write-up is a writing entry and may add `summary` and
+`links: [{title, url}]`.
+
+## Writing conventions
+
+Plain Markdown; these are the only conventions the site reads.
+
+- **Excerpts.** A blockquote in a book's notes is an excerpt. Transcribe the
+  passage as written. If the blockquote has more than one paragraph, the last
+  one is the source, e.g. `p. 112`. Notes go between the excerpts as ordinary
+  paragraphs.
+- **The homepage passage** is picked by hand: put `{: .featured}` on the line
+  right after a blockquote. If several are marked, the most recently read book
+  wins, so unmark the old one when choosing a new one.
+- **Margin notes** are Markdown footnotes (`[^1]`). On wide screens they sit
+  in the margin beside the text; elsewhere they are footnotes.
+- **Mentioned in.** Linking one entry from another adds a backlink at the foot
+  of the linked page. Link with the trailing slash (`/reading/dune/`).
+
+## Heads, later
+
+Commonplace books were traditionally sorted under *heads*: short topic words
+(*Attention*, *Cities*) with an A–Z index. There are none yet, on purpose.
+Revisit once there are enough excerpts that groupings show up on their own.
+Likely shape: a `heads: [..]` list in front matter and one `/heads/` index
+page, not a taxonomy designed up front.
 
 ## Rules
 
@@ -70,6 +98,10 @@ Books add `author`, `rating`, `date_read`, and later `goodreads_id`, `shelf`,
    `/feed/posts.xml`; Writing owns `/feed.xml`. Do not use `{% feed_meta %}`.
 7. **Do not name a section index's slug after a redirect stub** (`/posts/`,
    `/blog/`, ...) in `_pages/`.
+8. **Excerpts are cut out of rendered HTML.** `_includes/excerpts.html` splits
+   `book.content` on `<blockquote`, which works because collections render
+   before pages. Use it from pages (`index.html`, `excerpts/`), not from a
+   collection's layout.
 
 ## Voice
 

@@ -5,29 +5,49 @@ section: reading
 permalink: /reading/
 description: "Books I have read, with notes on some of them."
 ---
+{%- comment -%}
+Books with notes come first, as full cards. The rest sit on a shelf of small
+covers, grouped by the year they were read; each year has an id, so
+/reading/#2025 still links to that year.
+{%- endcomment -%}
 <h1>Reading</h1>
 {%- assign dated = site.books | where_exp: "b", "b.date_read" | sort: "date_read" | reverse %}
 {%- assign undated = site.books | where_exp: "b", "b.date_read == nil" | sort: "title" %}
-{%- assign books = dated | concat: undated %}
-{%- assign years = "" %}
+{%- assign annotated = "" | split: "" %}
+{%- assign shelf_dated = "" | split: "" %}
+{%- assign shelf_undated = "" | split: "" %}
 {%- for b in dated %}
-  {%- assign y = b.date_read | date: "%Y" %}
-  {%- unless years contains y %}{% assign years = years | append: y | append: "," %}{% endunless %}
+  {%- assign body = b.content | strip %}
+  {%- if body != "" %}{% assign annotated = annotated | push: b %}{% else %}{% assign shelf_dated = shelf_dated | push: b %}{% endif %}
 {%- endfor %}
-{%- assign year_list = years | split: "," %}
-{%- if books.size > 0 %}
-<div class="filters" role="group" aria-label="Filter books" hidden>
-  <button type="button" data-filter="all" aria-pressed="true">All</button>
-  <button type="button" data-filter="notes" aria-pressed="false">With notes</button>
-  {%- for year in year_list %}
-  <button type="button" data-filter="{{ year }}" aria-pressed="false">{{ year }}</button>
-  {%- endfor %}
-</div>
-<ul class="book-list">
-  {%- for book in books %}
-  {% include book-card.html book=book %}
-  {%- endfor %}
-</ul>
-{%- else %}
+{%- for b in undated %}
+  {%- assign body = b.content | strip %}
+  {%- if body != "" %}{% assign annotated = annotated | push: b %}{% else %}{% assign shelf_undated = shelf_undated | push: b %}{% endif %}
+{%- endfor %}
+{%- if site.books.size == 0 %}
 <p class="empty">No books yet.</p>
+{%- else %}
+<p class="section-intro">{{ site.books.size }} books{% if annotated.size > 0 %}, {{ annotated.size }} with notes{% endif %}.</p>
+{%- if annotated.size > 0 %}
+<section class="reading-group">
+  <h2>With notes</h2>
+  <ul class="book-list">
+    {%- for book in annotated %}
+    {% include book-card.html book=book %}
+    {%- endfor %}
+  </ul>
+</section>
+{%- endif %}
+<section class="reading-group">
+  <h2>{% if annotated.size > 0 %}The rest of the shelf{% else %}The shelf{% endif %}</h2>
+  {%- assign years = shelf_dated | group_by_exp: "b", "b.date_read | date: '%Y'" %}
+  {%- for year in years %}
+  <h3 class="shelf-year" id="{{ year.name }}">{{ year.name }}</h3>
+  {% include shelf.html books=year.items %}
+  {%- endfor %}
+  {%- if shelf_undated.size > 0 %}
+  <h3 class="shelf-year" id="undated">Undated</h3>
+  {% include shelf.html books=shelf_undated %}
+  {%- endif %}
+</section>
 {%- endif %}

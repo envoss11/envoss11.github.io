@@ -1,42 +1,31 @@
-// The Reading filter. "All" shows every book, "With notes" the ones with a
-// body, and a year the books read that year. The choice goes in the URL hash
-// so /reading/#2025 is a link. Without JavaScript the row stays hidden and
-// every book shows.
+// Margin notes. Footnotes are written as ordinary Markdown footnotes ([^1]);
+// this copies each one next to its reference so that on wide screens it can
+// sit in the margin beside the text. The CSS decides where they show: in the
+// margin when there is room, otherwise the footnotes stay at the bottom as
+// usual. Without JavaScript, they are plain footnotes.
 (function () {
-  var bar = document.querySelector('.filters');
-  if (!bar) return;
-  var buttons = bar.querySelectorAll('button[data-filter]');
-  var books = document.querySelectorAll('.book-card');
-  bar.hidden = false;
-
-  function matches(book, key) {
-    if (key === 'all') return true;
-    if (key === 'notes') return book.dataset.notes === 'true';
-    return book.dataset.year === key;
-  }
-
-  function apply(key) {
-    var valid = Array.prototype.some.call(buttons, function (b) {
-      return b.dataset.filter === key;
+  document.querySelectorAll('.prose').forEach(function (prose) {
+    var refs = prose.querySelectorAll('a.footnote[href^="#fn"]');
+    if (!refs.length) return;
+    refs.forEach(function (link) {
+      var sup = link.parentNode;
+      var note = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+      if (!note) return;
+      var side = document.createElement('span');
+      side.className = 'sidenote';
+      side.setAttribute('role', 'note');
+      var num = document.createElement('span');
+      num.className = 'sidenote-num';
+      num.textContent = link.textContent;
+      side.appendChild(num);
+      note.querySelectorAll('p').forEach(function (p, i) {
+        var part = p.cloneNode(true);
+        part.querySelectorAll('.reversefootnote').forEach(function (a) { a.remove(); });
+        if (i) side.appendChild(document.createElement('br'));
+        while (part.firstChild) side.appendChild(part.firstChild);
+      });
+      sup.after(side);
     });
-    if (!valid) key = 'all';
-    buttons.forEach(function (b) {
-      b.setAttribute('aria-pressed', String(b.dataset.filter === key));
-    });
-    books.forEach(function (book) {
-      book.hidden = !matches(book, key);
-    });
-  }
-
-  bar.addEventListener('click', function (e) {
-    var b = e.target.closest('button[data-filter]');
-    if (!b) return;
-    var key = b.dataset.filter;
-    history.replaceState(null, '', key === 'all' ? location.pathname : '#' + key);
-    apply(key);
+    prose.classList.add('has-sidenotes');
   });
-  window.addEventListener('hashchange', function () {
-    apply(location.hash.slice(1));
-  });
-  apply(location.hash.slice(1));
 })();

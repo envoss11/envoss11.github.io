@@ -20,7 +20,7 @@ help: ## Show this list
 	  | sed -E 's/^([a-z-]+):.*## /\1|/' \
 	  | awk -F'|' '{ printf "  %-11s %s\n", $$1, $$2 }'
 	@echo
-	@echo '  make entry SECTION=writing TITLE="Some title"   (reading|writing|projects)'
+	@echo '  make entry SECTION=writing TITLE="Some title"   (reading|writing)'
 
 notebook: ## Open the local editor at localhost:4100 (PORT= to change)
 	python3 tools/notebook/server.py --port $(or $(PORT),4100)
@@ -36,10 +36,9 @@ check: build ## What CI gates on: the build, then the link and image check
 
 # Sections are the collections in _config.yml. A new entry starts unpublished;
 # flip `published` to true (or delete the line) when it is ready.
-SECTIONS := reading writing projects
+SECTIONS := reading writing
 DIR_reading  := _books
 DIR_writing  := _writing
-DIR_projects := _projects
 
 entry: ## Start an entry: make entry SECTION=writing TITLE="..."
 	@case ' $(SECTIONS) ' in *' $(SECTION) '*) ;; *) echo 'usage: make entry SECTION=<$(SECTIONS)> TITLE="..."'; exit 1;; esac

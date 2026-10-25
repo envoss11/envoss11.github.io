@@ -5,5 +5,4 @@
     <a class="tab tab-{{ tab.key }}" href="{{ tab.url | relative_url }}"{% if page.section == tab.key %} aria-current="page"{% endif %}>{{ tab.label }}</a>
     {%- endfor %}
   </div>
-  <a class="tab tab-about" href="{{ site.data.notebook.about.url | relative_url }}">{{ site.data.notebook.about.label }}</a>
 </nav>

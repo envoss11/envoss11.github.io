@@ -5,19 +5,14 @@ tabs:
     label: Reading
     url: /reading/
     collection: books
+  # Not a collection: the blockquotes in Reading's notes, gathered.
+  - key: excerpts
+    label: Excerpts
+    url: /excerpts/
   - key: writing
     label: Writing
     url: /writing/
     collection: writing
-  - key: projects
-    label: Projects
-    url: /projects/
-    collection: projects
-
-# About is a page, not a section, so it sits outside the tabs.
-about:
-  label: About
-  url: /about/
 
 # Links to elsewhere, shown in the footer.
 links:

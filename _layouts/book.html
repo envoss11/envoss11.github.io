@@ -17,5 +17,6 @@ layout: notebook
     {%- assign body = content | strip %}
     {%- if body != "" %}{{ content }}{% else %}<p class="empty">No notes on this one yet.</p>{% endif %}
   </div>
+  {%- include mentioned-in.html %}
   <p class="back"><a href="{{ '/reading/' | relative_url }}">← All books</a></p>
 </article>

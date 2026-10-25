@@ -1,10 +1,10 @@
 # ---------------------------------------------------------------------------
 # Site
 # ---------------------------------------------------------------------------
-title: "Eric Voss"
+title: "Commonplace"
 # Read by jekyll-feed for the <author> on every entry in /feed.xml.
 author: "Eric Voss"
-description: "Eric Voss's notebook: notes on books, writing, and projects."
+description: "Eric Voss's commonplace book: notes on books I've read, and other writing."
 url: "https://www.ericvoss.com"
 baseurl: ""
 locale: "en-US"
@@ -50,9 +50,6 @@ collections:
   writing:
     output: true
     permalink: /writing/:title/
-  projects:
-    output: true
-    permalink: /projects/:title/
 
 # This replaces Jekyll's default exclude list rather than adding to it, so the
 # defaults have to be named here too. Dotfiles and _-prefixed directories are
@@ -80,12 +77,6 @@ defaults:
       type: writing
     values:
       section: writing
-      layout: entry
-  - scope:
-      path: ""
-      type: projects
-    values:
-      section: projects
       layout: entry
   - scope:
       path: "_pages"

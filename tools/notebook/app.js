@@ -1,5 +1,5 @@
 // The notebook editor. One page; the URL hash says what is open:
-// #/reading, #/reading/<slug>, #/about. Edits save themselves a moment after
+// #/reading, #/reading/<slug>, #/about (the homepage intro). Edits save themselves a moment after
 // typing stops (or on cmd/ctrl-S) to the Markdown file on disk.
 (function () {
   'use strict';
@@ -81,6 +81,8 @@
       if (on) tab.setAttribute('aria-current', 'page'); else tab.removeAttribute('aria-current');
     });
     document.body.dataset.section = name;
+    // The site styles a book's blockquotes as excerpts; so does the preview.
+    el.editor.classList.toggle('book', name === 'reading');
     el.sync.hidden = name !== 'reading';
     el.newForm.hidden = name === 'about';
     el.search.hidden = name === 'about';
@@ -330,7 +332,7 @@
 
   function route() {
     var parts = location.hash.replace(/^#\/?/, '').split('/');
-    var sec = ['reading', 'writing', 'projects', 'about'].indexOf(parts[0]) >= 0 ? parts[0] : 'reading';
+    var sec = ['reading', 'writing', 'about'].indexOf(parts[0]) >= 0 ? parts[0] : 'reading';
     var slug = sec === 'about' ? 'about' : parts[1];
     var ready = sec === section ? Promise.resolve() : loadSection(sec);
     ready.then(function () {

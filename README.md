@@ -1,6 +1,6 @@
 # ericvoss.com
 
-Eric Voss's notebook: notes on books, writing, and projects. Jekyll 4, built
+Commonplace, Eric Voss's notebook: notes on books, and other writing. Jekyll 4, built
 and deployed by GitHub Actions (`.github/workflows/deploy.yml`). The site is
 the public view of a set of Markdown files; the files are the notebook.
 
@@ -9,9 +9,9 @@ the public view of a set of Markdown files; the files are the notebook.
 | Tab | Directory | URL |
 |---|---|---|
 | Reading | `_books/` | `/reading/<slug>/` |
+| Excerpts | (from `_books/`) | `/excerpts/` |
 | Writing | `_writing/` | `/writing/<slug>/` |
-| Projects | `_projects/` | `/projects/<slug>/` |
-| About | `_pages/about.md` | `/about/` |
+| Homepage intro | `_pages/about.md` | `/` (`/about/` redirects there) |
 
 ## Writing in the notebook
 
@@ -31,20 +31,27 @@ touch git: commit and open a PR as usual.
 From the command line instead:
 
 ```sh
-make entry SECTION=writing TITLE="Some title"   # reading | writing | projects
+make entry SECTION=writing TITLE="Some title"   # reading | writing
 make sync-books                                 # pull the Goodreads shelf (DRY=1 to preview)
 ```
+
+The few Markdown conventions the site reads (excerpts, the featured passage,
+margin notes, backlinks) are listed in `CLAUDE.md` under "Writing conventions".
 
 A new entry starts with `published: false`. Delete that line, or set it to
 `true`, when it is ready; the production build skips unpublished entries.
 
 ## Layout
 
-- `index.html` — the cover, with the latest entries of each section.
-- `reading/`, `writing/`, `projects/` — the section index pages.
+- `index.html` — the first page: the intro from `_pages/about.md`, the
+  featured excerpt, recent books, and recent writing once there is some.
+- `reading/` — books with notes first, then the rest as a shelf of small
+  covers by year read. `excerpts/` — every excerpt, by book. `writing/`.
 - `_layouts/notebook.html` — header, tabs, footer. `book.html` and `entry.html`
   extend it.
-- `_includes/` — `tabs.html`, `book-card.html`, `entry-list.html`, `head.html`.
+- `_includes/` — `tabs.html`, `book-card.html`, `shelf.html`, `excerpts.html`,
+  `mentioned-in.html`, `entry-list.html`, `head.html`.
+- `assets/js/site.js` — margin notes; the only script, and optional.
 - `_data/notebook.yml` — tab order and footer links.
 - `tools/goodreads_sync.py` — the Goodreads sync behind `make sync-books`.
 - `tools/notebook/` — the editor: `server.py` (standard library only, bound to
