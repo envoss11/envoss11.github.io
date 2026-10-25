@@ -13,7 +13,7 @@ API that reads and writes the same files Jekyll builds from:
     POST /api/new                          {section, title} -> a new unpublished entry
     POST /api/sync-books                   run `make sync-books`, return its output
 
-It binds to 127.0.0.1 only. Writes are confined to the three collection
+It binds to 127.0.0.1 only. Writes are confined to the two collection
 directories and _pages/about.md, slugs are checked against a strict pattern,
 and every file is replaced atomically. Requests must name this server as their
 Host, and writes must come from its own page, so another website open in the
@@ -43,7 +43,6 @@ ROOT = HERE.parent.parent
 SECTIONS = {
     "reading": ROOT / "_books",
     "writing": ROOT / "_writing",
-    "projects": ROOT / "_projects",
 }
 ABOUT = ROOT / "_pages" / "about.md"
 
@@ -143,10 +142,8 @@ def list_section(section):
         # Most recently read first; books with no read date after, by title.
         entries.sort(key=lambda e: e["title"].lower())
         entries.sort(key=lambda e: e.get("date_read") or "", reverse=True)
-    elif section == "writing":
-        entries.sort(key=lambda e: e["slug"], reverse=True)
     else:
-        entries.sort(key=lambda e: e["title"].lower())
+        entries.sort(key=lambda e: e["slug"], reverse=True)
     return entries
 
 
@@ -221,7 +218,7 @@ def save_entry(section, slug, data):
 def new_entry(data, today=None):
     section, title = data.get("section"), (data.get("title") or "").strip()
     if section not in SECTIONS:
-        raise Refused(HTTPStatus.BAD_REQUEST, "section must be reading, writing or projects")
+        raise Refused(HTTPStatus.BAD_REQUEST, "section must be reading or writing")
     if not title or "\n" in title:
         raise Refused(HTTPStatus.BAD_REQUEST, "a one-line title is required")
     slug = slugify(title)

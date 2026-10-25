@@ -1,22 +1,23 @@
 # Working on this repo
 
 `ericvoss.com` is a personal notebook. The notebook comes first: Markdown files
-in three sections, written through a local editor app (`make notebook`). The
+in two sections, written through a local editor app (`make notebook`). The
 Jekyll site is the public view of those files. Hand-written Jekyll, no theme
 gem, no JavaScript framework. The editor (`tools/notebook/`) is stdlib Python
 plus one plain HTML/JS page; keep it dependency-free. Design plan:
 `~/.claude/plans/` (notebook refactor, in phases; see the PR history for which
 have landed).
 
-Sections: **Reading** (one page per book, seeded from Goodreads), **Writing**,
-**Projects**, plus a standalone **About** page that is not a notebook section.
+Sections: **Reading** (one page per book, seeded from Goodreads) and
+**Writing** (essays, notes, and project write-ups). `_pages/about.md` is not a
+page: its body is the homepage intro, and `/about/` redirects home.
 
 ## Commands
 
 | Target | What it does |
 |---|---|
 | `make notebook` | The local editor at `localhost:4100` (`tools/notebook/`) |
-| `make entry SECTION=writing TITLE="..."` | Start an unpublished entry. `SECTION` is `reading`, `writing` or `projects` |
+| `make entry SECTION=writing TITLE="..."` | Start an unpublished entry. `SECTION` is `reading` or `writing` |
 | `make serve` | Preview at `localhost:4000`, unpublished entries included |
 | `make build` | Production build into `_site/` |
 | `make check` | Build, then html-proofer — the same gate CI runs on every PR |
@@ -29,8 +30,7 @@ Sections: **Reading** (one page per book, seeded from Goodreads), **Writing**,
 |---|---|
 | `_books/` | Reading. `<slug>.md`, live at `/reading/<slug>/`. Body is my notes and may be empty. |
 | `_writing/` | Writing. `YYYY-MM-DD-slug.md`, live at `/writing/<slug>/`, in RSS. |
-| `_projects/` | Projects. `<slug>.md`, live at `/projects/<slug>/`. |
-| `_pages/` | About, and redirect stubs for old URLs. |
+| `_pages/` | `about.md` (the homepage intro), and redirect stubs for old URLs. |
 | `_data/notebook.yml` | Tab order and footer links. |
 
 ## Front matter
@@ -44,7 +44,8 @@ excerpt: ""         # optional; meta description and RSS summary
 ```
 
 Books add `author`, `rating`, `date_read`, and later `goodreads_id`, `shelf`,
-`cover`. Projects add `summary` and `links: [{title, url}]`. There are no topics.
+`cover`. A project write-up is a writing entry and may add `summary` and
+`links: [{title, url}]`. There are no topics.
 
 ## Rules
 

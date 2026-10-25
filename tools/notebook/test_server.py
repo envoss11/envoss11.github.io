@@ -24,9 +24,9 @@ class Scratch(unittest.TestCase):
         self.saved = (server.ROOT, dict(server.SECTIONS), server.ABOUT)
         server.ROOT = self.tmp
         server.SECTIONS.update({k: self.tmp / d for k, d in
-                                (("reading", "_books"), ("writing", "_writing"), ("projects", "_projects"))})
+                                (("reading", "_books"), ("writing", "_writing"))})
         server.ABOUT = self.tmp / "_pages" / "about.md"
-        for d in ("_books", "_writing", "_projects", "_pages"):
+        for d in ("_books", "_writing", "_pages"):
             (self.tmp / d).mkdir()
         server.ABOUT.write_text('---\ntitle: About\npermalink: /about/\n---\n\nHello.\n')
         (self.tmp / "_books" / "dune.md").write_text('---\ntitle: "Dune"\nauthor: "Frank Herbert"\ndate_read: 2024-05-01\n---\n')
@@ -104,7 +104,7 @@ class NewEntries(Scratch):
     def test_refuses_duplicates_and_junk(self):
         with self.assertRaises(server.Refused):
             server.new_entry({"section": "reading", "title": "Dune"})
-        for data in ({"section": "about", "title": "x"}, {"section": "writing", "title": "!!!"},
+        for data in ({"section": "about", "title": "x"}, {"section": "projects", "title": "x"}, {"section": "writing", "title": "!!!"},
                      {"section": "writing", "title": ""}, {"section": "writing", "title": "a\nb"}):
             with self.assertRaises(server.Refused, msg=data):
                 server.new_entry(data)

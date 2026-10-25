@@ -24,7 +24,7 @@
 
   --tab-reading: #1f6f6b;
   --tab-writing: #8f5d0e;
-  --tab-projects: #a8472f;
+  --tab-excerpts: #a8472f;
   --tab-ink: #ffffff;
 
   --shadow: 0 1px 2px rgba(40, 30, 10, .25), 0 8px 24px rgba(40, 30, 10, .18);
@@ -59,7 +59,7 @@
 
     --tab-reading: #6cc3bd;
     --tab-writing: #e0b050;
-    --tab-projects: #e08a70;
+    --tab-excerpts: #e08a70;
     --tab-ink: #12110e;
 
     --shadow: 0 1px 2px rgba(0, 0, 0, .6), 0 8px 24px rgba(0, 0, 0, .5);
@@ -214,7 +214,7 @@ h1, h2, h3, h4 {
 
 .tab-reading  { --tab-color: var(--tab-reading); }
 .tab-writing  { --tab-color: var(--tab-writing); }
-.tab-projects { --tab-color: var(--tab-projects); }
+.tab-excerpts { --tab-color: var(--tab-excerpts); }
 
 @media (prefers-reduced-motion: no-preference) {
   .tab { transition: transform .15s ease, padding .15s ease, filter .15s ease; }
@@ -245,7 +245,6 @@ h1, h2, h3, h4 {
 }
 .feed-reading  { --section-color: var(--tab-reading); }
 .feed-writing  { --section-color: var(--tab-writing); }
-.feed-projects { --section-color: var(--tab-projects); }
 .see-all {
   font: 400 .88rem var(--sans);
   color: var(--text-light);

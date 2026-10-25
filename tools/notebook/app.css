@@ -12,7 +12,7 @@
 }
 .status { font-size: .85rem; color: var(--text-light); }
 .status.ok { color: var(--accent); }
-.status.error { color: var(--tab-projects); }
+.status.error { color: var(--tab-excerpts); }
 .status .reload { margin-left: 6px; }
 
 .app button, .app input[type="text"], .app input[type="search"], .app textarea {
@@ -97,9 +97,12 @@
 
 /* Section colors carry into the list's highlight. */
 body[data-section="writing"]  { --accent: var(--tab-writing); }
-body[data-section="projects"] { --accent: var(--tab-projects); }
-body[data-section="about"]    { --accent: var(--tab-about); }
-body[data-section="about"] .tab-about { filter: brightness(1.1); }
+body[data-section="about"]    { --accent: var(--tab-intro); }
+
+/* The homepage intro (_pages/about.md) has a tab here but not on the site. */
+:root { --tab-intro: #4f5a73; }
+@media (prefers-color-scheme: dark) { :root { --tab-intro: #9fb0d4; } }
+.tab-intro { --tab-color: var(--tab-intro); }
 
 /* Editor --------------------------------------------------------------------- */
 
