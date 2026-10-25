@@ -7,11 +7,21 @@ straight to Reading is a design question for the visual pass.
 {%- endcomment -%}
 <h1 class="sr-only">{{ site.title }}</h1>
 <p class="lede">{{ site.description }}</p>
+{%- comment -%}
+Books have no `date`; Jekyll would give each one the build time. Reading is
+ordered and labelled by `date_read` instead, and undated books are left off.
+{%- endcomment -%}
 {%- for tab in site.data.notebook.tabs %}
-{%- assign entries = site[tab.collection] | sort: "date" | reverse %}
+{%- if tab.collection == "books" %}
+  {%- assign date_key = "date_read" %}
+  {%- assign entries = site.books | where_exp: "b", "b.date_read" | sort: "date_read" | reverse %}
+{%- else %}
+  {%- assign date_key = "date" %}
+  {%- assign entries = site[tab.collection] | sort: "date" | reverse %}
+{%- endif %}
 <section class="feed-section" id="{{ tab.key }}" aria-labelledby="h-{{ tab.key }}">
   <h2 id="h-{{ tab.key }}"><a href="{{ tab.url | relative_url }}">{{ tab.label }}</a></h2>
   {%- assign recent = entries | slice: 0, 5 %}
-  {% include entry-list.html entries=recent %}
+  {% include entry-list.html entries=recent date_key=date_key %}
 </section>
 {%- endfor %}
