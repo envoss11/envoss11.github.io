@@ -8,6 +8,9 @@ rating, date_read, cover). The title is set on creation and never again, and
 the body of a file, which is my notes, is never touched. Running it twice in a
 row changes nothing.
 
+Books with no read date are skipped: those were added from memory when the
+account was set up, not as they were read, and stay off the site.
+
     python3 tools/goodreads_sync.py [--dry-run] [--no-covers]
 
 Standard library plus curl. Local use; CI and the site build never run it.
@@ -144,10 +147,13 @@ def main():
     BOOKS.mkdir(exist_ok=True)
     known = existing_by_id()
     taken = {p.stem for p in BOOKS.glob("*.md")}
-    created, updated, unchanged = [], [], 0
+    created, updated, unchanged, undated = [], [], 0, 0
 
     for item in shelf_items():
         book = to_book(item)
+        if book["date_read"] is None:
+            undated += 1
+            continue
         cover = None if args.no_covers else download_cover(book, args.dry_run)
         owned = {
             "author": book["author"],
@@ -181,7 +187,7 @@ def main():
             path.write_text(new)
 
     prefix = "would " if args.dry_run else ""
-    print(f"{prefix}create {len(created)}, {prefix}update {len(updated)}, unchanged {unchanged}")
+    print(f"{prefix}create {len(created)}, {prefix}update {len(updated)}, unchanged {unchanged}, skipped {undated} with no read date")
     for name in created:
         print(f"  + {name}")
     for name in updated:
