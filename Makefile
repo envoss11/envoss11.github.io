@@ -11,7 +11,7 @@ DATE   := $(shell date +%Y-%m-%d)
 SLUG ?= $(shell printf '%s' '$(TITLE)' | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$$//')
 
 .DEFAULT_GOAL := help
-.PHONY: help notebook serve build check entry sync-books test-tools
+.PHONY: help notebook serve build check entry sync-books sync-articles test-tools
 
 help: ## Show this list
 	@echo "usage: make <target>"
@@ -53,5 +53,9 @@ entry: ## Start an entry: make entry SECTION=writing TITLE="..."
 sync-books: ## Pull the public Goodreads shelf into _books/ (DRY=1 to preview)
 	python3 tools/goodreads_sync.py $(if $(DRY),--dry-run)
 
-test-tools: ## Unit tests for the editor server
+sync-articles: ## Pull Raindrop.io bookmarks and highlights into _articles/ (DRY=1 to preview)
+	python3 tools/raindrop_sync.py $(if $(DRY),--dry-run)
+
+test-tools: ## Unit tests for the editor server and the Raindrop sync
 	python3 -m unittest discover -s tools/notebook
+	python3 -m unittest discover -s tools -p 'test_*.py' -t tools

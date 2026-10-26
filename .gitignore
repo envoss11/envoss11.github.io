@@ -8,3 +8,6 @@ vendor/
 .Rhistory
 
 __pycache__/
+
+# Raindrop test token for `make sync-articles`.
+.raindrop-token

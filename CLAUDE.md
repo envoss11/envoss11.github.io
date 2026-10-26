@@ -9,10 +9,11 @@ plus one plain HTML/JS page; keep it dependency-free. Design plan:
 `~/.claude/plans/` (notebook refactor, in phases; see the PR history for which
 have landed).
 
-Sections: **Reading** (one page per book, seeded from Goodreads) and
-**Writing** (essays, notes, and project write-ups). **Excerpts** is a tab but
-not a collection: it gathers the blockquotes from Reading's notes. `_pages/about.md` is not a
-page: its body is the homepage intro, and `/about/` redirects home.
+Sections: **Reading** (one page per book, seeded from Goodreads, plus
+articles synced from Raindrop.io) and **Writing** (essays, notes, and project
+write-ups). **Excerpts** is a tab but not a collection: it gathers the
+blockquotes from Reading's notes, books and articles both. `_pages/about.md`
+is not a page: its body is the homepage intro, and `/about/` redirects home.
 
 ## Commands
 
@@ -24,16 +25,18 @@ page: its body is the homepage intro, and `/about/` redirects home.
 | `make build` | Production build into `_site/` |
 | `make check` | Build, then html-proofer — the same gate CI runs on every PR |
 | `make sync-books` | Pull the public Goodreads shelf into `_books/` (`DRY=1` to preview) |
-| `make test-tools` | Unit tests for the editor server; run after changing `tools/notebook/` |
+| `make sync-articles` | Pull Raindrop.io bookmarks and highlights into `_articles/` (`DRY=1` to preview) |
+| `make test-tools` | Unit tests for the editor server and the Raindrop sync; run after changing `tools/` |
 
 ## Where things go
 
 | | |
 |---|---|
 | `_books/` | Reading. `<slug>.md`, live at `/reading/<slug>/`. Body is my notes and may be empty. |
+| `_articles/` | Articles, written by `make sync-articles`, live at `/reading/articles/<slug>/`. Raindrop owns these: never edit them by hand. |
 | `_writing/` | Writing. `YYYY-MM-DD-slug.md`, live at `/writing/<slug>/`, in RSS. |
 | `_pages/` | `about.md` (the homepage intro), and redirect stubs for old URLs. |
-| `excerpts/` | The Excerpts page. Built from book notes; nothing to edit here. |
+| `excerpts/` | The Excerpts page. Built from book and article notes; nothing to edit here. |
 | `_data/notebook.yml` | Tab order and footer links. |
 
 ## Front matter
@@ -49,6 +52,9 @@ excerpt: ""         # optional; meta description and RSS summary
 Books add `author`, `rating`, `date_read`, and later `goodreads_id`, `shelf`,
 `cover`. A project write-up is a writing entry and may add `summary` and
 `links: [{title, url}]`.
+
+Articles carry `source`, `site`, `date_read` (when saved to Raindrop) and
+`raindrop_id`, all written by the sync.
 
 ## Writing conventions
 
@@ -73,6 +79,16 @@ Commonplace books were traditionally sorted under *heads*: short topic words
 Revisit once there are enough excerpts that groupings show up on their own.
 Likely shape: a `heads: [..]` list in front matter and one `/heads/` index
 page, not a taxonomy designed up front.
+
+## Articles
+
+Raindrop.io is the source for articles. The bookmark's note comes first, then
+each highlight as a blockquote (so it is an excerpt) followed by its note.
+Bookmarks in a collection whose name contains "queue", or nested under one,
+are to-read and stay out. Each sync rewrites `_articles/` to match Raindrop and
+deletes files whose bookmark is gone. The token lives in `RAINDROP_TOKEN` or
+`.raindrop-token`; never commit it. Articles render without Liquid
+(`render_with_liquid: false`), so trap 1 does not apply to them.
 
 ## Rules
 

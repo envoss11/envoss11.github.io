@@ -1,9 +1,9 @@
 {%- comment -%}
 Backlinks: the entries whose text links to this page. Worked out at build time
-by looking for this page's URL, trailing slash included, in every book's notes
-and every writing entry. `/reading/dune/` counts; `/reading/dune` does not.
+by looking for this page's URL, trailing slash included, in every book's notes,
+every article's notes, and every writing entry. `/reading/dune/` counts; `/reading/dune` does not.
 {%- endcomment -%}
-{%- assign docs = site.books | concat: site.writing %}
+{%- assign docs = site.books | concat: site.writing | concat: site.articles %}
 {%- assign refs = "" | split: "" %}
 {%- for d in docs %}
   {%- if d.url != page.url and d.content contains page.url %}{% assign refs = refs | push: d %}{% endif %}
@@ -13,7 +13,7 @@ and every writing entry. `/reading/dune/` counts; `/reading/dune` does not.
   <h2 id="mentioned-in">Mentioned in</h2>
   <ul>
     {%- for d in refs %}
-    <li><a href="{{ d.url | relative_url }}">{{ d.title | split: ":" | first }}</a>{% if d.author %} <span class="byline">{{ d.author }}</span>{% endif %}</li>
+    <li><a href="{{ d.url | relative_url }}">{% if d.collection == "articles" %}{{ d.title }}{% else %}{{ d.title | split: ":" | first }}{% endif %}</a>{% if d.author %} <span class="byline">{{ d.author }}</span>{% endif %}</li>
     {%- endfor %}
   </ul>
 </aside>
