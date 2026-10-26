@@ -70,6 +70,27 @@ class Render(unittest.TestCase):
         self.assertIn('title: "https://example.com/a"', rs.render(item(title=""), []))
 
 
+class Links(unittest.TestCase):
+    def test_tracking_parameters_are_dropped(self):
+        self.assertEqual(rs.clean_link("https://a.com/x?utm_source=tldr&id=3&UTM_medium=e#s"), "https://a.com/x?id=3#s")
+        self.assertEqual(rs.clean_link("https://a.com/x?utm_source=tldr"), "https://a.com/x")
+        self.assertEqual(rs.clean_link("https://a.com/x?a=1&utm_source=t&b=2"), "https://a.com/x?a=1&b=2")
+        self.assertEqual(rs.clean_link("https://a.com/x/?utm_source=s&utm_medium=e"), "https://a.com/x/")
+        self.assertEqual(rs.clean_link("https://a.com/b.html#s.md?utm_source=t"), "https://a.com/b.html#s.md")
+
+    def test_other_trackers_are_dropped(self):
+        self.assertEqual(rs.clean_link("https://a.com/p?utm_source=x&_bhlid=abc&gift=1"), "https://a.com/p?gift=1")
+
+    def test_site_comes_from_the_cleaned_link(self):
+        url = "https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fwww.b.org%2Fp/1/x"
+        self.assertIn('site: "b.org"', rs.render(item(link=url, domain="tracking.tldrnewsletter.com"), []))
+
+    def test_click_trackers_are_unwrapped(self):
+        url = ("https://tracking.tldrnewsletter.com/CL0/https:%2F%2Fthinkingmachines.ai%2Fblog%2Flora%2F"
+               "%3Futm_source=tldrai/1/0100019-abc/dXerf=424")
+        self.assertEqual(rs.clean_link(url), "https://thinkingmachines.ai/blog/lora/")
+
+
 class Plan(unittest.TestCase):
     def test_known_files_keep_their_slug_and_new_ones_avoid_collisions(self):
         old = rs.ARTICLES / "old-name.md"

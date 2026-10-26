@@ -18,7 +18,7 @@ It needs a Raindrop test token (app.raindrop.io/settings/integrations ->
 create an app -> create test token), either in RAINDROP_TOKEN or in a file
 named `.raindrop-token` at the repo root, which git ignores.
 
-Standard library only. Local use; CI and the site build never run it.
+Standard library plus curl. Local use; CI and the site build never run it.
 """
 
 import argparse
@@ -27,9 +27,9 @@ import json
 import os
 import re
 import sys
+import subprocess
 import time
-import urllib.error
-import urllib.request
+import urllib.parse
 from pathlib import Path
 
 API = "https://api.raindrop.io/rest/v1"
@@ -56,25 +56,26 @@ def read_token():
 
 
 def get(path, tok, params=None, tries=4):
-    """GET an API path and return the parsed JSON. Backs off when rate limited
-    (the API allows 120 requests a minute)."""
+    """GET an API path through curl and return the parsed JSON. Python's
+    http.client gets truncated chunked responses here, as it does from the
+    Goodreads feed; curl does not. The token goes to curl on stdin, so it is
+    not in the process list. Backs off when rate limited (the API allows 120
+    requests a minute)."""
     query = "?" + "&".join(f"{k}={v}" for k, v in params.items()) if params else ""
-    req = urllib.request.Request(
-        f"{API}{path}{query}",
-        headers={"Authorization": f"Bearer {tok}", "User-Agent": "ericvoss.com raindrop_sync"},
-    )
+    config = f'header = "Authorization: Bearer {tok}"\n'
+    cmd = ["curl", "-sS", "--max-time", "60", "-A", "ericvoss.com raindrop_sync",
+           "-K", "-", "-w", "\n%{http_code}", f"{API}{path}{query}"]
     for attempt in range(tries):
-        try:
-            with urllib.request.urlopen(req, timeout=60) as resp:
-                return json.load(resp)
-        except urllib.error.HTTPError as err:
-            if err.code == 401:
-                sys.exit("Raindrop refused the token (401). Make a new test token and try again.")
-            if err.code in (429, 500, 502, 503, 504) and attempt < tries - 1:
-                wait = int(err.headers.get("Retry-After") or 0) or 2 ** (attempt + 2)
-                time.sleep(min(wait, 60))
-                continue
-            raise
+        run = subprocess.run(cmd, input=config, capture_output=True, text=True)
+        body, _, code = run.stdout.rpartition("\n")
+        if run.returncode == 0 and code == "200":
+            return json.loads(body)
+        if code == "401":
+            sys.exit("Raindrop refused the token (401). Make a new test token and try again.")
+        if attempt < tries - 1 and (run.returncode != 0 or code in ("429", "500", "502", "503", "504")):
+            time.sleep(2 ** (attempt + 2))
+            continue
+        sys.exit(f"GET {path} failed: HTTP {code or '-'} {run.stderr.strip()}")
 
 
 def collections(tok):
@@ -156,13 +157,42 @@ def quote_text(text):
     return "  \n".join(f"> {line}" for line in lines)
 
 
+CLICK_TRACKER = re.compile(r"^https?://[^/]+/CL0/([^/]+)/")
+# Query parameters that only identify the reader or the campaign.
+TRACKING = re.compile(r"^(utm_[^=]*|_bhlid|mc_cid|mc_eid|fbclid|gclid)(=|$)", re.I)
+
+
+def drop_utm(part):
+    """`a?x=1&utm_y=2` -> `a?x=1`: the parameters after the first `?`, without
+    the tracking ones. Values are left as written, not re-encoded."""
+    head, sep, query = part.partition("?")
+    if not sep:
+        return part
+    kept = [p for p in query.split("&") if p and not TRACKING.match(p)]
+    return head + ("?" + "&".join(kept) if kept else "")
+
+
+def clean_link(url):
+    """The link a reader should follow. Newsletter click-trackers of the form
+    `<host>/CL0/<encoded target>/...` (TLDR uses them) carry a per-subscriber
+    id, so the target is unwrapped. Tracking parameters are dropped from the
+    query and from the fragment, where some sites put them."""
+    m = CLICK_TRACKER.match(url)
+    if m:
+        url = urllib.parse.unquote(m.group(1))
+    base, hash_, fragment = url.partition("#")
+    return drop_utm(base) + hash_ + drop_utm(fragment)
+
+
 def render(item, hls):
     """The whole file for one bookmark."""
     title = (item.get("title") or "").strip() or item.get("link", "")
+    link = clean_link(item.get("link", ""))
+    host = urllib.parse.urlsplit(link).hostname or item.get("domain") or ""
     fm = {
         "title": title,
-        "source": item.get("link", ""),
-        "site": item.get("domain") or "",
+        "source": link,
+        "site": re.sub(r"^www\.", "", host),
         # When it was saved to Raindrop. Called date_read so articles sort
         # alongside books, which use the same key.
         "date_read": (item.get("created") or "")[:10] or None,
