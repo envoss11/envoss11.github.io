@@ -85,7 +85,10 @@ page, not a taxonomy designed up front.
 Raindrop.io is the source for articles. The bookmark's note comes first, then
 each highlight as a blockquote (so it is an excerpt) followed by its note.
 Bookmarks in a collection whose name contains "queue", or nested under one,
-are to-read and stay out. Each sync rewrites `_articles/` to match Raindrop and
+are to-read and stay out. Notes that touch my work stay in Raindrop but off
+the site: list the bookmark or highlight id in `tools/raindrop_private.txt`,
+or tag the bookmark `private` in Raindrop. Check new notes for this before
+pushing a sync. Each sync rewrites `_articles/` to match Raindrop and
 deletes files whose bookmark is gone. The token lives in `RAINDROP_TOKEN` or
 `.raindrop-token`; never commit it. Articles render without Liquid
 (`render_with_liquid: false`), so trap 1 does not apply to them.
