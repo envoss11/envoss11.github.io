@@ -50,6 +50,10 @@ collections:
   writing:
     output: true
     permalink: /writing/:title/
+  # Written by `make sync-articles` from Raindrop.io; not edited by hand.
+  articles:
+    output: true
+    permalink: /reading/articles/:title/
 
 # This replaces Jekyll's default exclude list rather than adding to it, so the
 # defaults have to be named here too. Dotfiles and _-prefixed directories are
@@ -78,6 +82,14 @@ defaults:
     values:
       section: writing
       layout: entry
+  - scope:
+      path: ""
+      type: articles
+    values:
+      section: reading
+      layout: article
+      # Highlights quote other people's text, which can contain `{{`.
+      render_with_liquid: false
   - scope:
       path: "_pages"
     values:

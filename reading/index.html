@@ -3,10 +3,11 @@ layout: notebook
 title: Reading
 section: reading
 permalink: /reading/
-description: "Books I have read, with notes on some of them."
+description: "Books and articles I have read, with notes on some of them."
 ---
 {%- comment -%}
-Books with notes come first, as full cards. The rest sit on a shelf of small
+Books with notes come first, as full cards, then the latest articles. The rest
+of the books sit on a shelf of small
 covers, grouped by the year they were read; each year has an id, so
 /reading/#2025 still links to that year.
 {%- endcomment -%}
@@ -36,6 +37,13 @@ covers, grouped by the year they were read; each year has an id, so
     {% include book-card.html book=book %}
     {%- endfor %}
   </ul>
+</section>
+{%- endif %}
+{%- if site.articles.size > 0 %}
+{%- assign articles = site.articles | sort: "date_read" | reverse | slice: 0, 5 %}
+<section class="reading-group">
+  <h2>Articles <a class="see-all" href="{{ '/reading/articles/' | relative_url }}">All {{ site.articles.size }} →</a></h2>
+  {% include article-list.html articles=articles %}
 </section>
 {%- endif %}
 <section class="reading-group">

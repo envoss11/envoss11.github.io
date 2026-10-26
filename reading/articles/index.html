@@ -1,0 +1,36 @@
+---
+layout: notebook
+title: Articles
+section: reading
+permalink: /reading/articles/
+description: "Articles I have read, with highlights and notes."
+---
+{%- comment -%}
+Every synced article, most recently saved first. The ones with highlights or
+notes come first; the rest are listed after.
+{%- endcomment -%}
+<h1>Articles</h1>
+{%- assign all = site.articles | sort: "date_read" | reverse %}
+{%- assign annotated = "" | split: "" %}
+{%- assign rest = "" | split: "" %}
+{%- for a in all %}
+  {%- assign body = a.content | strip %}
+  {%- if body != "" %}{% assign annotated = annotated | push: a %}{% else %}{% assign rest = rest | push: a %}{% endif %}
+{%- endfor %}
+{%- if all.size == 0 %}
+<p class="empty">No articles yet.</p>
+{%- else %}
+<p class="section-intro">{{ all.size }} articles{% if annotated.size > 0 %}, {{ annotated.size }} with highlights or notes{% endif %}. <a href="{{ '/reading/' | relative_url }}">Books are on Reading.</a></p>
+{%- if annotated.size > 0 %}
+<section class="reading-group">
+  <h2>With highlights or notes</h2>
+  {% include article-list.html articles=annotated %}
+</section>
+{%- endif %}
+{%- if rest.size > 0 %}
+<section class="reading-group">
+  <h2>{% if annotated.size > 0 %}The rest{% else %}Saved{% endif %}</h2>
+  {% include article-list.html articles=rest %}
+</section>
+{%- endif %}
+{%- endif %}

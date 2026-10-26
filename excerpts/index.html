@@ -3,17 +3,22 @@ layout: notebook
 title: Excerpts
 section: excerpts
 permalink: /excerpts/
-description: "Passages copied out of the books I've read."
+description: "Passages copied out of the books and articles I've read."
 ---
 <h1>Excerpts</h1>
-{%- assign dated = site.books | where_exp: "b", "b.date_read" | sort: "date_read" | reverse %}
-{%- assign undated = site.books | where_exp: "b", "b.date_read == nil" | sort: "title" %}
+{%- comment -%}
+Books and articles together, by the date each was read (for an article, when
+it was saved to Raindrop).
+{%- endcomment -%}
+{%- assign everything = site.books | concat: site.articles %}
+{%- assign dated = everything | where_exp: "b", "b.date_read" | sort: "date_read" | reverse %}
+{%- assign undated = everything | where_exp: "b", "b.date_read == nil" | sort: "title" %}
 {%- assign books = dated | concat: undated | where_exp: "b", "b.content contains '<blockquote'" %}
 {%- if books.size > 0 %}
-<p class="section-intro">Passages copied out of books, most recently read first.</p>
+<p class="section-intro">Passages copied out of books and articles, most recently read first.</p>
 {%- for book in books %}
 <section class="excerpt-group">
-  <h2><a href="{{ book.url | relative_url }}">{{ book.title | split: ":" | first }}</a> <span class="byline">{{ book.author }}</span></h2>
+  <h2><a href="{{ book.url | relative_url }}">{% if book.collection == "articles" %}{{ book.title }}{% else %}{{ book.title | split: ":" | first }}{% endif %}</a> <span class="byline">{{ book.author | default: book.site }}</span></h2>
   <div class="prose">
     {%- include excerpts.html book=book %}
   </div>

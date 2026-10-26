@@ -33,6 +33,7 @@ From the command line instead:
 ```sh
 make entry SECTION=writing TITLE="Some title"   # reading | writing
 make sync-books                                 # pull the Goodreads shelf (DRY=1 to preview)
+make sync-articles                              # pull Raindrop.io bookmarks and highlights (DRY=1 to preview)
 ```
 
 The few Markdown conventions the site reads (excerpts, the featured passage,
@@ -45,15 +46,18 @@ A new entry starts with `published: false`. Delete that line, or set it to
 
 - `index.html` — the first page: the intro from `_pages/about.md`, the
   featured excerpt, recent books, and recent writing once there is some.
-- `reading/` — books with notes first, then the rest as a shelf of small
-  covers by year read. `excerpts/` — every excerpt, by book. `writing/`.
-- `_layouts/notebook.html` — header, tabs, footer. `book.html` and `entry.html`
-  extend it.
+- `reading/` — books with notes first, the latest articles, then the rest of
+  the books as a shelf of small covers by year read. `reading/articles/` —
+  every article. `excerpts/` — every excerpt, by book. `writing/`.
+- `_layouts/notebook.html` — header, tabs, footer. `book.html`, `article.html`
+  and `entry.html` extend it.
 - `_includes/` — `tabs.html`, `book-card.html`, `shelf.html`, `excerpts.html`,
-  `mentioned-in.html`, `entry-list.html`, `head.html`.
+  `mentioned-in.html`, `entry-list.html`, `article-list.html`, `head.html`.
 - `assets/js/site.js` — margin notes; the only script, and optional.
 - `_data/notebook.yml` — tab order and footer links.
 - `tools/goodreads_sync.py` — the Goodreads sync behind `make sync-books`.
+- `tools/raindrop_sync.py` — the Raindrop.io sync behind `make sync-articles`.
+  It needs a test token in `RAINDROP_TOKEN` or `.raindrop-token` (git-ignored).
 - `tools/notebook/` — the editor: `server.py` (standard library only, bound to
   127.0.0.1), and one page (`index.html`, `app.js`, `app.css`) that reuses the
   site stylesheet. `make test-tools` runs its tests.

@@ -417,9 +417,9 @@ h1, h2, h3, h4 {
 }
 
 // In a book's notes a blockquote is an excerpt: a passage copied out, so it is
-// set as text to read, not an aside. If it has more than one paragraph, the
+// set as text to read, not an aside. The same goes for an article's highlights. If it has more than one paragraph, the
 // last is where it came from ("p. 112").
-.book .prose blockquote, .excerpt-group blockquote, .featured-quote blockquote {
+.book .prose blockquote, .article .prose blockquote, .excerpt-group blockquote, .featured-quote blockquote {
   margin: var(--lh) 0;
   padding: 0 0 0 18px;
   border-left: 3px solid var(--tab-excerpts);
@@ -427,14 +427,16 @@ h1, h2, h3, h4 {
   font-size: 1.05rem;
   color: var(--text-strong);
 }
-.book .prose blockquote p, .excerpt-group blockquote p, .featured-quote blockquote p { margin: 0 0 .5em; }
+.book .prose blockquote p, .article .prose blockquote p, .excerpt-group blockquote p, .featured-quote blockquote p { margin: 0 0 .5em; }
 .book .prose blockquote > p:last-child:not(:first-child),
+.article .prose blockquote > p:last-child:not(:first-child),
 .excerpt-group blockquote > p:last-child:not(:first-child),
 .featured-quote blockquote > p:last-child:not(:first-child) {
   font: .85rem var(--sans);
   color: var(--text-light);
 }
 .book .prose blockquote > p:last-child:not(:first-child)::before,
+.article .prose blockquote > p:last-child:not(:first-child)::before,
 .excerpt-group blockquote > p:last-child:not(:first-child)::before,
 .featured-quote blockquote > p:last-child:not(:first-child)::before { content: "— "; }
 
