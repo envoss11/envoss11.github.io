@@ -8,4 +8,4 @@ redirect_to: /
 sitemap: false
 ---
 
-Some notes on books I've read, along with miscellaneous other writings. 
+Here's some stuff I'm reading and writing.
