@@ -7,7 +7,8 @@ becomes `_articles/<slug>.md`. Its highlights become blockquotes, so they show
 up on the Excerpts page. A note on a highlight follows it as a paragraph, and
 the bookmark's own note comes first. Bookmarks in a collection whose name
 contains "queue" (any case), or in a collection nested under one, are left
-out: those are still to be read. A file whose bookmark is gone, or has moved
+out: those are still to be read. Notes listed in tools/raindrop_private.txt,
+or on a bookmark tagged `private`, stay in Raindrop and off the site. A file whose bookmark is gone, or has moved
 into a queue, is deleted. A slug is fixed when its file is first written, so
 renaming a bookmark in Raindrop does not change its URL. Running the sync
 twice in a row changes nothing.
@@ -39,6 +40,8 @@ EXCLUDE = "queue"
 ROOT = Path(__file__).resolve().parent.parent
 ARTICLES = ROOT / "_articles"
 TOKEN_FILE = ROOT / ".raindrop-token"
+PRIVATE_FILE = ROOT / "tools" / "raindrop_private.txt"
+PRIVATE_TAG = "private"
 
 
 # --- Raindrop ---------------------------------------------------------------
@@ -184,8 +187,19 @@ def clean_link(url):
     return drop_utm(base) + hash_ + drop_utm(fragment)
 
 
-def render(item, hls):
-    """The whole file for one bookmark."""
+def read_private(path=PRIVATE_FILE):
+    """Bookmark and highlight ids whose notes are withheld, as strings."""
+    if not path.exists():
+        return set()
+    lines = (line.split("#", 1)[0].strip() for line in path.read_text().splitlines())
+    return {line for line in lines if line}
+
+
+def render(item, hls, private=frozenset()):
+    """The whole file for one bookmark. `private` holds ids whose notes are
+    left out: a bookmark's id withholds all its notes, a highlight's just its own."""
+    tags = {t.casefold() for t in item.get("tags") or []}
+    withhold_all = str(item["_id"]) in private or PRIVATE_TAG in tags
     title = (item.get("title") or "").strip() or item.get("link", "")
     link = clean_link(item.get("link", ""))
     host = urllib.parse.urlsplit(link).hostname or item.get("domain") or ""
@@ -201,7 +215,7 @@ def render(item, hls):
     head = "".join(f"{k}: {scalar(v)}\n" for k, v in fm.items() if v not in (None, ""))
 
     blocks = []
-    note = (item.get("note") or "").strip()
+    note = "" if withhold_all else (item.get("note") or "").strip()
     if note:
         blocks.append(note)
     for h in sorted(hls, key=lambda h: h.get("created") or ""):
@@ -209,7 +223,8 @@ def render(item, hls):
         if not quoted:
             continue
         blocks.append(quoted)
-        hnote = (h.get("note") or "").strip()
+        withhold = withhold_all or str(h.get("_id")) in private
+        hnote = "" if withhold else (h.get("note") or "").strip()
         if hnote:
             blocks.append(hnote)
 
@@ -250,6 +265,7 @@ def main():
     args = ap.parse_args()
 
     tok = read_token()
+    private = read_private()
     cols = collections(tok)
     skip = excluded_collections(cols)
     if skip:
@@ -267,7 +283,7 @@ def main():
         ARTICLES.mkdir(exist_ok=True)
     for path, item in plan(items, known, taken):
         keep.add(path)
-        new = render(item, highlights(item, tok))
+        new = render(item, highlights(item, tok), private)
         old = path.read_text() if path.exists() else None
         if new == old:
             unchanged += 1

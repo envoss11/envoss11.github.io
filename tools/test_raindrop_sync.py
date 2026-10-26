@@ -91,6 +91,39 @@ class Links(unittest.TestCase):
         self.assertEqual(rs.clean_link(url), "https://thinkingmachines.ai/blog/lora/")
 
 
+class Private(unittest.TestCase):
+    hls = [{"_id": "h1", "text": "Kept", "note": "Work note.", "created": "1"},
+           {"_id": "h2", "text": "Also kept", "note": "Fine to share.", "created": "2"}]
+
+    def test_bookmark_id_withholds_every_note(self):
+        out = rs.render(item(note="Internal."), self.hls, private={"1"})
+        self.assertNotIn("Internal.", out)
+        self.assertNotIn("Work note.", out)
+        self.assertNotIn("Fine to share.", out)
+        self.assertIn("> Kept", out)
+        self.assertIn("> Also kept", out)
+
+    def test_highlight_id_withholds_one_note(self):
+        out = rs.render(item(note="Public."), self.hls, private={"h1"})
+        self.assertIn("Public.", out)
+        self.assertNotIn("Work note.", out)
+        self.assertIn("Fine to share.", out)
+
+    def test_private_tag(self):
+        out = rs.render(item(note="Internal.", tags=["Private"]), self.hls)
+        self.assertNotIn("Internal.", out)
+        self.assertNotIn("Work note.", out)
+
+    def test_list_file_ignores_comments(self):
+        import tempfile
+        with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False) as f:
+            f.write("# heading\n123  # a title\n\nabc\n")
+        self.assertEqual(rs.read_private(Path(f.name)), {"123", "abc"})
+
+    def test_checked_in_list_parses(self):
+        self.assertTrue(rs.read_private())
+
+
 class Plan(unittest.TestCase):
     def test_known_files_keep_their_slug_and_new_ones_avoid_collisions(self):
         old = rs.ARTICLES / "old-name.md"
