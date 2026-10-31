@@ -1,8 +1,0 @@
-{%- comment -%} The section tabs. `section` is set by each layout or page. {%- endcomment -%}
-<nav class="tabs" aria-label="Sections">
-  <div class="dividers">
-    {%- for tab in site.data.notebook.tabs %}
-    <a class="tab tab-{{ tab.key }}" href="{{ tab.url | relative_url }}"{% if page.section == tab.key %} aria-current="page"{% endif %}>{{ tab.label }}</a>
-    {%- endfor %}
-  </div>
-</nav>
