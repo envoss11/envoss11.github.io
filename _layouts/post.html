@@ -1,0 +1,13 @@
+---
+layout: default
+---
+<article class="post">
+  <header class="post-head">
+    <p class="meta"><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%-d %B %Y" }}</time></p>
+    <h1>{{ page.title }}</h1>
+  </header>
+  <div class="prose">
+{{ content }}
+  </div>
+  <p class="back"><a href="{{ '/writing/' | relative_url }}">&larr; All writing</a></p>
+</article>

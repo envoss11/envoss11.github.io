@@ -1,10 +1,9 @@
 # ---------------------------------------------------------------------------
 # Site
 # ---------------------------------------------------------------------------
-title: "Commonplace"
-# Read by jekyll-feed for the <author> on every entry in /feed.xml.
+title: "Eric Voss"
 author: "Eric Voss"
-description: "Eric Voss's commonplace book: notes on books I've read, and other writing."
+description: "Eric Voss: a home page and some writing."
 url: "https://www.ericvoss.com"
 baseurl: ""
 locale: "en-US"
@@ -40,24 +39,13 @@ sass:
 include:
   - _pages
 
-# Content lives in collections, one Markdown file per entry. `published: false`
-# in front matter keeps an entry out of a production build; `make serve`
-# passes --unpublished to show it.
 collections:
-  books:
-    output: true
-    permalink: /reading/:title/
   writing:
     output: true
     permalink: /writing/:title/
-  # Written by `make sync-articles` from Raindrop.io; not edited by hand.
-  articles:
-    output: true
-    permalink: /reading/articles/:title/
 
 # This replaces Jekyll's default exclude list rather than adding to it, so the
-# defaults have to be named here too. Dotfiles and _-prefixed directories are
-# skipped on their own.
+# defaults have to be named here too.
 exclude:
   - Gemfile
   - Gemfile.lock
@@ -67,30 +55,10 @@ exclude:
   - README.md
   - CLAUDE.md
   - tools
-  - .venv
 
 defaults:
   - scope:
       path: ""
-      type: books
-    values:
-      section: reading
-      layout: book
-  - scope:
-      path: ""
       type: writing
     values:
-      section: writing
-      layout: entry
-  - scope:
-      path: ""
-      type: articles
-    values:
-      section: reading
-      layout: article
-      # Highlights quote other people's text, which can contain `{{`.
-      render_with_liquid: false
-  - scope:
-      path: "_pages"
-    values:
-      layout: notebook
+      layout: post

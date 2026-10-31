@@ -1,0 +1,14 @@
+---
+layout: default
+---
+<section class="intro">
+  <h1 class="visually-hidden">Eric Voss</h1>
+  <div class="lede">
+{{ content }}
+  </div>
+  <ul class="elsewhere elsewhere--home">
+    {%- for link in site.data.links %}
+    <li><a href="{{ link.url }}" rel="me">{{ link.title }}</a></li>
+    {%- endfor %}
+  </ul>
+</section>

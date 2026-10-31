@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+{% include head.html %}
+</head>
+<body class="is-{{ page.layout }}">
+  <div class="topo-wrap">{% include topo.svg %}</div>
+  <div class="page">
+    <header class="masthead">
+      <a class="mark" href="{{ '/' | relative_url }}">Eric Voss</a>
+      <nav aria-label="Site">
+        <a href="{{ '/writing/' | relative_url }}"{% if page.url contains "/writing/" %} aria-current="page"{% endif %}>Writing</a>
+      </nav>
+    </header>
+
+    <main>
+{{ content }}
+    </main>
+
+    <footer class="colophon">
+      <ul class="elsewhere">
+        {%- for link in site.data.links %}
+        <li><a href="{{ link.url }}" rel="me">{{ link.title }}</a></li>
+        {%- endfor %}
+        <li><a href="{{ '/feed.xml' | relative_url }}">RSS</a></li>
+      </ul>
+      <p>&copy; {{ site.time | date: "%Y" }} Eric Voss</p>
+    </footer>
+  </div>
+</body>
+</html>
